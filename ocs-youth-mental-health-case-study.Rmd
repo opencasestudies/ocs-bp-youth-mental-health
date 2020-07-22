@@ -338,7 +338,7 @@ The function needs to:
 [Great resource for renaming](https://stackoverflow.com/questions/35023375/r-renaming-passed-columns-in-functions)
 
 ```{r}
-data_prep <- function(TABLE, old_col, new_col, pivot_col){
+data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
   TABLE <- TABLE[-dim(TABLE)[1],]
   TABLE <- TABLE %>%
   na_if("nc") %>%
@@ -373,7 +373,7 @@ data_prep <- function(TABLE, old_col, new_col, pivot_col){
 ```{r}
 dim(table11.1b)
 
-table11.1b <- data_prep(TABLE = table11.1b,
+table11.1b <- data_prep_settings(TABLE = table11.1b,
           old_col = "Setting Where Mental Health ServiceWas Received",
           new_col = "MHS_setting",
           pivot_col = "Percent")
@@ -435,16 +435,63 @@ table11.1b <- table11.1b %>%
 *table11.2a*
 
 ```{r}
+data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
+  TABLE <- TABLE[-dim(TABLE)[1],]
+  TABLE <- TABLE %>%
+  na_if("nc") %>%
+  na_if("--") %>%
+  na_if("") %>%
+  na_if("*")
+  TABLE <- TABLE %>%
+    as_tibble() %>%
+    rename({{new_col}} := {{old_col}})
+  partA <- TABLE %>%
+    dplyr::select({{new_col}})
+  partB <- TABLE %>%
+    dplyr::select(-{{new_col}})
+  partA <- partA %>%
+  mutate({{new_col}} := partA %>%
+           dplyr::select({{new_col}}) %>%
+           pull({{new_col}}) %>%
+           gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
+                        "", .))
+  partA <- partA %>%
+  mutate({{new_col}} := case_when(str_detect(!!as.name(new_col), pattern = "1") ~ paste("Age",
+                                                        str_sub(!!as.name(new_col),
+                                                                start = 1,
+                                                                end =2),
+                                                        str_sub(!!as.name(new_col),
+                                                                start = 3,
+                                                                end = 4),
+                                                        sep="_"),
+                                 TRUE ~ !!as.name(new_col)))
+  partB <- partB %>%
+    mutate_all(str_remove_all, "a") %>%
+    mutate_all(str_remove_all, ",")
+  rm(TABLE)
+  TABLE <- bind_cols(partA,
+                     partB)
+  TABLE <- TABLE %>%
+  pivot_longer(cols = contains("20"), names_to = "Year", values_to = pivot_col)
+  TABLE
+}
+```
+
+```{r}
 dim(table11.2a)
 
-table11.2a <- data_prep(TABLE = table11.2a,
+table11.2a <- data_prep_dem(TABLE = table11.2a,
           old_col = "Demographic Characteristic",
           new_col = "Demographic",
           pivot_col = "Number")
 
+table11.2a %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
 table11.2a <- table11.2a %>%
-  filter(Demographic != "General Medicine") %>%
-  filter(Demographic != "Juvenile Justice") #Leading lines with no data
+  filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.2a <- table11.2a %>%
   mutate_at(vars(Year, Number), as.numeric)
@@ -522,6 +569,26 @@ table11.2a <- table11.2a %>%
 ```{r}
 dim(table11.2b)
 
+table11.2b <- data_prep_dem(TABLE = table11.2b,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Percent")
+
+table11.2b %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
+table11.2b <- table11.2b %>%
+  filter(complete.cases(.) | Demographic == "AIAN")
+
+table11.2b <- table11.2b %>%
+  mutate_at(vars(Year, Percent), as.numeric)
+```
+
+```{r, eval=FALSE}
+dim(table11.2b)
+
 table11.2b <- table11.2b[-dim(table11.2b)[1],]
 
 table11.2b <- table11.2b %>%
@@ -590,14 +657,18 @@ table11.2b <- table11.2b %>%
 ```{r}
 dim(table11.3a)
 
-table11.3a <- data_prep(TABLE = table11.3a,
+table11.3a <- data_prep_dem(TABLE = table11.3a,
           old_col = "Demographic Characteristic",
           new_col = "Demographic",
           pivot_col = "Number")
 
+table11.3a %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
 table11.3a <- table11.3a %>%
-  filter(Demographic != "General Medicine") %>%
-  filter(Demographic != "Juvenile Justice") #Leading lines with no data
+  filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.3a <- table11.3a %>%
   mutate_at(vars(Year, Number), as.numeric)
@@ -674,6 +745,26 @@ table11.3a <- table11.3a %>%
 ```{r}
 dim(table11.3b)
 
+table11.3b <- data_prep_dem(TABLE = table11.3b,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Percent")
+
+table11.3b %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
+table11.3b <- table11.3b %>%
+  filter(complete.cases(.) | Demographic == "AIAN")
+
+table11.3b <- table11.3b %>%
+  mutate_at(vars(Year, Percent), as.numeric)
+```
+
+```{r, eval=FALSE}
+dim(table11.3b)
+
 table11.3b <- table11.3b[-dim(table11.3b)[1],]
 
 table11.3b <- table11.3b %>%
@@ -742,7 +833,7 @@ table11.3b <- table11.3b %>%
 ```{r}
 dim(table11.4a)
 
-table11.4a <- data_prep(TABLE = table11.4a,
+table11.4a <- data_prep_dem(TABLE = table11.4a,
           old_col = "Demographic Characteristic",
           new_col = "Demographic",
           pivot_col = "Number")
@@ -751,8 +842,6 @@ table11.4a %>%
   filter(!complete.cases(.)) %>%
   group_by(Demographic) %>%
   tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
 
 table11.4a <- table11.4a %>%
   filter(complete.cases(.) | Demographic == "AIAN")
@@ -830,6 +919,26 @@ table11.4a <- table11.4a %>%
 *Table 11.4b*
 
 ```{r}
+dim(table11.4b)
+
+table11.4b <- data_prep_dem(TABLE = table11.4b,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Percent")
+
+table11.4b %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
+table11.4b <- table11.4b %>%
+  filter(complete.cases(.) | Demographic == "AIAN")
+
+table11.4b <- table11.4b %>%
+  mutate_at(vars(Year, Percent), as.numeric)
+```
+
+```{r, eval=FALSE}
 dim(table11.4b)
 
 table11.4b <- table11.4b[-dim(table11.4b)[1],]
