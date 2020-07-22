@@ -328,11 +328,65 @@ table11.1a <- table11.1a %>%
   mutate_at(vars(Year, Number), as.numeric)
 ```
 
-*table11.1b*
+We will write a function to simplify this process.
 
-*This table has been audited*
+The function needs to:
+- remove the last row of the table
+- get rid of certain patterns
+- transition the data to long format
+
+[Great resource for renaming](https://stackoverflow.com/questions/35023375/r-renaming-passed-columns-in-functions)
 
 ```{r}
+data_prep <- function(TABLE, old_col, new_col, pivot_col){
+  TABLE <- TABLE[-dim(TABLE)[1],]
+  TABLE <- TABLE %>%
+  na_if("nc") %>%
+  na_if("--") %>%
+  na_if("") %>%
+  na_if("*")
+  TABLE <- TABLE %>%
+    as_tibble() %>%
+    rename({{new_col}} := {{old_col}})
+  partA <- TABLE %>%
+    dplyr::select({{new_col}})
+  partB <- TABLE %>%
+    dplyr::select(-{{new_col}})
+  partA <- partA %>%
+  mutate({{new_col}} := partA %>%
+           dplyr::select({{new_col}}) %>%
+           pull({{new_col}}) %>%
+           gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
+                        "", .))
+  partB <- partB %>%
+    mutate_all(str_remove_all, "a") %>%
+    mutate_all(str_remove_all, ",")
+  rm(TABLE)
+  TABLE <- bind_cols(partA,
+                     partB)
+  TABLE <- TABLE %>%
+  pivot_longer(cols = contains("20"), names_to = "Year", values_to = pivot_col)
+  TABLE
+}
+```
+
+```{r}
+dim(table11.1b)
+
+table11.1b <- data_prep(TABLE = table11.1b,
+          old_col = "Setting Where Mental Health ServiceWas Received",
+          new_col = "MHS_setting",
+          pivot_col = "Percent")
+
+table11.1b <- table11.1b %>%
+  filter(MHS_setting != "General Medicine") %>%
+  filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
+
+table11.1b <- table11.1b %>%
+  mutate_at(vars(Year, Percent), as.numeric)
+```
+
+```{r, eval=FALSE}
 dim(table11.1b)
 
 table11.1b <- table11.1b[-dim(table11.1b)[1],]
@@ -381,6 +435,22 @@ table11.1b <- table11.1b %>%
 *table11.2a*
 
 ```{r}
+dim(table11.2a)
+
+table11.2a <- data_prep(TABLE = table11.2a,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Number")
+
+table11.2a <- table11.2a %>%
+  filter(Demographic != "General Medicine") %>%
+  filter(Demographic != "Juvenile Justice") #Leading lines with no data
+
+table11.2a <- table11.2a %>%
+  mutate_at(vars(Year, Number), as.numeric)
+```
+
+```{r, eval=FALSE}
 dim(table11.2a)
 
 table11.2a <- table11.2a[-dim(table11.2a)[1],]
@@ -520,6 +590,22 @@ table11.2b <- table11.2b %>%
 ```{r}
 dim(table11.3a)
 
+table11.3a <- data_prep(TABLE = table11.3a,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Number")
+
+table11.3a <- table11.3a %>%
+  filter(Demographic != "General Medicine") %>%
+  filter(Demographic != "Juvenile Justice") #Leading lines with no data
+
+table11.3a <- table11.3a %>%
+  mutate_at(vars(Year, Number), as.numeric)
+```
+
+```{r, eval=FALSE}
+dim(table11.3a)
+
 table11.3a <- table11.3a[-dim(table11.3a)[1],]
 
 table11.3a <- table11.3a %>%
@@ -654,6 +740,28 @@ table11.3b <- table11.3b %>%
 *Table 11.4a*
 
 ```{r}
+dim(table11.4a)
+
+table11.4a <- data_prep(TABLE = table11.4a,
+          old_col = "Demographic Characteristic",
+          new_col = "Demographic",
+          pivot_col = "Number")
+
+table11.4a %>%
+  filter(!complete.cases(.)) %>%
+  group_by(Demographic) %>%
+  tally()
+
+# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
+
+table11.4a <- table11.4a %>%
+  filter(complete.cases(.) | Demographic == "AIAN")
+
+table11.4a <- table11.4a %>%
+  mutate_at(vars(Year, Number), as.numeric)
+```
+
+```{r, eval=FALSE}
 dim(table11.4a)
 
 table11.4a <- table11.4a[-dim(table11.4a)[1],]
