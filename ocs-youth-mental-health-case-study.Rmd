@@ -24,7 +24,14 @@ output:
 }
 </style>
 
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
 **CSS not mentioned in metadata**
+
+</div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
@@ -32,9 +39,8 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       fig.align = "center", out.width = '90%')
 library(here)
 library(knitr)
+library(magick)
 ```
-
-####
 
 ## {.disclaimer_block}
 
@@ -45,15 +51,9 @@ library(knitr)
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
 
+## **RA Notes**
 
-## **Motivation**
-*** 
-
-- Question: How have depression rates in American youth changed since 2002 (SAMHSA data). Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
-
-- Description: We will evaluate the percent of youths in America that have had a major depressive episode in the past year since 2002 and we will compare how different youth subgroups have changed over time (by age group (12-13,14-15, and 16-17), gender, ethnicity) 
-
-[This is the motivating article for this case study.](https://pubmed.ncbi.nlm.nih.gov/30869927/). In this article, they web scrape to obtain the data they need. 
+[This is the motivating article for this case study](https://pubmed.ncbi.nlm.nih.gov/30869927/). In this article, they web scrape to obtain the data they need. 
 
 [Here is the Lieber Institute's resource on web scrape](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ)
 
@@ -62,6 +62,13 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 [Here as a good resource to learn how to web scrape](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html)
 
 [This is the set of tables we would like to consider](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
+
+## **Motivation**
+*** 
+
+- Question: How have depression rates in American youth changed since 2002 (SAMHSA data). Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
+
+- Description: We will evaluate the percent of youths in America that have had a major depressive episode in the past year since 2002 and we will compare how different youth subgroups have changed over time (by age group (12-13,14-15, and 16-17), gender, ethnicity) 
 
 #### {.reference_block}
 
@@ -106,10 +113,20 @@ library(tidyverse)
 library(rvest)
 ```
 
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I made some modifications to the table below. The `tidyverse` package hyperlink reference `readr`. I changed this to the tidyverse website and provided a different description.**
+
+</div>
+
  Package   | Use                                                                         
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
-[tidyverse](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data
+[tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
+[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
 
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
 
@@ -127,25 +144,60 @@ There are some important considerations regarding this data analysis to keep in 
 ## **What are the data?**
 *** 
 
-**Does this need to be updated?**
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
 
-If you want to make a table about variable info:
+**I removed this section because the tables are relatively self-explatory.**
 
-Variable   | Details                                                                        
----------- |-------------
-**variable1**  | Variable info  <br> -- more details <br> -- more detials <br>  **Example**: Content content  
-**variable2**  | Variable info  <br> -- more details <br> -- more detials <br>  **Example**: Content content
+</div>
 
 ## **Data Import**
 *** 
 
 Define web scraping [according to Wikipedia](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true)
 
+GIF
+
+https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+
+```{r, eval=FALSE}
+step1 <- image_read(here("webpage_screenshot.png"))
+step2 <- image_read(here("table_screenshot_inspect.png"))
+step3 <- image_read(here("table_screenshot_inspect_table.png"))
+step4 <- image_read(here("table_screenshot_inspect_table_xpath.png"))
+step5 <- image_read(here("table_screenshot_xpath_copy_r.png"))
+
+img <- c(step1,
+         step2,
+         step2,
+         step3,
+         step3,
+         step4,
+         step4,
+         step5,
+         step5,
+         step1)
+
+educational_gif <- image_resize(img, '1000x800!') %>%
+  image_background('white') %>%
+  image_morph(frames = 10) %>%
+  image_animate(delay = 20,
+                optimize = TRUE)
+
+image_write(educational_gif, "educational.gif")
+```
+
+```{r}
+image_read(here("educational.gif"))
+```
+
 There are two main steps to web scraping.
 
-Step one: identify location of data that will be scraped
+**Step one**: identify location of data that will be scraped
 
-Step two: scrape data
+**Step two**: save scraped data to an object
 
 Knowing the two steps, we can use the `rvest` package to scrape data.
 
@@ -177,9 +229,42 @@ INSERT SCREENSHOT
 
 Right click on the element and copy the XPath. We will need this XPath for the next step.
 
-**Scape the data** 
+**Save scraped data to an object** 
 
 For the first question we intend to answer, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape data from the web.
+
+<style>
+div.blue { background-color:#BBD6FF; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+**Is there an easier way to present this process in a way that is easily digested by the audience?**
+
+We need to balance interpretability, document length, and the raw depiction of the DS process. 
+
+I was considering using a function. However, I am not sure this is the best approach. 
+
+This is the function I was considering:
+
+scraper <- function(URL, XPATH){
+
+  url <- URL
+  
+  table <- url %>%
+  
+  read_html() %>%
+    
+  html_nodes(xpath=XPATH) %>%
+    
+  html_table()
+    
+  output <- table[[1]]
+  
+  output
+  
+}
+
+</div>
 
 ```{r}
 url11.1a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
@@ -188,8 +273,6 @@ table11.1a <- url11.1a %>%
   html_nodes(xpath='/html/body/div[4]/div[1]/table') %>%
   html_table()
 table11.1a <- table11.1a[[1]]
-
-head(table11.1a)
 ```
 
 ```{r}
@@ -199,8 +282,6 @@ table11.1b <- url11.1b %>%
   html_nodes(xpath='/html/body/div[4]/div[2]/table') %>%
   html_table()
 table11.1b <- table11.1b[[1]]
-
-head(table11.1b)
 ```
 
 ```{r}
@@ -210,8 +291,6 @@ table11.2a <- url11.2a %>%
   html_nodes(xpath='/html/body/div[4]/div[3]/table') %>%
   html_table()
 table11.2a <- table11.2a[[1]]
-
-head(table11.2a)
 ```
 
 ```{r}
@@ -221,8 +300,6 @@ table11.2b <- url11.2b %>%
   html_nodes(xpath='/html/body/div[4]/div[4]/table') %>%
   html_table()
 table11.2b <- table11.2b[[1]]
-
-head(table11.2b)
 ```
 
 ```{r}
@@ -232,8 +309,6 @@ table11.3a <- url11.3a %>%
   html_nodes(xpath='/html/body/div[4]/div[5]/table') %>%
   html_table()
 table11.3a <- table11.3a[[1]]
-
-head(table11.3a)
 ```
 
 ```{r}
@@ -243,8 +318,6 @@ table11.3b <- url11.3b %>%
   html_nodes(xpath='/html/body/div[4]/div[6]/table') %>%
   html_table()
 table11.3b <- table11.3b[[1]]
-
-head(table11.3b)
 ```
 
 ```{r}
@@ -254,8 +327,6 @@ table11.4a <- url11.4a %>%
   html_nodes(xpath='/html/body/div[4]/div[7]/table') %>%
   html_table()
 table11.4a <- table11.4a[[1]]
-
-head(table11.4a)
 ```
 
 ```{r}
@@ -265,8 +336,6 @@ table11.4b <- url11.4b %>%
   html_nodes(xpath='/html/body/div[4]/div[8]/table') %>%
   html_table()
 table11.4b <- table11.4b[[1]]
-
-head(table11.4b)
 ```
 
 ## **Data Exploration and Wrangling**
@@ -274,13 +343,9 @@ head(table11.4b)
 
 Now that we've imported the data, let's see if we can wrangle a table. Since the data comes from a source that is well-maintained, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
 
-## Revise this
+We will start with *Table 11.1a—Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018*.
 
-We will start with *Table 11.1b—Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018*.
-
-*Table11.1a*
-
-*This table has been audited*
+**Table11.1a**
 
 ```{r}
 dim(table11.1a)
@@ -331,11 +396,10 @@ table11.1a <- table11.1a %>%
 We will write a function to simplify this process.
 
 The function needs to:
+
 - remove the last row of the table
 - get rid of certain patterns
 - transition the data to long format
-
-[Great resource for renaming](https://stackoverflow.com/questions/35023375/r-renaming-passed-columns-in-functions)
 
 ```{r}
 data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
@@ -370,6 +434,8 @@ data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
 }
 ```
 
+We then apply this function to the table, ridding the table of headings and ensuring some of our commons are correctly of numeric class.
+
 ```{r}
 dim(table11.1b)
 
@@ -386,53 +452,13 @@ table11.1b <- table11.1b %>%
   mutate_at(vars(Year, Percent), as.numeric)
 ```
 
-```{r, eval=FALSE}
-dim(table11.1b)
+We write a function to simplify this process for data that uses demographic groups as units of observation.
 
-table11.1b <- table11.1b[-dim(table11.1b)[1],]
+The function needs to:
 
-table11.1b <- table11.1b %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.1b <- table11.1b %>%
-  as_tibble() %>%
-  rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
-
-partA <- table11.1b %>%
-  dplyr::select(MHS_setting)
-
-partB <- table11.1b %>%
-  dplyr::select(-MHS_setting)
-
-partA <- partA %>%
-  mutate(MHS_setting = gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            MHS_setting))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.1b)
-
-table11.1b <- bind_cols(partA,
-                        partB)
-
-table11.1b <- table11.1b %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Percent")
-
-table11.1b <- table11.1b %>%
-  filter(MHS_setting != "General Medicine") %>%
-  filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
-
-table11.1b <- table11.1b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
-```
-
-*table11.2a*
+- remove the last row of the table
+- get rid of certain patterns
+- transition the data to long format
 
 ```{r}
 data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
@@ -477,6 +503,10 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
 }
 ```
 
+**Table11.2a**
+
+We use the produced function to wrangle the next pair of tables. 
+
 ```{r}
 dim(table11.2a)
 
@@ -497,74 +527,7 @@ table11.2a <- table11.2a %>%
   mutate_at(vars(Year, Number), as.numeric)
 ```
 
-```{r, eval=FALSE}
-dim(table11.2a)
-
-table11.2a <- table11.2a[-dim(table11.2a)[1],]
-
-table11.2a <- table11.2a %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.2a <- table11.2a %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.2a %>%
-  dplyr::select(Demographic)
-
-partB <- table11.2a %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.2a)
-
-table11.2a <- bind_cols(partA,
-                        partB)
-
-table11.2a <- table11.2a %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Number")
-
-table11.2a %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
-
-table11.2a <- table11.2a %>%
-  filter(Demographic != "General Medicine") %>%
-  filter(Demographic != "Juvenile Justice") #Leading lines with no data
-
-table11.2a <- table11.2a %>%
-  mutate_at(vars(Year, Number), as.numeric)
-```
-
-*table11.2b*
+**Table11.2b**
 
 ```{r}
 dim(table11.2b)
@@ -586,71 +549,7 @@ table11.2b <- table11.2b %>%
   mutate_at(vars(Year, Percent), as.numeric)
 ```
 
-```{r, eval=FALSE}
-dim(table11.2b)
-
-table11.2b <- table11.2b[-dim(table11.2b)[1],]
-
-table11.2b <- table11.2b %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.2b <- table11.2b %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.2b %>%
-  dplyr::select(Demographic)
-
-partB <- table11.2b %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.2b)
-
-table11.2b <- bind_cols(partA,
-                        partB)
-
-table11.2b <- table11.2b %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Percent")
-
-table11.2b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
-
-table11.2b <- table11.2b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.2b <- table11.2b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
-```
+We repeat this process for the remaining tables.
 
 *Table 11.3a*
 
@@ -666,72 +565,6 @@ table11.3a %>%
   filter(!complete.cases(.)) %>%
   group_by(Demographic) %>%
   tally()
-
-table11.3a <- table11.3a %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.3a <- table11.3a %>%
-  mutate_at(vars(Year, Number), as.numeric)
-```
-
-```{r, eval=FALSE}
-dim(table11.3a)
-
-table11.3a <- table11.3a[-dim(table11.3a)[1],]
-
-table11.3a <- table11.3a %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.3a <- table11.3a %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.3a %>%
-  dplyr::select(Demographic)
-
-partB <- table11.3a %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.3a)
-
-table11.3a <- bind_cols(partA,
-                        partB)
-
-table11.3a <- table11.3a %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Number")
-
-table11.3a %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
 
 table11.3a <- table11.3a %>%
   filter(complete.cases(.) | Demographic == "AIAN")
@@ -762,72 +595,6 @@ table11.3b <- table11.3b %>%
   mutate_at(vars(Year, Percent), as.numeric)
 ```
 
-```{r, eval=FALSE}
-dim(table11.3b)
-
-table11.3b <- table11.3b[-dim(table11.3b)[1],]
-
-table11.3b <- table11.3b %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.3b <- table11.3b %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.3b %>%
-  dplyr::select(Demographic)
-
-partB <- table11.3b %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.3b)
-
-table11.3b <- bind_cols(partA,
-                        partB)
-
-table11.3b <- table11.3b %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Percent")
-
-table11.3b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
-
-table11.3b <- table11.3b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.3b <- table11.3b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
-```
-
 *Table 11.4a*
 
 ```{r}
@@ -842,72 +609,6 @@ table11.4a %>%
   filter(!complete.cases(.)) %>%
   group_by(Demographic) %>%
   tally()
-
-table11.4a <- table11.4a %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.4a <- table11.4a %>%
-  mutate_at(vars(Year, Number), as.numeric)
-```
-
-```{r, eval=FALSE}
-dim(table11.4a)
-
-table11.4a <- table11.4a[-dim(table11.4a)[1],]
-
-table11.4a <- table11.4a %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.4a <- table11.4a %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.4a %>%
-  dplyr::select(Demographic)
-
-partB <- table11.4a %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.4a)
-
-table11.4a <- bind_cols(partA,
-                        partB)
-
-table11.4a <- table11.4a %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Number")
-
-table11.4a %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
 
 table11.4a <- table11.4a %>%
   filter(complete.cases(.) | Demographic == "AIAN")
@@ -938,74 +639,14 @@ table11.4b <- table11.4b %>%
   mutate_at(vars(Year, Percent), as.numeric)
 ```
 
-```{r, eval=FALSE}
-dim(table11.4b)
-
-table11.4b <- table11.4b[-dim(table11.4b)[1],]
-
-table11.4b <- table11.4b %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-
-table11.4b <- table11.4b %>%
-  as_tibble() %>%
-  rename(Demographic = `Demographic Characteristic`)
-
-rm(partA)
-rm(partB)
-
-partA <- table11.4b %>%
-  dplyr::select(Demographic)
-
-partB <- table11.4b %>%
-  dplyr::select(-Demographic)
-
-partA <- partA %>%
-  mutate(Demographic = gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            Demographic))
-
-partA <- partA %>%
-  mutate(Demographic = case_when(str_detect(Demographic, pattern = "1") ~ paste("Age",
-                                                        str_sub(Demographic,
-                                                                start = 1,
-                                                                end =2),
-                                                        str_sub(Demographic,
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ Demographic))
-
-partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
-
-rm(table11.4b)
-
-table11.4b <- bind_cols(partA,
-                        partB)
-
-table11.4b <- table11.4b %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Percent")
-
-table11.4b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-# Delete rows representing a leading line in a table that provided no data but instead was used for ease of visualizaiton. 
-
-table11.4b <- table11.4b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.4b <- table11.4b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
-```
+Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
 
 ## **Data Analysis**
 *** 
+
+We would like to conduct a [chi-square test](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true) for independence. 
+
+To conduct this statistical test, we need to produce a 2x2 table.
 
 ```{r}
 chi_square_11.2a <- table11.2a %>%
@@ -1019,8 +660,14 @@ chi_square_11.2a <- chi_square_11.2a %>%
               values_from = Number) %>%
   column_to_rownames("Demographic")
 
-chisq.test(chi_square_11.2a)
+chi_square_11.2a
+```
 
+```{r}
+chisq.test(chi_square_11.2a)
+```
+
+```{r}
 chi_square_11.3a <- table11.3a %>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
@@ -1032,8 +679,14 @@ chi_square_11.3a <- chi_square_11.3a %>%
               values_from = Number) %>%
   column_to_rownames("Demographic")
 
-chisq.test(chi_square_11.3a)
+chi_square_11.3a
+```
 
+```{r}
+chisq.test(chi_square_11.3a)
+```
+
+```{r}
 chi_square_11.4a <- table11.4a %>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
@@ -1045,6 +698,10 @@ chi_square_11.4a <- chi_square_11.4a %>%
               values_from = Number) %>%
   column_to_rownames("Demographic")
 
+chi_square_11.4a
+```
+
+```{r}
 chisq.test(chi_square_11.4a)
 ```
 
@@ -1112,26 +769,11 @@ table11.4b %>%
 
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}  
 [RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
-[Inference](https://www.britannica.com/science/inference-statistics){target="_blank"}  
-[Regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}  
-[Different types of regression](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"}  
-[Ordinary least squares method](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"}  
-[Residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}  
 
 <u>Packages used in this case study: </u>
 
-**This needs to be updated**
-
  Package   | Use                                                                         
 ---------- |-------------
-[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
-[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data  
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
-[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data   
-[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style   
-[pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R   
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator  
-[purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble   
-[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with  dplyr/stringr/tidyr/purrr  
-[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns 
-[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers  
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data 
+[tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
+[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
