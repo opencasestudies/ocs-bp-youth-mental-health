@@ -51,24 +51,10 @@ library(magick)
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
 
-## **RA Notes**
-
-[This is the motivating article for this case study](https://pubmed.ncbi.nlm.nih.gov/30869927/). In this article, they web scrape to obtain the data they need. 
-
-[Here is the Lieber Institute's resource on web scrape](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ)
-
-[Here is a resouce the Lieber Institute source above referse to](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html)
-
-[Here as a good resource to learn how to web scrape](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html)
-
-[This is the set of tables we would like to consider](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
-
 ## **Motivation**
 *** 
 
-- Question: How have depression rates in American youth changed since 2002 (SAMHSA data). Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
-
-- Description: We will evaluate the percent of youths in America that have had a major depressive episode in the past year since 2002 and we will compare how different youth subgroups have changed over time (by age group (12-13,14-15, and 16-17), gender, ethnicity) 
+The following paper motivated this case study. 
 
 #### {.reference_block}
 
@@ -78,26 +64,27 @@ Twenge JM, Cooper AB, Joiner TE, Duffy ME, Binau SG. Age, period, and cohort tre
 *** 
 
 #### {.main_question_block}
-<b><u> Our main question: </u></b>
+<b><u> Our main questions: </u></b>
 
 1) How have depression rates in American youth changed since 2002 (SAMHSA data).  
 2) Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
-
-- Number of youths who received care from mental health services in the past year
-  + This can be done using the first table. 
-- Number of youths who experienced  a  major depressive episodes in youths in the past year (by age, gender, ethnicity) Table 11.2, Table 11.2B
-  + Table 11.2 and Table 11.2B can be used to answer this question
-- Number of youths who experienced a MD episode with severe impairment in the past year (by age, gender, ethnicity)
-  + Need ot find where to find this
-- Youths who received treatment for depression in the past year(by age, gender, ethnicity)
-  + 114A and 114B might be useful
 
 ####
 
 ## **Learning Objectives** 
 *** 
 
-In this case study, we will CONTENT... We will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `package_name`, `package_name`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**May need to update this section to update the tidyverse packages included.**
+
+</div>
+
+In this case study, we will determine the percent of youth in America that have had a major depressive episode in the past year since 2002. We will compare how different youth subgroups have changed over time (by age group (12-13,14-15, and 16-17), gender, ethnicity).
+We will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest). The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -118,7 +105,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**I made some modifications to the table below. The `tidyverse` package hyperlink reference `readr`. I changed this to the tidyverse website and provided a different description.**
+**I made some modifications to the table below. The `tidyverse` package hyperlink referenced `readr`. I thought this was incorrect. I changed this to the tidyverse website and provided a different description. If this was indeed a typo, it may need to be fixed in other case studies.**
 
 </div>
 
@@ -135,9 +122,28 @@ The first time we use a function, we will use the `::` to indicate which package
 
 ## **Limitations**
 *** 
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.**
+
+</div>
+
 There are some important considerations regarding this data analysis to keep in mind: 
 
-1) Limitation 1  
+1) We treat sample estimates as observed values. This produces understimates in the p-values of statistical tests conducted.
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**Also: what other limitations exist?**
+
+</div>
 
 2) Limitition 2  
 
@@ -149,7 +155,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**I removed this section because the tables are relatively self-explatory.**
+**I removed this section because the tables are relatively self-explatory. I am not sure exactly what should be in place of the table I removed.**
 
 </div>
 
@@ -158,16 +164,42 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 
 Define web scraping [according to Wikipedia](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true)
 
-GIF
+There are two main steps to web scraping.
 
-https://cran.r-project.org/web/packages/magick/vignettes/intro.html
+1. identify location of data that will be scraped
 
-```{r, eval=FALSE}
+2. save scraped data to an object
+
+`rvest` can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; like the `pdftools` package, `rvest` streamlines the extraction process.  
+
+The two steps can be broken down even further 
+
+1. identify location of data that will be scraped
+    + right-click to inspect element (webpage)
+    + hover pointer over components of element (webpage) until the data has been found
+    + copy Xpath of data sought
+2. save scraped data to an object
+    + import html code for element (webpage)
+    + extract pieces (table) out of HTML documents (webpage) using Xpath
+    + parse the html table into a data frame
+    
+We accomplish STEP 1 with our web browser.
+
+We accomplish STEP 2 in the `R` programming environment. 
+
+Below is a animated overview of the process.
+
+```{r, eval=FALSE, echo=FALSE}
 step1 <- image_read(here("webpage_screenshot.png"))
 step2 <- image_read(here("table_screenshot_inspect.png"))
 step3 <- image_read(here("table_screenshot_inspect_table.png"))
 step4 <- image_read(here("table_screenshot_inspect_table_xpath.png"))
 step5 <- image_read(here("table_screenshot_xpath_copy_r.png"))
+step5_zoom <- image_read(here("table_screenshot_xpath_copy_r_zoom.png"))
+
+image_info(step5_zoom)
+
+step5_zoom <- image_border(step5_zoom, "white", "284x334")
 
 img <- c(step1,
          step2,
@@ -178,9 +210,12 @@ img <- c(step1,
          step4,
          step5,
          step5,
+         step5_zoom,
+         step5_zoom,
+         step5_zoom,
          step1)
 
-educational_gif <- image_resize(img, '1000x800!') %>%
+educational_gif <- image_resize(img, '1440x900!') %>%
   image_background('white') %>%
   image_morph(frames = 10) %>%
   image_animate(delay = 20,
@@ -189,23 +224,9 @@ educational_gif <- image_resize(img, '1000x800!') %>%
 image_write(educational_gif, "educational.gif")
 ```
 
-```{r}
+```{r, echo=FALSE}
 image_read(here("educational.gif"))
 ```
-
-There are two main steps to web scraping.
-
-**Step one**: identify location of data that will be scraped
-
-**Step two**: save scraped data to an object
-
-Knowing the two steps, we can use the `rvest` package to scrape data.
-
-`rvest` can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; like the `pdftools` package, `rvest` streamlines the extraction process.  
-
-The two steps can be broken down even further 
-
-**Identify location of data that will be scraped**
 
 [Let's go to the web page with all the tables we are interested in scraping.](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
 
@@ -233,39 +254,6 @@ Right click on the element and copy the XPath. We will need this XPath for the n
 
 For the first question we intend to answer, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape data from the web.
 
-<style>
-div.blue { background-color:#BBD6FF; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "blue">
-
-**Is there an easier way to present this process in a way that is easily digested by the audience?**
-
-We need to balance interpretability, document length, and the raw depiction of the DS process. 
-
-I was considering using a function. However, I am not sure this is the best approach. 
-
-This is the function I was considering:
-
-scraper <- function(URL, XPATH){
-
-  url <- URL
-  
-  table <- url %>%
-  
-  read_html() %>%
-    
-  html_nodes(xpath=XPATH) %>%
-    
-  html_table()
-    
-  output <- table[[1]]
-  
-  output
-  
-}
-
-</div>
-
 ```{r}
 url11.1a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
 table11.1a <- url11.1a %>%
@@ -276,66 +264,25 @@ table11.1a <- table11.1a[[1]]
 ```
 
 ```{r}
-url11.1b <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.1b <- url11.1b %>%
+scraper <- function(XPATH){
+  url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
+  table <- url %>%
   read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[2]/table') %>%
+  html_nodes(xpath=XPATH) %>%
   html_table()
-table11.1b <- table11.1b[[1]]
+  output <- table[[1]]
+  output
+}
 ```
 
 ```{r}
-url11.2a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.2a <- url11.2a %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[3]/table') %>%
-  html_table()
-table11.2a <- table11.2a[[1]]
-```
-
-```{r}
-url11.2b <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.2b <- url11.2b %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[4]/table') %>%
-  html_table()
-table11.2b <- table11.2b[[1]]
-```
-
-```{r}
-url11.3a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.3a <- url11.3a %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[5]/table') %>%
-  html_table()
-table11.3a <- table11.3a[[1]]
-```
-
-```{r}
-url11.3b <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.3b <- url11.3b %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[6]/table') %>%
-  html_table()
-table11.3b <- table11.3b[[1]]
-```
-
-```{r}
-url11.4a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.4a <- url11.4a %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[7]/table') %>%
-  html_table()
-table11.4a <- table11.4a[[1]]
-```
-
-```{r}
-url11.4b <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.4b <- url11.4b %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[8]/table') %>%
-  html_table()
-table11.4b <- table11.4b[[1]]
+table11.1b <- scraper(XPATH = "/html/body/div[4]/div[2]/table")
+table11.2a <- scraper(XPATH = '/html/body/div[4]/div[3]/table')
+table11.2b <- scraper(XPATH = '/html/body/div[4]/div[4]/table')
+table11.3a <- scraper(XPATH = '/html/body/div[4]/div[5]/table')
+table11.3b <- scraper(XPATH = '/html/body/div[4]/div[6]/table')
+table11.4a <- scraper(XPATH = '/html/body/div[4]/div[7]/table')
+table11.4b <- scraper(XPATH = '/html/body/div[4]/div[8]/table')
 ```
 
 ## **Data Exploration and Wrangling**
@@ -777,3 +724,15 @@ table11.4b %>%
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data 
 [tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
+
+## **RA Notes**
+
+[This is the motivating article for this case study](https://pubmed.ncbi.nlm.nih.gov/30869927/). In this article, they web scrape to obtain the data they need. 
+
+[Here is the Lieber Institute's resource on web scrape](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ)
+
+[Here is a resouce the Lieber Institute source above referse to](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html)
+
+[Here as a good resource to learn how to web scrape](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html)
+
+[This is the set of tables we would like to consider](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
