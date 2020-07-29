@@ -46,7 +46,6 @@ library(magick)
 
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
-
 ## {.license_block}
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
@@ -79,7 +78,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**May need to update this section to update the tidyverse packages included.**
+**It may be a good idea to provide a link to Rstudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
 
 </div>
 
@@ -132,60 +131,95 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 
 </div>
 
-There are some important considerations regarding this data analysis to keep in mind: 
-
-1) We treat sample estimates as observed values. This produces understimates in the p-values of statistical tests conducted.
-
 <style>
 div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**Also: what other limitations exist?**
+**Wording for this section should be reviewed.**
 
 </div>
 
-2) Limitition 2  
+There are some important considerations regarding this data analysis to keep in mind: 
+
+1) We treat sample estimates—estimates of the true population value—as observed values. This produces understimates in the p-values of statistical tests conducted.
+
+2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true) in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true). 
+
+3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that partificipants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true) may for a variety of reasons report inaccurate information. 
 
 ## **What are the data?**
 *** 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+The data comes from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm). 
 
-**I removed this section because the tables are relatively self-explatory. I am not sure exactly what should be in place of the table I removed.**
+Every year, thousands are surveyed in 50 states.
 
-</div>
+This information is used for disease surveillance and to guide public policy. 
+
+This data is made available publicly online] on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/). 
+
+```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
+include_graphics(here("nsudh_screenshot_webpage.png"))
+```
 
 ## **Data Import**
 *** 
 
-Define web scraping [according to Wikipedia](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true)
+Data is often made available online 
+
+Usually, the data we are interested in is made available on the page as a delimited text file. 
+
+However, sometimes data is not made available in this manner.
+
+How do we proceed in this scenario?
+
+We can manually copy each cell of data. This process is often inefficient, subject to error, and not reproducible. 
+
+We can also use `R` for web scraping. 
+
+[Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true) is the process of extracting data from a website.
 
 There are two main steps to web scraping.
 
 1. identify location of data that will be scraped
 
-2. save scraped data to an object
+2. save webpage element to an object
+
+We accomplish STEP 1 with our web browser.
+
+We accomplish STEP 2 in the `R` programming environment. 
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I could not find the animation that I referred to on several occasions.**
+
+**However, I was able to find the sources that I consulted to create the three step `rvest` process. They are included below**
+
+[RStudio](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html)
+
+[Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html)
+
+</div>
 
 `rvest` can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; like the `pdftools` package, `rvest` streamlines the extraction process.  
 
 The two steps can be broken down even further 
 
-1. identify location of data that will be scraped
-    + right-click to inspect element (webpage)
-    + hover pointer over components of element (webpage) until the data has been found
-    + copy Xpath of data sought
-2. save scraped data to an object
-    + import html code for element (webpage)
-    + extract pieces (table) out of HTML documents (webpage) using Xpath
-    + parse the html table into a data frame
-    
-We accomplish STEP 1 with our web browser.
+1) identify location of data that will be scraped
 
-We accomplish STEP 2 in the `R` programming environment. 
++ right-click to inspect element (webpage)
++ hover pointer over components of element (webpage) until the data has been found
++ copy Xpath of data sought
+
+3) save webpage element to an object
+
++ import html code for element (webpage)
++ extract pieces (table) out of HTML documents (webpage) using Xpath
++ parse the html table into a data frame
 
 Below is a animated overview of the process.
 
@@ -228,17 +262,28 @@ image_write(educational_gif, "educational.gif")
 image_read(here("educational.gif"))
 ```
 
+```{r, echo=FALSE}
+step1 <- image_read(here("webpage_screenshot.png"))
+step2 <- image_read(here("table_screenshot_inspect.png"))
+step3 <- image_read(here("table_screenshot_inspect_table.png"))
+step4 <- image_read(here("table_screenshot_inspect_table_xpath.png"))
+step5 <- image_read(here("table_screenshot_xpath_copy_r.png"))
+step5_zoom <- image_read(here("table_screenshot_xpath_copy_r_zoom.png"))
+```
+
 [Let's go to the web page with all the tables we are interested in scraping.](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
 
-INSERT SCREENSHOT
+```{r, echo=FALSE}
+step1
+```
 
-Once on the webpage, there aren't any visible options to download the data. Usually, a delimited text file is available on the page. On the webpage above, no option exists. 
-
-How do we proceed?
+Once on the webpage, there aren't any visible options to download the data. 
 
 Right-click and select "Inspect" 
 
-INSERT SCREENSHOT
+```{r, echo=FALSE}
+step2
+```
 
 A window opens. 
 
@@ -246,13 +291,70 @@ This window allows us to glance at the internal mechanics of the webpage. To scr
 
 Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and opening elements when the highlighted portion is too large—we can indentify the element that contains the data we are looking for. 
 
-INSERT SCREENSHOT
+```{r, echo=FALSE}
+step3
+```
 
 Right click on the element and copy the XPath. We will need this XPath for the next step.
 
-**Save scraped data to an object** 
+```{r, echo=FALSE}
+step4
+```
+
+Now we can return to the `R` programming environment
+
+```{r, echo=FALSE}
+step5
+```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the process.**
+
+</div>
+
+***
+
+**2) Save webpage element to an object** 
 
 For the first question we intend to answer, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape data from the web.
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I wanted to include the last slide/component of the GIF. However, I realized that the audience would also benefit from having an actual code chunk. As a result, this section may need some very minor reworking.**
+
+</div>
+
+```{r, echo=FALSE}
+step5_zoom
+```
+
+We need to:
+
++ import html code for element (webpage)
++ extract pieces (table) out of HTML documents (webpage) using Xpath
++ parse the html table into a data frame
+
+To do this:
+
++ We import the html code using `rvest::read_html()`.
++ We extract specific components of the webpage using `rvest::read_node()`.
++ We convert this html table into a dataframe using `rvest::html_table()`.
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**The `rvest` package provides wrappers for the `xml2` and `httr` packages. I was not sure whether to tag the following functions as rvest or `xml2`/`httr`. I will leave that decision to you..**
+
+</div>
 
 ```{r}
 url11.1a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
@@ -262,6 +364,23 @@ table11.1a <- url11.1a %>%
   html_table()
 table11.1a <- table11.1a[[1]]
 ```
+
+Great! We have successfully scraped the data.
+
+From here on, we will need to wrangle the data.
+
+First, we need to repeat the above process for the other tables we are interested in. 
+
+We can create a function to accomplish this succinctly. 
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**For some odd reason, calling the `function()` function with the `base::` prefix causes an error.**
+
+</div>
 
 ```{r}
 scraper <- function(XPATH){
@@ -274,6 +393,8 @@ scraper <- function(XPATH){
   output
 }
 ```
+
+We apply the function we created too the 
 
 ```{r}
 table11.1b <- scraper(XPATH = "/html/body/div[4]/div[2]/table")
@@ -290,54 +411,54 @@ table11.4b <- scraper(XPATH = '/html/body/div[4]/div[8]/table')
 
 Now that we've imported the data, let's see if we can wrangle a table. Since the data comes from a source that is well-maintained, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
 
-We will start with *Table 11.1a—Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018*.
-
 **Table11.1a**
 
 ```{r}
-dim(table11.1a)
+base::dim(table11.1a)
 
 table11.1a <- table11.1a[-dim(table11.1a)[1],]
 
 table11.1a <- table11.1a %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
+  dplyr::na_if("nc") %>%
+  dplyr::na_if("--") %>%
+  dplyr::na_if("") %>%
+  dplyr::na_if("*")
 
 table11.1a <- table11.1a %>%
-  as_tibble() %>%
-  rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
+  tibble::as_tibble() %>%
+  dplyr::rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
 
 partA <- table11.1a %>%
   dplyr::select(MHS_setting)
 
 partB <- table11.1a %>%
-  dplyr::select(-MHS_setting)
+  select(-MHS_setting)
 
 partA <- partA %>%
-  mutate(MHS_setting = gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
+  dplyr::mutate(MHS_setting = base::gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
                             "",
                             MHS_setting))
 
 partB <- partB %>%
-  mutate_all(str_remove_all, "a") %>%
-  mutate_all(str_remove_all, ",")
+  mutate(dplyr::across(.cols = dplyr::everything(),
+                stringr::str_remove_all, "a")) %>%
+  mutate(dplyr::across(.cols = dplyr::everything(),
+                stringr::str_remove_all, ","))
 
-rm(table11.1a)
+base::rm(table11.1a)
 
-table11.1a <- bind_cols(partA,
-                        partB)
-
-table11.1a <- table11.1a %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = "Number")
-
-table11.1a <- table11.1a %>%
-  filter(MHS_setting != "General Medicine") %>%
-  filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
+table11.1a <- dplyr::bind_cols(partA,
+                               partB)
 
 table11.1a <- table11.1a %>%
-  mutate_at(vars(Year, Number), as.numeric)
+  tidyr::pivot_longer(cols = dplyr::contains("20"), names_to = "Year", values_to = "Number")
+
+table11.1a <- table11.1a %>%
+  dplyr::filter(MHS_setting != "General Medicine") %>%
+  dplyr::filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
+
+table11.1a <- table11.1a %>%
+  mutate(across(c(Year, Number), as.numeric))
 ```
 
 We will write a function to simplify this process.
@@ -360,18 +481,20 @@ data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
     as_tibble() %>%
     rename({{new_col}} := {{old_col}})
   partA <- TABLE %>%
-    dplyr::select({{new_col}})
+    select({{new_col}})
   partB <- TABLE %>%
-    dplyr::select(-{{new_col}})
+    select(-{{new_col}})
   partA <- partA %>%
   mutate({{new_col}} := partA %>%
-           dplyr::select({{new_col}}) %>%
-           pull({{new_col}}) %>%
+           select({{new_col}}) %>%
+           dplyr::pull({{new_col}}) %>%
            gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
                         "", .))
   partB <- partB %>%
-    mutate_all(str_remove_all, "a") %>%
-    mutate_all(str_remove_all, ",")
+    mutate(across(.cols = everything(),
+                str_remove_all, "a")) %>%
+    mutate(across(.cols = everything(),
+                str_remove_all, ","))
   rm(TABLE)
   TABLE <- bind_cols(partA,
                      partB)
@@ -380,6 +503,19 @@ data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
   TABLE
 }
 ```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
+
+**Table11.1a**
 
 We then apply this function to the table, ridding the table of headings and ensuring some of our commons are correctly of numeric class.
 
@@ -396,7 +532,7 @@ table11.1b <- table11.1b %>%
   filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
 
 table11.1b <- table11.1b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
+  mutate(across(c(Year, Percent), as.numeric))
 ```
 
 We write a function to simplify this process for data that uses demographic groups as units of observation.
@@ -429,18 +565,20 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
            gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
                         "", .))
   partA <- partA %>%
-  mutate({{new_col}} := case_when(str_detect(!!as.name(new_col), pattern = "1") ~ paste("Age",
-                                                        str_sub(!!as.name(new_col),
+  mutate({{new_col}} := dplyr::case_when(stringr::str_detect(!!base::as.name(new_col), pattern = "1") ~ base::paste("Age",
+                                                        stringr::str_sub(!!base::as.name(new_col),
                                                                 start = 1,
                                                                 end =2),
-                                                        str_sub(!!as.name(new_col),
+                                                        stringr::str_sub(!!base::as.name(new_col),
                                                                 start = 3,
                                                                 end = 4),
                                                         sep="_"),
-                                 TRUE ~ !!as.name(new_col)))
+                                 TRUE ~ !!base::as.name(new_col)))
   partB <- partB %>%
-    mutate_all(str_remove_all, "a") %>%
-    mutate_all(str_remove_all, ",")
+    mutate(across(.cols = everything(),
+                str_remove_all, "a")) %>%
+    mutate(across(.cols = everything(),
+                str_remove_all, ","))
   rm(TABLE)
   TABLE <- bind_cols(partA,
                      partB)
@@ -449,6 +587,17 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
   TABLE
 }
 ```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
 
 **Table11.2a**
 
@@ -464,15 +613,26 @@ table11.2a <- data_prep_dem(TABLE = table11.2a,
 
 table11.2a %>%
   filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
+  dplyr::group_by(Demographic) %>%
   tally()
 
 table11.2a <- table11.2a %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
+  filter(stats::complete.cases(.) | Demographic == "AIAN")
 
 table11.2a <- table11.2a %>%
-  mutate_at(vars(Year, Number), as.numeric)
+  mutate(across(c(Year, Number), as.numeric))
 ```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
 
 **Table11.2b**
 
@@ -493,12 +653,23 @@ table11.2b <- table11.2b %>%
   filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.2b <- table11.2b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
+  mutate(across(c(Year, Percent), as.numeric))
 ```
 
 We repeat this process for the remaining tables.
 
-*Table 11.3a*
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
+
+**Table 11.3a**
 
 ```{r}
 dim(table11.3a)
@@ -517,10 +688,21 @@ table11.3a <- table11.3a %>%
   filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.3a <- table11.3a %>%
-  mutate_at(vars(Year, Number), as.numeric)
+  mutate(across(c(Year, Number), as.numeric))
 ```
 
-*Table 11.3b*
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
+
+**Table 11.3b**
 
 ```{r}
 dim(table11.3b)
@@ -539,10 +721,21 @@ table11.3b <- table11.3b %>%
   filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.3b <- table11.3b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
+  mutate(across(c(Year, Percent), as.numeric))
 ```
 
-*Table 11.4a*
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
+
+**Table 11.4a**
 
 ```{r}
 dim(table11.4a)
@@ -561,10 +754,21 @@ table11.4a <- table11.4a %>%
   filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.4a <- table11.4a %>%
-  mutate_at(vars(Year, Number), as.numeric)
+  mutate(across(c(Year, Number), as.numeric))
 ```
 
-*Table 11.4b*
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**I included the following line to help separate the tables.**
+
+</div>
+
+***
+
+**Table 11.4b**
 
 ```{r}
 dim(table11.4b)
@@ -583,7 +787,7 @@ table11.4b <- table11.4b %>%
   filter(complete.cases(.) | Demographic == "AIAN")
 
 table11.4b <- table11.4b %>%
-  mutate_at(vars(Year, Percent), as.numeric)
+  mutate(across(c(Year, Percent), as.numeric))
 ```
 
 Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
@@ -591,28 +795,59 @@ Now that we've wrangled the data, we can go ahead and proceed with our analysis.
 ## **Data Analysis**
 *** 
 
-We would like to conduct a [chi-square test](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true) for independence. 
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**In this section, we only analyzed data from tables 2-4. Data from table 1 is very different than data from tables 2-4. For expediency, I did not include an example with data frome table 1. The following code, however, can easily be repurposed to accomplish that once a specific group has been identified to conduct the test on.**
+
+</div>
+
+We would like to conduct a [chi-squared test](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true) for independence. 
 
 To conduct this statistical test, we need to produce a 2x2 table.
+
+The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. 
 
 ```{r}
 chi_square_11.2a <- table11.2a %>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
+```
 
-chi_square_11.2a <- chi_square_11.2a %>%
-  pivot_wider(names_from = Year,
-              names_prefix = "Year", 
-              values_from = Number) %>%
-  column_to_rownames("Demographic")
+The resulting object is still in long format.
 
+```{r}
 chi_square_11.2a
 ```
 
+To conduct a chi-squared test for indepence we will need a [contingency table](https://en.wikipedia.org/wiki/Contingency_table?oldformat=true). 
+
+A contingency table can be produced from data in long format by transforming the data to wide format and repurposing some values as row names. 
+
 ```{r}
-chisq.test(chi_square_11.2a)
+chi_square_11.2a <- chi_square_11.2a %>%
+  tidyr::pivot_wider(names_from = Year,
+              names_prefix = "Year", 
+              values_from = Number) %>%
+  tibble::column_to_rownames("Demographic")
 ```
+
+The final object should look like this. 
+
+```{r}
+chi_square_11.2a
+```
+
+The chi-squared test for independence can be conducted using the `stats::chisq.test()` function. 
+
+```{r}
+stats::chisq.test(chi_square_11.2a)
+```
+
+We can repeat this process for the remaining tables.
 
 ```{r}
 chi_square_11.3a <- table11.3a %>%
@@ -654,6 +889,35 @@ chisq.test(chi_square_11.4a)
 
 ## **Data Visualization**
 *** 
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**This is the intentionally terrible plot that requires faceting.**
+
+</div>
+
+```{r}
+table11.1b %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting)) +
+  ggplot2::geom_line() +
+  ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                     labels = seq(2009, 2018, by=1),
+                     limits = c(2009, 2018)) +
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")
+```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**The plots below need to be correctly faceted. Keep in mind that tables 11.2+ must be faceted by demographic group type and not by setting type.**
+
+</div>
 
 ```{r}
 table11.1b %>%
@@ -698,6 +962,15 @@ table11.4b %>%
   labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
        subtitle = "By Demographic Characteristics: Percentages, 2004-2018")
 ```
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**The plots created (after faceting properly) can be used to answer the questions listed at the beginning of the case study. After finalizing the plots, some time should be spent towards framing the visualizations in such a way to underscore how they were used to asnwer the question.**
+
+</div>
 
 ## **Summary**
 *** 
