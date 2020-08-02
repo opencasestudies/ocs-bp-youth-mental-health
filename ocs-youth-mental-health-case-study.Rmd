@@ -1,5 +1,6 @@
 ---
-title: "Open Case Studies : Youth Mental Health "
+title: "Open Case Studies : Mental Health of American Youth"
+css: style.css
 output:
   html_document:
     self_contained: yes
@@ -24,14 +25,7 @@ output:
 }
 </style>
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**CSS not mentioned in metadata**
-
-</div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
@@ -50,14 +44,52 @@ library(magick)
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
 
+## {.reference_block}
+
+To cite this case study please use:
+
+Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-bp-co2-emissions. Mental Health of American Youth (Version v1.0.0).
+
+
 ## **Motivation**
 *** 
 
-The following paper motivated this case study. 
+The following papers motivated this case study. 
 
 #### {.reference_block}
 
-Twenge JM, Cooper AB, Joiner TE, Duffy ME, Binau SG. Age, period, and cohort trends in mood disorder indicators and suicide-related outcomes in a nationally representative dataset, 2005-2017. *J Abnorm Psychol*. 2019;128(3):185-199. doi:10.1037/abn0000410
+Twenge JM, Cooper AB, Joiner TE, Duffy ME, Binau SG. Age, period, and cohort trends in mood disorder indicators and suicide-related outcomes in a nationally representative dataset, 2005-2017. *J Abnorm Psychol*.128,3 (2019):185-199. doi:10.1037/abn0000410
+
+
+Olfson, M., Blanco, C., Wang, S., Laje, G. & Correll, C. U. National Trends in the Mental Health Care of Children, Adolescents, and Adults by Office-Based Physicians. *JAMA Psychiatry*. 71, 81 (2014):81-90. doi: 10.1001/jamapsychiatry.2013.3074.
+
+####
+
+The main findings of the first [article](https://content.apa.org/record/2019-12578-001){target="_blank"} are:
+
+>Rates of major depressive episode in the last year increased 52% 2005–2017 (from 8.7% to 13.2%) among adolescents aged 12 to 17 and 63% 2009–2017 (from 8.1% to 13.2%) among young adults 18–25. 
+
+>Serious psychological distress in the last month and suicide-related outcomes (suicidal ideation, plans, attempts, and deaths by suicide) in the last year also increased among young adults 18–25 from 2008–2017 (with a 71% increase in serious psychological distress), with less consistent and weaker increases among adults ages 26 and over. 
+
+>Cultural trends contributing to an increase in mood disorders and suicidal thoughts and behaviors since the mid-2000s, including the rise of electronic communication and digital media and declines in sleep duration, may have had a larger impact on younger people, creating a cohort effect.
+
+While the main findings of the second [article](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"} are:
+
+>Compared with adult mental health care, the mental health
+care of young people has increased more rapidly.
+
+>Between 1995-1998 and 2007-2010, visits resulting in mental disorder diagnoses
+per 100 population increased significantly faster for youths (from 7.78 to 15.30 visits) than for
+adults (from 23.23 to 28.48 visits) (interaction: P < .001). 
+
+>Psychiatrist visits also increased
+significantly faster for youths (from 2.86 to 5.71 visits).
+
+
+While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
+
+In this case study we will evaluate data related to depression episodes and mental health care to evaluate trends overtime. We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm). This data was also used in the first study.  
+
 
 ## **Main Questions**
 *** 
@@ -65,7 +97,7 @@ Twenge JM, Cooper AB, Joiner TE, Duffy ME, Binau SG. Age, period, and cohort tre
 #### {.main_question_block}
 <b><u> Our main questions: </u></b>
 
-1) How have depression rates in American youth changed since 2002 (SAMHSA data).  
+1) How have depression rates in American youth changed since 2002, according to the NSDUH data?  
 2) Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
 
 ####
@@ -119,6 +151,101 @@ The first time we use a function, we will use the `::` to indicate which package
 ## **Context**
 *** 
 
+According to other sources the rate of suicide has increased for most age groups in the United States over the past decade and a half.
+
+```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
+include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.png")
+```
+
+#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+
+
+While suicide does appear to be increasing amoung youths it also appears to be increasing amoung middle aged adults as well for both females and males. 
+
+```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
+include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
+```
+
+#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+
+
+
+
+```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
+include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig3.png")
+```
+
+#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+
+
+According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
+
+> Since 2008, suicide has ranked as the 10th leading cause of death for all ages in the United States. In 2016, suicide became the **second leading cause of death** among those aged **10–34** and the fourth leading cause among those aged 35–54.
+
+
+
+
+```{r, echo = FALSE, out.width="800px"}
+knitr::include_graphics(here::here("img","mortality.png"))
+```
+#### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}
+
+
+
+**So although sucide is on the rise for most age groups, sucide is one of the top two contributors to death for youths.** Thus this warrents further examination of mental health of American youths.
+
+
+```{r, echo = FALSE, out.width="800px"}
+knitr::include_graphics(here::here("img","mortality_age.png"))
+```
+
+#### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf)
+
+
+
+*If you are having thoughts of suicide, please know that you are not alone. If you are in danger of acting on suicidal thoughts, call 911. For support and resources, call the National Suicide Prevention Lifeline at 1-800-273-8255 or text 741-741 for the Crisis Text Line.*
+
+I took this from an article.https://www.theatlantic.com/health/archive/2020/06/why-suicide-rates-among-millennials-are-rising/612943/
+
+*If you or someone you know may be struggling with suicidal thoughts, you can call the U.S. National Suicide Prevention Lifeline at 800-273-TALK (8255) any time day or night, or chat online.*
+I thook thos from this article. https://www.usatoday.com/story/news/nation/2020/01/30/u-s-suicide-rate-rose-again-2018-how-can-suicide-prevention-save-lives/4616479002/
+
+
+
+
+covid:https://wellbeingtrust.org/areas-of-focus/policy-and-advocacy/reports/projected-deaths-of-despair-during-covid-19/
+
+Historically, suicide rates were much higher before 1950, however, we are seeing an increase in the last 20 years.
+
+```{r, echo = FALSE, out.width="800px"}
+knitr::include_graphics(here::here("img","suicide.png"))
+```
+
+#### [[source]](https://time.com/5609124/us-suicide-rate-increase/){target="_blank"}
+
+
+
+
+
+Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased reates of depression in youths. See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the  World Health Organization about rates of depression in other countries.
+
+Great paper about what may be causing increased dpression - and the caveats of if we actually have increased depression: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/
+
+
+
+
+https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml
+
+
+According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
+
+If you are in crisis and need help, call this toll-free number for the National Suicide Prevention Lifeline (NSPL), available 24 hours a day, every day: 1-800-273-TALK (8255). The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at www.suicidepreventionlifeline.org.
+
+The Crisis Text Line is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to 741741 and a trained crisis counselor will respond to you with support and information over text message. Visit www.crisistextline.org.
+
+
+Also see [here](https://www.mhanational.org/depression-teens-0) for more information about how to recognise and help youths experiencing symptoms of depression.
+
 ## **Limitations**
 *** 
 
@@ -144,20 +271,20 @@ There are some important considerations regarding this data analysis to keep in 
 
 1) We treat sample estimates—estimates of the true population value—as observed values. This produces understimates in the p-values of statistical tests conducted.
 
-2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true) in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true). 
+2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
 
-3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that partificipants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true) may for a variety of reasons report inaccurate information. 
+3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that partificipants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 ## **What are the data?**
 *** 
 
-The data comes from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm). 
+The data comes from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-Every year, thousands are surveyed in 50 states.
+This survey started in 1971 and is conducted annual in all 50 states and the District of Columbia.
 
 This information is used for disease surveillance and to guide public policy. 
 
-This data is made available publicly online] on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/). 
+This data is made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
 include_graphics(here("nsudh_screenshot_webpage.png"))
@@ -166,25 +293,21 @@ include_graphics(here("nsudh_screenshot_webpage.png"))
 ## **Data Import**
 *** 
 
-Data is often made available online 
-
-Usually, the data we are interested in is made available on the page as a delimited text file. 
-
-However, sometimes data is not made available in this manner.
+Data is often made available online. Usually, the data we are interested in is made available for download on the page as a delimited text file. However, sometimes data is not made available in this manner.
 
 How do we proceed in this scenario?
 
-We can manually copy each cell of data. This process is often inefficient, subject to error, and not reproducible. 
+We can manually copy each cell of data, however, this process is often inefficient, subject to error, and not reproducible. 
 
 We can also use `R` for web scraping. 
 
-[Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true) is the process of extracting data from a website.
+[Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} is the process of extracting data from a website.
 
-There are two main steps to web scraping.
+There are two main steps to web scraping:  
 
-1. identify location of data that will be scraped
+1. Identify location of data that will be scraped  
 
-2. save webpage element to an object
+2. Save the webpage element to an object  
 
 We accomplish STEP 1 with our web browser.
 
@@ -199,23 +322,23 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 
 **However, I was able to find the sources that I consulted to create the three step `rvest` process. They are included below**
 
-[RStudio](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html)
+[RStudio](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
 
-[Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html)
+[Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
 
 </div>
 
-`rvest` can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; like the `pdftools` package, `rvest` streamlines the extraction process.  
+The `rvest`  package can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
 
-The two steps can be broken down even further 
+The two steps can be broken down even further: 
 
-1) identify location of data that will be scraped
+1) Identify location of data that will be scraped
 
 + right-click to inspect element (webpage)
 + hover pointer over components of element (webpage) until the data has been found
 + copy Xpath of data sought
 
-3) save webpage element to an object
+3) Save webpage element to an object
 
 + import html code for element (webpage)
 + extract pieces (table) out of HTML documents (webpage) using Xpath
@@ -258,7 +381,7 @@ educational_gif <- image_resize(img, '1440x900!') %>%
 image_write(educational_gif, "educational.gif")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE,eval=FALSE}
 image_read(here("educational.gif"))
 ```
 
@@ -609,7 +732,7 @@ dim(table11.2a)
 table11.2a <- data_prep_dem(TABLE = table11.2a,
           old_col = "Demographic Characteristic",
           new_col = "Demographic",
-          pivot_col = "Number")
+        pivot_col = "Number")
 
 table11.2a %>%
   filter(!complete.cases(.)) %>%
@@ -978,8 +1101,11 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 ## **Suggested Homework**
 *** 
 
-## **Helpful Links**
-*** 
+## **Additional Information**
+***
+
+### Helpful Links
+
 
 **This needs to be updated**
 
@@ -998,7 +1124,15 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 [tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
 
-## **RA Notes**
+
+### Acknowledgements
+
+We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson) for assisting in framing the major direction of the case study.
+
+We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
+
+
+### **RA Notes**
 
 [This is the motivating article for this case study](https://pubmed.ncbi.nlm.nih.gov/30869927/). In this article, they web scrape to obtain the data they need. 
 
