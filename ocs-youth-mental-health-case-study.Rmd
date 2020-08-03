@@ -105,6 +105,7 @@ In this case study we will evaluate data related to depression episodes and ment
 ## **Learning Objectives** 
 *** 
 
+avocado update these!
 <style>
 div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
@@ -278,34 +279,59 @@ There are some important considerations regarding this data analysis to keep in 
 ## **What are the data?**
 *** 
 
-The data comes from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
+We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-This survey started in 1971 and is conducted annual in all 50 states and the District of Columbia.
-
-This information is used for disease surveillance and to guide public policy. 
+This survey started in 1971 and is conducted annualy in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health realted issues. Households are randomly selected and than a professional interviewer visists the addresses and asks one or two of the residents to inverview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to particpate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particuarlly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
 
 This data is made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
-include_graphics(here("nsudh_screenshot_webpage.png"))
+include_graphics(here::here("img", "nsudh_screenshot_webpage.png"))
 ```
+
+At the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} for the survey data, you can see that the results are displayed in many tables. Importantly, there is no obvious way to download the data directly from this particular website.
+
+```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
+include_graphics(here::here("img", "website_overview.png"))
+```
+
+If one clicks on the TOC botton on the far right upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
+
+We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus the following tables are of interest to us are:
+
+Table   | Details                                                                         
+---|-------------
+Table 11.1A       | Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018   
+Table 11.1B       | Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Percentages, 2002-2018  
+Table 11.2A       |  Major Depressive Episode in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Numbers in Thousands, 2004-2018
+Table 11.2B       | Major Depressive Episode in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Percentages, 2004-2018
+Table 11.3A       | Major Depressive Episode with Severe Impairment in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Numbers in Thousands, 2006-2018
+Table 11.3B       | Major Depressive Episode with Severe Impairment in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Percentages, 2006-2018
+Table 11.4A       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Numbers in Thousands, 2004-2018
+Table 11.4B       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Percentages, 2004-2018
+
+
+####
 
 ## **Data Import**
 *** 
 
-Data is often made available online. Usually, the data we are interested in is made available for download on the page as a delimited text file. However, sometimes data is not made available in this manner.
+Data is often made available online. Usually, the data we are interested in is made available for download on the page as a delimited text file or an excel file. However, sometimes data is not made available in this manner, such as the [NSDUH survey data](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"}.
 
 How do we proceed in this scenario?
 
-We can manually copy each cell of data, however, this process is often inefficient, subject to error, and not reproducible. 
+We can manually copy each cell of data, however, this process is often inefficient, subject to error, and not reproducible. Say we wanted to run an analysis next year on the next years data and it happens to be formatted in the same way. 
 
 We can also use `R` for web scraping. 
 
 [Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} is the process of extracting data from a website.
 
+
+### Basic steps of web scraping
+
 There are two main steps to web scraping:  
 
-1. Identify location of data that will be scraped  
+1. Identify location of data on the webpage that will be scraped  
 
 2. Save the webpage element to an object  
 
@@ -328,9 +354,16 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 
 </div>
 
+In this case study we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. This data is available in a large PDF with all the results form the year. However it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract the data from the pdf with `pdftools`. Again, if we instead decided to copy paste the data from the website to another file that we would also need to import, this would not be as efficient or reproducible and might result in errors. 
+
+
+Alternatively, we will use the `rvest` package to [scrape](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} the data directly from the tables on the website. Assuming the data next year would be displayed in a similar manner, this could allow us simply modify our code based on the url for the data next year to run the same analysis on the data easily. 
+
 The `rvest`  package can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
 
-The two steps can be broken down even further: 
+### Steps for scraping tables
+
+The two web scraping steps for these tables can be broken down even further: 
 
 1) Identify location of data that will be scraped
 
@@ -338,22 +371,24 @@ The two steps can be broken down even further:
 + hover pointer over components of element (webpage) until the data has been found
 + copy Xpath of data sought
 
-3) Save webpage element to an object
+2) Save webpage element to an object in R
 
-+ import html code for element (webpage)
-+ extract pieces (table) out of HTML documents (webpage) using Xpath
-+ parse the html table into a data frame
++ import html code for the webpage
++ extract pieces of HTML documents (webpage) using Xpath
++ parse the extracted data into a data frame
 
 Below is a animated overview of the process.
 
-```{r, eval=FALSE, echo=FALSE}
-step1 <- image_read(here("webpage_screenshot.png"))
-step2 <- image_read(here("table_screenshot_inspect.png"))
-step3 <- image_read(here("table_screenshot_inspect_table.png"))
-step4 <- image_read(here("table_screenshot_inspect_table_xpath.png"))
-step5 <- image_read(here("table_screenshot_xpath_copy_r.png"))
-step5_zoom <- image_read(here("table_screenshot_xpath_copy_r_zoom.png"))
+```{r, echo = FALSE}
+step1 <- image_read(here::here("img", "webpage_screenshot.png"))
+step2 <- image_read(here::here("img", "table_screenshot_inspect.png"))
+step3 <- image_read(here::here("img", "table_screenshot_inspect_table.png"))
+step4 <- image_read(here::here("img", "table_screenshot_inspect_table_xpath.png"))
+step5 <- image_read(here::here("img", "table_screenshot_xpath_copy_r.png"))
+step5_zoom <- image_read(here::here("img", "table_screenshot_xpath_copy_r_zoom.png"))
+```
 
+```{r, eval=FALSE, echo=FALSE}
 image_info(step5_zoom)
 
 step5_zoom <- image_border(step5_zoom, "white", "284x334")
@@ -378,25 +413,22 @@ educational_gif <- image_resize(img, '1440x900!') %>%
   image_animate(delay = 20,
                 optimize = TRUE)
 
-image_write(educational_gif, "educational.gif")
-```
-
-```{r, echo=FALSE,eval=FALSE}
-image_read(here("educational.gif"))
+image_write(educational_gif, here::here("img", "educational.gif"))
 ```
 
 ```{r, echo=FALSE}
-step1 <- image_read(here("webpage_screenshot.png"))
-step2 <- image_read(here("table_screenshot_inspect.png"))
-step3 <- image_read(here("table_screenshot_inspect_table.png"))
-step4 <- image_read(here("table_screenshot_inspect_table_xpath.png"))
-step5 <- image_read(here("table_screenshot_xpath_copy_r.png"))
-step5_zoom <- image_read(here("table_screenshot_xpath_copy_r_zoom.png"))
+knitr::include_graphics(here::here("img","educational.gif"))
 ```
 
-[Let's go to the web page with all the tables we are interested in scraping.](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm)
+***
 
-```{r, echo=FALSE}
+Now let's go through each step together:
+
+### 1) Identify location of data that will be scraped
+
+First, let's go to the [web page](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} with all the tables we are interested in scraping
+
+```{r, step1, echo=FALSE}
 step1
 ```
 
@@ -404,111 +436,144 @@ Once on the webpage, there aren't any visible options to download the data.
 
 Right-click and select "Inspect" 
 
-```{r, echo=FALSE}
+```{r, step2, echo=FALSE}
 step2
 ```
 
 A window opens. 
 
-This window allows us to glance at the internal mechanics of the webpage. To scrape the data from the webpage, we need to first learn a little bit about the components that make it thet web page it is. 
+This window allows us to glance at the internal mechanics of the webpage. To scrape the data from the webpage, we need to first learn a little bit about the components that make it the web page it is. 
 
-Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and opening elements when the highlighted portion is too large—we can indentify the element that contains the data we are looking for. 
+Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and clicking on the elements on the right side of the screen—we can indentify the element that contains the data we are looking for. Another option for identifying xpaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html).  
 
-```{r, echo=FALSE}
-step3
+```{r,step3, echo=FALSE}
+step3 
 ```
 
 Right click on the element and copy the XPath. We will need this XPath for the next step.
 
-```{r, echo=FALSE}
+```{r, step4, echo=FALSE}
 step4
 ```
 
-Now we can return to the `R` programming environment
+Now we can return to the `R` programming environment.
 
-```{r, echo=FALSE}
+```{r, step5, echo=FALSE}
 step5
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
-
-**I included the following line to help separate the process.**
-
-</div>
-
 ***
 
-**2) Save webpage element to an object** 
+### 2) Save webpage element to an object in R 
 
-For the first question we intend to answer, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape data from the web.
+For the first table we want to scrape, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape the data from this table.
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I wanted to include the last slide/component of the GIF. However, I realized that the audience would also benefit from having an actual code chunk. As a result, this section may need some very minor reworking.**
-
-</div>
-
-```{r, echo=FALSE}
+```{r,step5_zoom, echo=FALSE}
 step5_zoom
 ```
 
+
+Let's explore this step in greater detail:
+
 We need to:
 
-+ import html code for element (webpage)
++ import html code for the webpage
 + extract pieces (table) out of HTML documents (webpage) using Xpath
 + parse the html table into a data frame
 
 To do this:
 
-+ We import the html code using `rvest::read_html()`.
-+ We extract specific components of the webpage using `rvest::read_node()`.
-+ We convert this html table into a dataframe using `rvest::html_table()`.
++ We import the html code using the `read_html()` function of the `rvest` package
++ We extract specific components of the webpage using the `html_nodes()` function of the `rvest` package
++ We convert this html table into a dataframe using the `html_table()`function of the `rvest` package
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+**The `rvest` package provides wrappers for the `xml2` and `httr` packages, thus we can just install and load the `rvest` package and it will install and load dependency packages like `xml2` and `httr` and allow us to use functions from  both of these packages.**
 
-**The `rvest` package provides wrappers for the `xml2` and `httr` packages. I was not sure whether to tag the following functions as rvest or `xml2`/`httr`. I will leave that decision to you..**
+In fact, when we load `rvest` the first time we see:
 
-</div>
+```{r, out.width= "60%"}
+knitr::include_graphics(here::here("img", "rvest.png"))
+```
+
+In this case, we are scraping table 11.1a from the website. First we assign the url to a character string to use within the `read_html()` function of the `xml2` package. 
 
 ```{r}
-url11.1a <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-table11.1a <- url11.1a %>%
-  read_html() %>%
-  html_nodes(xpath='/html/body/div[4]/div[1]/table') %>%
-  html_table()
+NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
+```
+
+One could also directly use the url but this is less convenient for piping.  
+
+<details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` opperator</summary>  
+
+By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which are usable when loading the tidyverse or several of the packages within the tidyverse like `dplyr` becuase they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. This allows us to perform multiple sequential steps on one data input.   
+
+</details>  
+
+  
+The `read_html()` function then allows us to save the html document for the webpage inside R. 
+
+```{r}
+webpage <- NSDUH_url %>%
+  xml2::read_html() 
+webpage
+```
+
+Then we use the `html_nodes()` function of the `rvest` package to select just the table11.1a element of the webpage.
+
+See this [tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"} in case you get stuck) on CSS selectors to understand more about how this function works to use the `xpath` to select the elements of interest from the webpage.
+
+
+```{r}
+webpage_element <-webpage %>%
+  rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table')
+webpage_element 
+
+```
+
+Finally, the `html_table()` function of the `rvest` package parses the html object into a data frame.
+
+```{r}
+library(dplyr)
+table11.1a<-webpage_element%>%
+  rvest::html_table()
+print(table11.1a, max = 2)
+glimpse(table11.1a)
+```
+
+We can see that the output is a list with one element, to extract the data from the list we will use brackets `[[]]` to select the first element of the list.
+```{r}
 table11.1a <- table11.1a[[1]]
 ```
 
-Great! We have successfully scraped the data.
 
-From here on, we will need to wrangle the data.
+Putting this all of this together we can do the entire porcess like this with our pipe opperator `%>%`.
 
-First, we need to repeat the above process for the other tables we are interested in. 
+```{r}
+NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
+table11.1a <- NSDUH_url %>%
+  xml2::read_html() %>%
+  rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table') %>%
+  rvest::html_table()
+table11.1a <- table11.1a[[1]]
+```
+
+
+Now need to repeat the above process for the other tables we are interested in. 
+
+### Writing a function to scrape multiple tables
 
 We can create a function to accomplish this succinctly. 
+Functions allow us to perform the same process on multiple data inputs. See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+In general, the process pf writing functions involves first specifying an input that is used within the function to create an output. In this case the data input is `XPATH` which will be replaced by an actual xpath and the nused in the subsequent steps to scrape the data from each table that an xpath is supplied for.
 
-**For some odd reason, calling the `function()` function with the `base::` prefix causes an error.**
-
-</div>
+We will all this function `scarper`.
 
 ```{r}
 scraper <- function(XPATH){
-  url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
-  table <- url %>%
+  NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
+  table <- NSDUH_url %>%
   read_html() %>%
   html_nodes(xpath=XPATH) %>%
   html_table()
@@ -517,7 +582,7 @@ scraper <- function(XPATH){
 }
 ```
 
-We apply the function we created too the 
+Now we can apply the function we created to each of the xpaths for each of the tables on the website that we would like to use in our data analysis.
 
 ```{r}
 table11.1b <- scraper(XPATH = "/html/body/div[4]/div[2]/table")
@@ -529,62 +594,256 @@ table11.4a <- scraper(XPATH = '/html/body/div[4]/div[7]/table')
 table11.4b <- scraper(XPATH = '/html/body/div[4]/div[8]/table')
 ```
 
+
+Great! We have successfully scraped the data.
+
+Now we need to wrangle the data.
+
+
 ## **Data Exploration and Wrangling**
 *** 
 
-Now that we've imported the data, let's see if we can wrangle a table. Since the data comes from a source that is well-maintained, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
+Now that we've imported the data, let's see if we can wrangle a table. Since the data appears to be formated in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
 
 **Table11.1a**
 
+First we want to remove the last row of our data frame, which happens to be the legend of our table. Recall from looking at the website that there is a legend for this table.
+
+```{r, echo = FALSE}
+knitr::include_graphics(here::here("img", "table11.1a.png"))
+```
+
+We can take a look at the last row using the `tail` function of the `dplyr` package. We can specify that we only want to see the last row by using the `n = 1` argument.
+
 ```{r}
-base::dim(table11.1a)
+table11.1a %>%
+  dplyr::as_tibble() %>%
+  tail(n = 1)
+```
 
-table11.1a <- table11.1a[-dim(table11.1a)[1],]
+We can see that the legend is repeated for every column. Let's take a look at the year 2004 column.
+```{r}
+table11.1a %>%
+  dplyr::as_tibble() %>%  
+  select(`2004`) %>%
+  tail(n = 1)
+```
 
-table11.1a <- table11.1a %>%
+Let's save this so that we can refer back to it later:
+```{r}
+legend <- table11.1a %>%
+  as_tibble() %>%  
+  select(`2004`) %>%
+  tail(n = 1)
+```
+
+Another way to look at the last row is to use the `n()` function of the `dplyr` package. This function can be used inside other `dplyr` functions and it counts the total number of observations of a group. Within the [`slice()` function](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} of the `dplyr` packge, it allows you to refer the full length of the object.
+
+```{r}
+table11.1a %>%
+  dplyr::as_tibble() %>%
+  slice(n()) 
+```
+We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
+
+We are also going to use a special pipe opperator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reasign it at the end after all the steps have been performed.
+
+```{r}
+library(magrittr)
+table11.1a %<>%
+  dplyr::as_tibble() %>%
+  slice(1:(n()-1))
+```
+
+Now let's take a look at data:
+```{r}
+table11.1a
+```
+
+Great! We can see the the legend is no longer part of the data.
+
+Now let's use the legend to recode the data. There are many different values for missing data, that we would like to replace with `NA` instead.
+We can use the `pull()` function of the `dplyr` package to take a look at the legend data:
+
+```{r}
+pull(legend, `2004`)
+```
+
+Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. We can use the `na_if()` function to recode these values to `NA`.
+
+avocado... there isnt support for doing this in one command... but could at least do two commands
+
+```{r}
+table11.1a %<>%
   dplyr::na_if("nc") %>%
   dplyr::na_if("--") %>%
   dplyr::na_if("") %>%
   dplyr::na_if("*")
 
-table11.1a <- table11.1a %>%
-  tibble::as_tibble() %>%
-  dplyr::rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
-
-partA <- table11.1a %>%
-  dplyr::select(MHS_setting)
-
-partB <- table11.1a %>%
-  select(-MHS_setting)
-
-partA <- partA %>%
-  dplyr::mutate(MHS_setting = base::gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                            "",
-                            MHS_setting))
-
-partB <- partB %>%
-  mutate(dplyr::across(.cols = dplyr::everything(),
-                stringr::str_remove_all, "a")) %>%
-  mutate(dplyr::across(.cols = dplyr::everything(),
-                stringr::str_remove_all, ","))
-
-base::rm(table11.1a)
-
-table11.1a <- dplyr::bind_cols(partA,
-                               partB)
-
-table11.1a <- table11.1a %>%
-  tidyr::pivot_longer(cols = dplyr::contains("20"), names_to = "Year", values_to = "Number")
-
-table11.1a <- table11.1a %>%
-  dplyr::filter(MHS_setting != "General Medicine") %>%
-  dplyr::filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
-
-table11.1a <- table11.1a %>%
-  mutate(across(c(Year, Number), as.numeric))
+table11.1a 
 ```
 
-We will write a function to simplify this process.
+Now let's rename the first column using the `rename()` function of the `dplyr` package. This requires listing the new name first like so: `new_name = old_name`.
+```{r}
+table11.1a %<>%
+  dplyr::rename(MHS_setting = 
+                  `Setting Where Mental Health ServiceWas Received`)
+head(table11.1a)
+```
+
+Nice!
+
+Now you may notice that the individual values have an `"a"` after the numeric value.
+
+According to the legend this indicates if "the difference between this estimate and the 2018 estimate is significant at the .05 level."
+
+While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
+
+Since lower case "a" values occur in the first column values, we want to makes sure we dont remove these.
+
+So how can we do this? We can use the `stringr` package to modify character strings. and we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
+
+Currently all of our data is of class character as indicated by the `<chr>` under the column names. 
+
+<details> <summary> Click here for an explanation of what a character string is </summary>
+
+There are several classes of data in R programming. Character is one of these classes. 
+A chacter string is an individual data value made up of characters. This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. If data is of class character, than the numeric values will not be processed like a numeric value in a mathematical sense. If you want your numeric values to be interpreted that way, they need to be converted to a numeric class. The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
+
+</details>
+
+  
+The `stringr` package has functions that allow us to replace (the `str_replace()` function) or remove(the `str_remove()` function) characters. 
+
+To use these we need to be able to specify what we want to remove and replace. 
+
+Here is a part of a [cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"} about string manipulation from rstudio.
+```{r}
+knitr::include_graphics(here::here("img", "regex.png"))
+```
+
+We can see that we can refer to any digit (such as 1,2,3 etc.) as `[:digit:]`.
+We can also see that we can refer to any punction mark as `[:punct:]`.
+Finally, we see that spaces and tabls can be refered to as `[:blank:]`.
+
+
+If we take a closer look at the first column of our table (using the `pull()` function of the `dplyr` package), we can see that besides the `"a"` values that we see adjacent to our numeric values in the body of the table, we also some large white spaces, some numeric values, instances of `\r\n`, as well as some commas and other punctuation marks. 
+
+```{r}
+pull(table11.1a, MHS_setting)
+```
+
+
+We can use the `str_remove_all()` function which is a variant of the `str_remove()` function of the `stringr` package (which allows us to remove all occurences of sepcificed characters in each row rather than just the first occurance, which is what `str_remove()` does), to remove the digit values, the `\r\n` characters and the punctionation marks from the column called `MHS_setting`.
+
+Using the `mutate()` function we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctionation marks.
+
+We need to specify that the character strings that should be used can be found ing the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
+
+To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
+
+```{r}
+table11.1a %<>%
+mutate(MHS_setting = 
+         str_remove_all(string = MHS_setting, 
+                       pattern = "[:digit:]|\r\n|[:punct:]|"))
+
+```
+
+We also want to replace the spaces with an underscore. We can see that sometimes there appears to be more than one space. We can specify that we want any occurance of 1 or more  to be replaced by using the `{1,}` notation.
+
+See here for an explanation of this on the cheat sheet:
+
+```{r}
+knitr::include_graphics(here::here("img", "quantifiers.png"))
+```
+
+So now we will use the `str_replace_all()` function of the `stringr` package.
+In this case we also need to specify a replacement with the `replacement = ` argument.
+
+```{r} 
+table11.1a%<>%
+mutate(MHS_setting = 
+         str_replace_all(string = MHS_setting,
+                        pattern = "[:blank:]{1,}", 
+                    replacement = "_"))
+```
+
+Now to finally remove the "a" values and the commas from the body of the table we can use `str_remove_all()` function yet again. However this time to specify that we want all columns except the first column called `MHS_setting`, we can use the `across()` function of the `dplyr` package. This allows us to specify what columns we want to mutate by using the `.cols = ` argument. We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
+
+```{r}
+table11.1a%<>%
+mutate(dplyr::across(.cols = -MHS_setting,
+                stringr::str_remove_all, "a|,"))
+
+table11.1a
+```
+
+Our table is looking much better!
+
+
+We would also like to remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`. If we look at the website, we can see that these were leading line with no data.
+
+```{r}
+knitr::include_graphics(here::here("img", "table11.1a.png"))
+```
+
+We can remove them using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
+
+```{r}
+table11.1a %<>%
+  dplyr::filter(MHS_setting != "General_Medicine") %>%
+  dplyr::filter(MHS_setting != "Juvenile_Justice") 
+table11.1a 
+```
+
+
+Now we would like to change the shape of our table so that we have a new column that reperesents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data) for more information about different table formats, typically refreed to as wide and long or sometimes narrow.
+
+We will use the `pivot_longer()` function of the `tidyr` package to change the shape of our table. 
+
+There are 3 main arguments in this function:   
+1) cols - which specifies what columns to collapse  
+2) names_to - which specifies the name of the new column that will be created that will contain the column names of the columns you are collapsing  
+3) values_to - which specifies the name of the new column that will be created that will contain the values from the columns you are collapsing 
+
+To specify that we want to collapse all columns except the `MHS_setting` column we can again use the minus sign.
+
+```{r}
+library(tidyr)
+table11.1a %<>%
+  tidyr::pivot_longer(cols = - MHS_setting, 
+                  names_to = "Year",
+                 values_to = "Number")
+table11.1a
+```
+
+We can see that our table is now much longer- as we have 340 rows!
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Why do we have 340 rows now?
+
+####
+
+
+
+Finally, we also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what varaibles we wish to mutate.
+
+```{r}
+table11.1a %<>%
+  mutate(across(.cols =c(Year, Number), as.numeric))
+
+table11.1a
+```
+
+Now we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
+
+
+Now we want to wrangle all of our other tables which are formatted similarly.
+
+We can again write a function to simplify this process.
 
 The function needs to:
 
