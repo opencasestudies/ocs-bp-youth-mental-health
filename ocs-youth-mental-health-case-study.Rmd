@@ -800,10 +800,28 @@ table11.1a %<>%
 table11.1a
 ```
 
-We would also like to remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading line with no data.
+We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were recieved, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading line with no data.
 
 ```{r}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
+```
+
+First we will add the `type` and `subtype` variables using the `mutate` function.
+
+
+```{r}
+table11.1a %<>%
+  mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+  mutate(subtype =c("Specialty_total", 
+                    rep("Outpatient", 5), 
+                    rep("Inpatient", 3), 
+                    "Nonspecialty_total", 
+                    rep("Education", 3), 
+                    rep("General_medicine", 2),
+                    rep("Juvenile_Justice", 2),
+                    rep("Child_Welfare", 2), 
+                    "combination"))
+
 ```
 
 We can remove them using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
@@ -834,7 +852,7 @@ To specify that we want to collapse all columns except the `MHS_setting` column 
 ```{r}
 library(tidyr)
 table11.1a %<>%
-  tidyr::pivot_longer(cols = - MHS_setting, 
+  tidyr::pivot_longer(cols = contains("20"), 
                   names_to = "Year",
                  values_to = "Number") %>%
   mutate(Year = as.numeric(Year))
@@ -851,22 +869,28 @@ Why do we have 289 rows now?
 
 ####
 
-
-
 Now we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
 
+Let's take a look at what the rest of the tables contain:
+Table   | Details                                                                         
+---|-------------
+Table 11.1A       | Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018   
+Table 11.1B       | Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Percentages, 2002-2018  
+Table 11.2A       |  Major Depressive Episode in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Numbers in Thousands, 2004-2018
+Table 11.2B       | Major Depressive Episode in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Percentages, 2004-2018
+Table 11.3A       | Major Depressive Episode with Severe Impairment in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Numbers in Thousands, 2006-2018
+Table 11.3B       | Major Depressive Episode with Severe Impairment in Past Year among Persons Aged 12 to 17, by Demographic Characteristics: Percentages, 2006-2018
+Table 11.4A       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Numbers in Thousands, 2004-2018
+Table 11.4B       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Percentages, 2004-2018
 
-Now we want to wrangle all of our other tables which are formatted similarly.
+OK, so the next table is very similar to Table11.1A, while the remaining tables have information about demographics.
 
-We can again write a function to simplify this process.
 
-The function needs to:
 
-- remove the last row of the table
-- get rid of certain patterns
-- transition the data to long format
 
 As a reminder here are all of the steps that we performed to wrangle `table11.1a`:
+
+
 
 ```{r, eval = FALSE}
 table11.1a %<>%
@@ -888,17 +912,28 @@ table11.1a %<>%
   mutate(dplyr::across(.cols = -MHS_setting,
                 stringr::str_remove_all, "a|,")) %>%
   mutate(across(-MHS_setting, as.numeric)) %>%
+  mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+  mutate(subtype =c("Specialty_total", 
+                    rep("Outpatient", 5), 
+                    rep("Inpatient", 3), 
+                    "Nonspecialty_total", 
+                    rep("Education", 3), 
+                    rep("General_medicine", 2),
+                    rep("Juvenile_Justice", 2),
+                    rep("Child_Welfare", 2), 
+                    "combination")) %>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare") %>%
-    tidyr::pivot_longer(cols = - MHS_setting, 
+    tidyr::pivot_longer(cols = contains("20"), 
                   names_to = "Year",
                  values_to = "Number") %>%
    mutate(Year = as.numeric(Year))
 ```
 
+Now we want to wrangle table11.1B which is formatted the most similarly. To do so we can simply run these steps on the using the `table11.1B` as the input. For the sake of education however, we will show you how you could make a function if we had several more similar tables to wrangle. This will also make it easier to write a function to wrangle the other demographic tables.
 
-Last time we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col` which will be the name of the column that will be created after pivoting that will take the values from each of the years.
+Last time we wrote a function in this case study, we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col` which will be the name of the column that will be created after pivoting that will take the values from each of the years.
 
 We will also add code to remove all rows that have only NA values, this means we don't need to know what rows ahead of time.
 
@@ -939,6 +974,16 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
   mutate(dplyr::across(.cols = -{{new_col}},
                 stringr::str_remove_all, "a|,")) %>%
      mutate(across(-{{new_col}}, as.numeric)) %>%
+    mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+     mutate(subtype =c("Specialty_total", 
+                    rep("Outpatient", 5), 
+                    rep("Inpatient", 3), 
+                    "Nonspecialty_total", 
+                    rep("Education", 3), 
+                    rep("General_medicine", 2),
+                    rep("Juvenile_Justice", 2),
+                    rep("Child_Welfare", 2), 
+                    "combination")) %>%
      filter(rowSums(is.na(select(., is.numeric))) <
               length(select(., is.numeric))) %>%
   pivot_longer(cols = contains("20"), 
@@ -948,10 +993,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 }
 ```
 
-
-
-
-***
+Now we can apply the function to `table11.1b`.
 
 ### **Table11.1b**
 
@@ -964,16 +1006,28 @@ table11.1b<- data_prep_settings(
 table11.1b
 ```
 
+Great!
+
 What about the subsequent tables?
+
+### **Demographic Tables**
+
+All of the rest of the tables have demographic information and have this general structure:
+
+```{r}
+knitr::include_graphics(here::here("img", "dem_table.png"))
+```
 
 In these tables we have age groups in our first column so we dont want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
 
 We also want to add the word `Age` and an underscore in front of the age group listed in the tables. We can use the `str_replace()` function of the `stringr` package, becuase now we want to only replace the first instance of `1` with `Age_1`.
 
-We also plan to replace the first column name with `Demographic` everytime.
+We also plan to replace the first column name with `Demographic` for all of the tables.
 
+We also want to create a new variable that list the subgroups.
 
 We will also split the function into two so that we can check how the data looks as we expect before we change the shape of the table. We will call the function that performs `pivot_longer()` step `Make_long()`.
+
 
 
 ```{r}
@@ -989,12 +1043,16 @@ data_dem_settings <- function(TABLE){
          str_replace_all(string =pull(., Demographic),
                         pattern = "[:blank:]{1,}", 
                     replacement = "_")) %>%
-mutate(Demographic = str_replace(string = Demographic, 
-                                pattern = "1", 
-                            replacement = "Age_1")) %>%
-  mutate(dplyr::across(.cols = -Demographic,
+  mutate(Demographic = str_replace(string = Demographic, 
+                                  pattern = "1", 
+                              replacement = "Age_1")) %>%
+ mutate(subgroup =c("Total",
+                    rep("Age", 4), 
+                    rep("Sex", 3), 
+                    rep("Race", 9)))%>%
+  mutate(dplyr::across(.cols = contains("20"),
                 stringr::str_remove_all, "a|,")) %>%
-     mutate(across(-Demographic, as.numeric)) %>%
+     mutate(across(contains("20"), as.numeric)) %>%
      filter(rowSums(is.na(select(., is.numeric))) <
               length(select(., is.numeric)))}
 
@@ -1054,33 +1112,32 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
 ```
 
 
-### **Remaining Tables**
 
-We use thefunction to wrangle the next pair of tables. 
+We use the function to wrangle the next pair of tables. 
 ```{r}
 table11.2a <- data_dem_settings(TABLE = table11.2a)
 
-table11.2a
+glimpse(table11.2a)
 
 table11.2b <- data_dem_settings(TABLE = table11.2b)
 
-table11.2b
+glimpse(table11.2b)
 
 table11.3a <- data_dem_settings(TABLE = table11.3a)
 
-table11.3a
+glimpse(table11.3a)
 
 table11.3b <- data_dem_settings(TABLE = table11.3b)
 
-table11.3b
+glimpse(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
 
-table11.4a
+glimpse(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
 
-table11.4b
+glimpse(table11.4b)
 
 ```
 
@@ -1300,7 +1357,8 @@ A contingency table can be produced from data in long format by transforming the
 
 ```{r}
 chi_square_11.2a <- chi_square_11.2a %>%
-  tidyr::pivot_wider(names_from = Year,
+  tidyr::pivot_wider(id_cols = -subgroup,
+                     names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
   tibble::column_to_rownames("Demographic")
@@ -1327,7 +1385,8 @@ chi_square_11.3a <- table11.3a %>%
   mutate(Number = Number * 1000)
 
 chi_square_11.3a <- chi_square_11.3a %>%
-  pivot_wider(names_from = Year,
+  pivot_wider(id_cols = -subgroup,
+              names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
   column_to_rownames("Demographic")
@@ -1340,13 +1399,14 @@ chisq.test(chi_square_11.3a)
 ```
 
 ```{r}
-chi_square_11.4a <- table11.4a %>%
+chi_square_11.4a <- table11.4a%>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
 
 chi_square_11.4a <- chi_square_11.4a %>%
-  pivot_wider(names_from = Year,
+  pivot_wider(id_cols = -subgroup,
+              names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
   column_to_rownames("Demographic")
@@ -1367,19 +1427,25 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 <div class = "red">
 
 **This is the intentionally terrible plot that requires faceting.**
+https://community.rstudio.com/t/unique-legends-in-facet-grid/49195
 
 </div>
 
+
+Need to filter for sertain types and then split into two plots...
 ```{r}
-table11.1b %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting)) +
+library(directlabels)
+plotMHS <-table11.1b %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = MHS_setting)) +
   ggplot2::geom_line() +
+  facet_wrap(~type)+
   ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
                      limits = c(2009, 2018)) +
   ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018") + 
-  face
+       subtitle = "Percentages, 2002-2018")
+
+directlabels::direct.label(plotMHS, method = list("angled.boxes"))
 ```
 
 <style>
@@ -1395,6 +1461,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 table11.1b %>%
   ggplot(aes(x = Year, y = Percent, group = MHS_setting)) +
   geom_line() +
+  facet_wrap(~type) +
   scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
                      limits = c(2009, 2018)) +
@@ -1402,8 +1469,45 @@ table11.1b %>%
        subtitle = "Percentages, 2002-2018")
 ```
 
+https://stackoverflow.com/questions/14840542/place-a-legend-for-each-facet-wrap-grid-in-ggplot2
+option using cowplot:
+ make list of plots
+ggList <- lapply(split(x, x$Server), function(i) {
+  ggplot(i, aes(Date, PercentUsed, group = 1, colour = FileSystem)) + 
+    geom_jitter(size = 2) +
+    geom_smooth(method = "loess", se = TRUE)})
+
+ plot as grid in 1 columns
+cowplot::plot_grid(plotlist = ggList, ncol = 1,
+                   align = 'v', labels = levels(x$Server))
+                   
+library(gridExtra)
+
+xs <- split(x,f = x$Server)
+p1 <- ggplot(xs$A,aes(x = Date,y = PercentUsed,group = 1,colour = FileSystem)) + 
+        geom_jitter(size=0.5) + 
+        geom_smooth(method="loess", se=T) + 
+        facet_wrap(~Server, ncol=1)
+
+p2 <- p1 %+% xs$B
+p3 <- p1 %+% xs$C
+
+grid.arrange(p1,p2,p3)                   
 ```{r}
 table11.2b %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                     labels = seq(2009, 2018, by=1),
+                     limits = c(2009, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(~subgroup)
+```
+
+```{r}
+table11.2b %>%
+  filter(Demographic %in% c("Age_12-13", "Age_14-15", "Age_16-17")) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_line() +
   scale_x_continuous(breaks = seq(2009, 2018, by=1),
