@@ -605,7 +605,7 @@ Now we need to wrangle the data.
 
 Now that we've imported the data, let's see if we can wrangle a table. Since the data appears to be formated in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
 
-**Table11.1a**
+### **Table11.1a**
 
 First we want to remove the last row of our data frame, which happens to be the legend of our table. Recall from looking at the website that there is a legend for this table.
 
@@ -672,6 +672,8 @@ pull(legend, `2004`)
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. We can use the `na_if()` function to recode these values to `NA`.
 
 avocado... there isnt support for doing this in one command... but could at least do two commands
+
+
 
 ```{r}
 table11.1a %<>%
@@ -742,12 +744,14 @@ We need to specify that the character strings that should be used can be found i
 
 To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
 
+
 ```{r}
 table11.1a %<>%
 mutate(MHS_setting = 
          str_remove_all(string = MHS_setting, 
                        pattern = "[:digit:]|\r\n|[:punct:]|"))
 
+table11.1a
 ```
 
 We also want to replace the spaces with an underscore. We can see that sometimes there appears to be more than one space. We can specify that we want any occurance of 1 or more  to be replaced by using the `{1,}` notation.
@@ -761,15 +765,21 @@ knitr::include_graphics(here::here("img", "quantifiers.png"))
 So now we will use the `str_replace_all()` function of the `stringr` package.
 In this case we also need to specify a replacement with the `replacement = ` argument.
 
+
+
 ```{r} 
 table11.1a%<>%
 mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                         pattern = "[:blank:]{1,}", 
                     replacement = "_"))
+
+table11.1a
 ```
 
 Now to finally remove the "a" values and the commas from the body of the table we can use `str_remove_all()` function yet again. However this time to specify that we want all columns except the first column called `MHS_setting`, we can use the `across()` function of the `dplyr` package. This allows us to specify what columns we want to mutate by using the `.cols = ` argument. We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
+
+
 
 ```{r}
 table11.1a%<>%
@@ -781,8 +791,16 @@ table11.1a
 
 Our table is looking much better!
 
+We also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what varaibles we wish to mutate.
 
-We would also like to remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`. If we look at the website, we can see that these were leading line with no data.
+```{r}
+table11.1a %<>%
+  mutate(across(.cols =-MHS_setting, as.numeric))
+
+table11.1a
+```
+
+We would also like to remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading line with no data.
 
 ```{r}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
@@ -790,15 +808,18 @@ knitr::include_graphics(here::here("img", "table11.1a.png"))
 
 We can remove them using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
 
+
 ```{r}
 table11.1a %<>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
-  dplyr::filter(MHS_setting != "Juvenile_Justice") 
+  dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
+  dplyr::filter(MHS_setting != "Child_Welfare")
+
 table11.1a 
 ```
 
 
-Now we would like to change the shape of our table so that we have a new column that reperesents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data) for more information about different table formats, typically refreed to as wide and long or sometimes narrow.
+Finally, we would like to change the shape of our table so that we have a new column that reperesents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data) for more information about different table formats, typically refreed to as wide and long or sometimes narrow.
 
 We will use the `pivot_longer()` function of the `tidyr` package to change the shape of our table. 
 
@@ -807,36 +828,30 @@ There are 3 main arguments in this function:
 2) names_to - which specifies the name of the new column that will be created that will contain the column names of the columns you are collapsing  
 3) values_to - which specifies the name of the new column that will be created that will contain the values from the columns you are collapsing 
 
-To specify that we want to collapse all columns except the `MHS_setting` column we can again use the minus sign.
+To specify that we want to collapse all columns except the `MHS_setting` column we can again use the minus sign. Finally, we will make the `Year` variable numeric as well.
+
 
 ```{r}
 library(tidyr)
 table11.1a %<>%
   tidyr::pivot_longer(cols = - MHS_setting, 
                   names_to = "Year",
-                 values_to = "Number")
+                 values_to = "Number") %>%
+  mutate(Year = as.numeric(Year))
+
 table11.1a
 ```
 
-We can see that our table is now much longer- as we have 340 rows!
+We can see that our table is now much longer- as we have 289 rows!
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Why do we have 340 rows now?
+Why do we have 289 rows now?
 
 ####
 
 
-
-Finally, we also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what varaibles we wish to mutate.
-
-```{r}
-table11.1a %<>%
-  mutate(across(.cols =c(Year, Number), as.numeric))
-
-table11.1a
-```
 
 Now we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
 
@@ -851,81 +866,149 @@ The function needs to:
 - get rid of certain patterns
 - transition the data to long format
 
+As a reminder here are all of the steps that we performed to wrangle `table11.1a`:
+
+```{r, eval = FALSE}
+table11.1a %<>%
+  dplyr::as_tibble() %>%
+  slice(1:(n()-1))%>%
+  dplyr::na_if("nc") %>%
+  dplyr::na_if("--") %>%
+  dplyr::na_if("") %>%
+  dplyr::na_if("*")%>%
+  dplyr::rename(MHS_setting = 
+                  `Setting Where Mental Health ServiceWas Received`) %>%
+  mutate(MHS_setting = 
+         str_remove_all(string = MHS_setting, 
+                       pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
+  mutate(MHS_setting = 
+         str_replace_all(string = MHS_setting,
+                        pattern = "[:blank:]{1,}", 
+                    replacement = "_")) %>%
+  mutate(dplyr::across(.cols = -MHS_setting,
+                stringr::str_remove_all, "a|,")) %>%
+  mutate(across(-MHS_setting, as.numeric)) %>%
+  dplyr::filter(MHS_setting != "General_Medicine") %>%
+  dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
+  dplyr::filter(MHS_setting != "Child_Welfare") %>%
+    tidyr::pivot_longer(cols = - MHS_setting, 
+                  names_to = "Year",
+                 values_to = "Number") %>%
+   mutate(Year = as.numeric(Year))
+```
+
+
+Last time we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col` which will be the name of the column that will be created after pivoting that will take the values from each of the years.
+
+We will also add code to remove all rows that have only NA values, this means we don't need to know what rows ahead of time.
+
+To do this we will use the `filter()` and `select()` functions of the `dplyr` package. 
+
+We will calculate a sum of the count of `NA` values across the rows for the numeric columns (the columns for each year) using the base `rowSums()` fuction.
+
+To do this we first select the columns that are numeric using: `select(., is.numeric)`, where the `.` refers to the table after all the previous wrangling steps in our function.
+
+Then we get a true or false statement about which columns have na values with the base `is.na()` function (this requires numeric values).
+
+
+Then we caculate the sum using the base `rowSums()` function.
+
+
+Altogether this looks like this: `rowSums(is.na(select(., is.numeric)))`.
+Finally we compare this to the number of columns that are numeric by using: `length(select(., is.numeric)))`, with the idea that if the number of `NA` values is less than the number of columns that could have `NA` values, then we know it is not an empty row.
+              
+Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
+
+
 ```{r}
-data_prep_settings <- function(TABLE, old_col, new_col, pivot_col){
-  TABLE <- TABLE[-dim(TABLE)[1],]
-  TABLE <- TABLE %>%
+data_prep_settings <- function(TABLE, new_col, pivot_col){
+  dplyr::as_tibble(TABLE) %>%
+  slice(1:(n()-1))%>%
   na_if("nc") %>%
   na_if("--") %>%
   na_if("") %>%
-  na_if("*")
-  TABLE <- TABLE %>%
-    as_tibble() %>%
-    rename({{new_col}} := {{old_col}})
-  partA <- TABLE %>%
-    select({{new_col}})
-  partB <- TABLE %>%
-    select(-{{new_col}})
-  partA <- partA %>%
-  mutate({{new_col}} := partA %>%
-           select({{new_col}}) %>%
-           dplyr::pull({{new_col}}) %>%
-           gsub("[[:digit:]]+|[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                        "", .))
-  partB <- partB %>%
-    mutate(across(.cols = everything(),
-                str_remove_all, "a")) %>%
-    mutate(across(.cols = everything(),
-                str_remove_all, ","))
-  rm(TABLE)
-  TABLE <- bind_cols(partA,
-                     partB)
-  TABLE <- TABLE %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = pivot_col)
-  TABLE
+  na_if("*") %>%
+    rename({{new_col}} := names(.)[1]) %>%
+     mutate({{new_col}} := 
+         str_remove_all(string = pull(., {{new_col}}), 
+                       pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
+  mutate({{new_col}} := 
+         str_replace_all(string =pull(., {{new_col}}),
+                        pattern = "[:blank:]{1,}", 
+                    replacement = "_")) %>%
+  mutate(dplyr::across(.cols = -{{new_col}},
+                stringr::str_remove_all, "a|,")) %>%
+     mutate(across(-{{new_col}}, as.numeric)) %>%
+     filter(rowSums(is.na(select(., is.numeric))) <
+              length(select(., is.numeric))) %>%
+  pivot_longer(cols = contains("20"), 
+               names_to = "Year", 
+               values_to = pivot_col)%>%
+     mutate(Year = as.numeric(Year))
 }
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
 
-</div>
 
 ***
 
-**Table11.1a**
-
-We then apply this function to the table, ridding the table of headings and ensuring some of our commons are correctly of numeric class.
+### **Table11.1b**
 
 ```{r}
-dim(table11.1b)
+table11.1b<- data_prep_settings(
+                    TABLE = table11.1b,
+                  new_col = "MHS_setting",
+                pivot_col = "Percent")
 
-table11.1b <- data_prep_settings(TABLE = table11.1b,
-          old_col = "Setting Where Mental Health ServiceWas Received",
-          new_col = "MHS_setting",
-          pivot_col = "Percent")
-
-table11.1b <- table11.1b %>%
-  filter(MHS_setting != "General Medicine") %>%
-  filter(MHS_setting != "Juvenile Justice") #Leading lines with no data
-
-table11.1b <- table11.1b %>%
-  mutate(across(c(Year, Percent), as.numeric))
+table11.1b
 ```
 
-We write a function to simplify this process for data that uses demographic groups as units of observation.
+What about the subsequent tables?
 
-The function needs to:
+In these tables we have age groups in our first column so we dont want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
 
-- remove the last row of the table
-- get rid of certain patterns
-- transition the data to long format
+We also want to add the word `Age` and an underscore in front of the age group listed in the tables. We can use the `str_replace()` function of the `stringr` package, becuase now we want to only replace the first instance of `1` with `Age_1`.
+
+We also plan to replace the first column name with `Demographic` everytime.
+
+
+We will also split the function into two so that we can check how the data looks as we expect before we change the shape of the table. We will call the function that performs `pivot_longer()` step `Make_long()`.
+
 
 ```{r}
+data_dem_settings <- function(TABLE){
+  dplyr::as_tibble(TABLE) %>%
+  slice(1:(n()-1))%>%
+  na_if("nc") %>%
+  na_if("--") %>%
+  na_if("") %>%
+  na_if("*") %>%
+    rename(Demographic := names(.)[1]) %>%
+  mutate(Demographic := 
+         str_replace_all(string =pull(., Demographic),
+                        pattern = "[:blank:]{1,}", 
+                    replacement = "_")) %>%
+mutate(Demographic = str_replace(string = Demographic, 
+                                pattern = "1", 
+                            replacement = "Age_1")) %>%
+  mutate(dplyr::across(.cols = -Demographic,
+                stringr::str_remove_all, "a|,")) %>%
+     mutate(across(-Demographic, as.numeric)) %>%
+     filter(rowSums(is.na(select(., is.numeric))) <
+              length(select(., is.numeric)))}
+
+Make_long <-function(TABLE, pivot_col){
+  TABLE %>%
+  pivot_longer(cols = contains("20"), 
+               names_to = "Year", 
+               values_to = pivot_col)%>%
+     mutate(Year = as.numeric(Year))}
+```
+
+from Michael
+
+```{r, eval=FALSE, echo=FALSE}
 data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
   TABLE <- TABLE[-dim(TABLE)[1],]
   TABLE <- TABLE %>%
@@ -970,22 +1053,76 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
 }
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
+### **Remaining Tables**
 
-</div>
+We use thefunction to wrangle the next pair of tables. 
+```{r}
+table11.2a <- data_dem_settings(TABLE = table11.2a)
 
-***
+table11.2a
 
-**Table11.2a**
+table11.2b <- data_dem_settings(TABLE = table11.2b)
 
-We use the produced function to wrangle the next pair of tables. 
+table11.2b
+
+table11.3a <- data_dem_settings(TABLE = table11.3a)
+
+table11.3a
+
+table11.3b <- data_dem_settings(TABLE = table11.3b)
+
+table11.3b
+
+table11.4a <- data_dem_settings(TABLE = table11.4a)
+
+table11.4a
+
+table11.4b <- data_dem_settings(TABLE = table11.4b)
+
+table11.4b
+
+```
 
 ```{r}
+table11.2a <-table11.2a %>% Make_long(pivot_col = "Number")
+table11.3a <-table11.3a %>% Make_long(pivot_col = "Number")
+table11.4a <-table11.4a %>% Make_long(pivot_col = "Number")
+
+table11.2b <-table11.2b %>% Make_long(pivot_col = "Percent")
+table11.3b <-table11.3b %>% Make_long(pivot_col = "Percent")
+table11.4b <-table11.4b %>% Make_long(pivot_col = "Percent")
+```
+
+We can now use the functions to wrangle the remaining tables. 
+
+```{r, eval = FALSE}
+tables <- list(table11.2a = table11.2a, table11.2b = table11.2b, 
+               table11.3a = table11.3a, table11.3b = table11.3b, 
+               table11.4a = table11.4a, table11.4b = table11.4b)
+
+remaining_tables <-map_df(tables, data_dem_settings)
+remaining_tables
+
+
+count_tables <- list(table11.2a = table11.2a, 
+                     table11.3a = table11.3a,
+                     table11.4a = table11.4a)
+
+percent_tables <- list(table11.2b = table11.2b, 
+                       table11.3b = table11.3b,
+                       table11.4b = table11.4b)
+
+count_tables<-map_df(count_tables, data_dem_settings)
+
+map(~count_tables, Make_long(TABLE = ., pivot_col = "Number"))
+```
+
+Now let's change the format of all of these tables.
+
+
+from Michael
+```{r, echo = FALSE, eval = FALSE}
 dim(table11.2a)
 
 table11.2a <- data_prep_dem(TABLE = table11.2a,
@@ -1005,20 +1142,9 @@ table11.2a <- table11.2a %>%
   mutate(across(c(Year, Number), as.numeric))
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+### **Table11.2b**
 
-**I included the following line to help separate the tables.**
-
-</div>
-
-***
-
-**Table11.2b**
-
-```{r}
+```{r, eval = FALSE}
 dim(table11.2b)
 
 table11.2b <- data_prep_dem(TABLE = table11.2b,
@@ -1040,20 +1166,11 @@ table11.2b <- table11.2b %>%
 
 We repeat this process for the remaining tables.
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
 
-</div>
+### **Table 11.3a**
 
-***
-
-**Table 11.3a**
-
-```{r}
+```{r, eval = FALSE}
 dim(table11.3a)
 
 table11.3a <- data_prep_dem(TABLE = table11.3a,
@@ -1073,20 +1190,10 @@ table11.3a <- table11.3a %>%
   mutate(across(c(Year, Number), as.numeric))
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
+### **Table 11.3b**
 
-</div>
-
-***
-
-**Table 11.3b**
-
-```{r}
+```{r, eval=FALSE}
 dim(table11.3b)
 
 table11.3b <- data_prep_dem(TABLE = table11.3b,
@@ -1106,20 +1213,11 @@ table11.3b <- table11.3b %>%
   mutate(across(c(Year, Percent), as.numeric))
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
 
-</div>
+### **Table 11.4a**
 
-***
-
-**Table 11.4a**
-
-```{r}
+```{r, eval = FALSE}
 dim(table11.4a)
 
 table11.4a <- data_prep_dem(TABLE = table11.4a,
@@ -1139,20 +1237,11 @@ table11.4a <- table11.4a %>%
   mutate(across(c(Year, Number), as.numeric))
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**I included the following line to help separate the tables.**
 
-</div>
+### **Table 11.4b**
 
-***
-
-**Table 11.4b**
-
-```{r}
+```{r, eval =FALSE}
 dim(table11.4b)
 
 table11.4b <- data_prep_dem(TABLE = table11.4b,
@@ -1289,7 +1378,8 @@ table11.1b %>%
                      labels = seq(2009, 2018, by=1),
                      limits = c(2009, 2018)) +
   ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")
+       subtitle = "Percentages, 2002-2018") + 
+  face
 ```
 
 <style>
