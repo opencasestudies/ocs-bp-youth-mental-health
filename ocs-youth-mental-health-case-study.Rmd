@@ -922,6 +922,7 @@ table11.1a %<>%
                     rep("Juvenile_Justice", 2),
                     rep("Child_Welfare", 2), 
                     "combination")) %>%
+  mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare") %>%
@@ -984,6 +985,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                     rep("Juvenile_Justice", 2),
                     rep("Child_Welfare", 2), 
                     "combination")) %>%
+      mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
      filter(rowSums(is.na(select(., is.numeric))) <
               length(select(., is.numeric))) %>%
   pivot_longer(cols = contains("20"), 
@@ -1320,6 +1322,10 @@ table11.4b <- table11.4b %>%
 
 Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
 
+Census Bureau definitions:
+**AIAN stands for American Indian and Alaska Native
+** NHOPI stands for Native Hawaiian or Other Pacific Islander
+
 ## **Data Analysis**
 *** 
 
@@ -1421,53 +1427,74 @@ chisq.test(chi_square_11.4a)
 ## **Data Visualization**
 *** 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
-
-**This is the intentionally terrible plot that requires faceting.**
-https://community.rstudio.com/t/unique-legends-in-facet-grid/49195
-
-</div>
+Ok, so now we are going to make some visualizations of the data represented in the tables. We will start with table11.1b which has the percentage values for counts presented in table11.1a.
 
 
-Need to filter for sertain types and then split into two plots...
+
+
 ```{r}
 library(directlabels)
 plotMHS <-table11.1b %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = MHS_setting)) +
+  filter(stringr::str_detect(short_label, 'total') ) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
   ggplot2::geom_line() +
   facet_wrap(~type)+
   ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
                      limits = c(2009, 2018)) +
   ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
 
-directlabels::direct.label(plotMHS, method = list("angled.boxes"))
+directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
-
-**The plots below need to be correctly faceted. Keep in mind that tables 11.2+ must be faceted by demographic group type and not by setting type.**
-
-</div>
 
 ```{r}
-table11.1b %>%
-  ggplot(aes(x = Year, y = Percent, group = MHS_setting)) +
-  geom_line() +
-  facet_wrap(~type) +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
-  labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")
+library(directlabels)
+plotMHS <-table11.1b %>%
+  filter(!stringr::str_detect(short_label, "total")) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  ggplot2::geom_line() +
+  facet_wrap(~type)+
+  ggplot2::scale_x_continuous(breaks = seq(2000, 2019, by=1),
+                     labels = seq(2000, 2019, by=1),
+                     limits = c(2000, 2019))+
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
+
+directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 ```
+
+
+```{r}
+library(directlabels)
+plotMHS <-table11.1b %>%
+  filter(!stringr::str_detect(short_label, "total")) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  ggplot2::geom_line() +
+  facet_wrap(~type)+
+  ggplot2::scale_x_continuous(breaks = seq(2002, 2019, by=1),
+                     labels = seq(2002, 2019, by=1),
+                     limits = c(2002, 2019)) +
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
+
+direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1)))
+
+```
+
+
+
+
 
 https://stackoverflow.com/questions/14840542/place-a-legend-for-each-facet-wrap-grid-in-ggplot2
 option using cowplot:
@@ -1492,61 +1519,223 @@ p1 <- ggplot(xs$A,aes(x = Date,y = PercentUsed,group = 1,colour = FileSystem)) +
 p2 <- p1 %+% xs$B
 p3 <- p1 %+% xs$C
 
-grid.arrange(p1,p2,p3)                   
+grid.arrange(p1,p2,p3)     
+
+
+
+### Major Depressive Episodes in past year
+
 ```{r}
-table11.2b %>%
+MDE <-table11.2b %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
   geom_line() +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
   labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~subgroup)
+  facet_wrap(~subgroup)+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+
+#directlabels::direct.label(MDE, list("angled.boxes", cex = .8))
+
+
 ```
 
 ```{r}
-table11.2b %>%
-  filter(Demographic %in% c("Age_12-13", "Age_14-15", "Age_16-17")) %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+Age_episode <-table11.2b %>%
+  filter(subgroup == "Age") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
   labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+
+directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
+
+```
+We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket. We can also see that the trend has been increasing for all three age brackets since 2011.
+
+
+```{r}
+Sex_episode <-table11.2b %>%
+  filter(subgroup == "Sex") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+
+directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
+
+```
+We can see an increase for both sexes since about 2011-2012, but there is a steeper increase for females. Furthermore Females have a much higher rate than males for all years.
+
+```{r}
+Race_episode <-table11.2b %>%
+  filter(subgroup == "Race") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
+
+Race_episode
+#directlabels::direct.label(Race_episode, list("far.from.others.borders", cex = .8))
+
+```
+
+Census Bureau definitions:
+**AIAN stands for American Indian and Alaska Native
+** NHOPI stands for Native Hawaiian or Other Pacific Islander
+
+### Major Depressive Episode with Severe Impairment
+
+
+```{r}
+Age_episode <-table11.3b %>%
+  filter(subgroup == "Age") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2006, 2018, by=1),
+                     labels = seq(2006, 2018, by=1),
+                     limits = c(2006, 2018)) +
+  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
+
+```
+We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
+
+
+```{r}
+Sex_episode <-table11.3b %>%
+  filter(subgroup == "Sex") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2006, 2018, by=1),
+                     labels = seq(2006, 2018, by=1),
+                     limits = c(2006, 2018)) +
+  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
+
 ```
 
 ```{r}
-table11.3b %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+Race_episode <-table11.3b %>%
+  filter(subgroup == "Race") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
+  scale_x_continuous(breaks = seq(2006, 2018, by=1),
+                     labels = seq(2006, 2018, by=1),
+                     limits = c(2006, 2018)) +
   labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")
+       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+
+directlabels::direct.label(Race_episode, list(dl.trans(y = y +0.3),"far.from.others.borders", cex = .8))
+
+Race_episode
+
 ```
+
+Census Bureau definitions:
+**AIAN stands for American Indian and Alaska Native
+** NHOPI stands for Native Hawaiian or Other Pacific Islander
+
+
+### Receipt of treatment among persons with major depressive episode 
 
 ```{r}
 table11.4b %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_line() +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) + 
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) + 
   labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
-       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")
+       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+```{r}
+Age_episode <-table11.4b %>%
+  filter(subgroup == "Age") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
+       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
+  
 
-**The plots created (after faceting properly) can be used to answer the questions listed at the beginning of the case study. After finalizing the plots, some time should be spent towards framing the visualizations in such a way to underscore how they were used to asnwer the question.**
+```
+We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
 
-</div>
+
+```{r}
+Sex_episode <-table11.4b %>%
+  filter(subgroup == "Sex") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                     labels = seq(2009, 2018, by=1),
+                     limits = c(2009, 2018)) +
+  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
+       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold")) 
+directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
+
+```
+
+```{r}
+Race_episode <-table11.4b %>%
+  filter(subgroup == "Race") %>%
+  mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                     labels = seq(2009, 2018, by=1),
+                     limits = c(2009, 2018)) +
+  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
+       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
+#directlabels::direct.label(Race_episode, list("far.from.others.borders", cex = .8))
+Race_episode
+
+```
+
+
+
+
 
 ## **Summary**
 *** 
