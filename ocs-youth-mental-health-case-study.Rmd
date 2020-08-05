@@ -54,7 +54,83 @@ Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hi
 ## **Motivation**
 *** 
 
-The following papers motivated this case study. 
+Rates of depression appear to have been increasing among American youths since around 2010 according to a recent [report](https://content.apa.org/record/2019-12578-001){target="_blank"}. A [recent study](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"}) also shows that youths appear to be seeking more care from mental health services.
+
+
+
+This case study will explore how rates of major depressive episodes have changed since the early 2000s. As well as how rates of treatment for depression of youths have changed over time.
+
+
+```{r,echo = FALSE, out.width="40%"}
+knitr::include_graphics(here::here("img", "k-mitch-hodge-IqSaG9zv2e0-unsplash.jpg"))
+```
+<span>Photo by <a href="https://unsplash.com/@kmitchhodge?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">K. Mitch Hodge</a> on <a href="https://unsplash.com/s/photos/depression?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>  
+
+
+The major symptoms of a major depressive episode include:   
+
+**S**leep disorder (increased or decreased)  
+**I**nterest deficit (anhedonia)  
+**G**uilt (worthlessness, hopelessness, regret)  
+**E**nergy deficit  
+**C**oncentration deficit  
+**A**ppetite disorder (increased or decreased)  
+**P**sychomotor retardation or agitation  
+**S**uicidality  
+
+#### [[source]](https://www.icsi.org/guideline/depression/diagnose-and-characterize-major-depression-persistent-depressive-disorder-with-clinical-interview/){target="_blank"}  
+
+
+```{r, echo = FALSE, out.width="80%"}
+knitr::include_graphics(here::here("img", "depression-symptoms-and-treatment-768x768.jpg"))
+```
+
+#### [[source]](https://newmilfordcounselingcenter.com/depression-2/){target="_blank"}  
+
+<details> <summary> Click here to see the diagnostic requirements for a major depressive episode according to the [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}</summary>    
+
+Five or more of the following symptoms have been present and documented during the same two-week period and represent a change from previous functioning; at least one of the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.  
+
+Note: Do not include symptoms that are clearly attributable to another medical condition.  
+
+1) Depressed mood most of the day, nearly every day, as indicated by either subjective report (e.g., feels sad, empty, hopeless) or observation made by others (e.g., appears tearful)  
+
+2) Markedly diminished interest or pleasure in all, or almost all, activities most of the day, nearly every day (as indicated by either subjective account or observation)  
+
+3) Significant weight loss when not dieting or weight gain (e.g., a change of more than 5% of body weight in a month), or decrease or increase in appetite nearly every day  
+
+4) Insomnia or hypersomnia nearly every day  
+
+5) Psychomotor agitation or retardation nearly every day (observable by others, not merely subjective feelings of restlessness or being slowed down)  
+
+6) Fatigue or loss of energy nearly every day  
+
+7) Feelings of worthlessness or excessive or inappropriate guilt (which may be delusional) nearly every day (not merely self-reproach or guilt about being sick)  
+
+8) Diminished ability to think or concentrate, or indecisiveness, nearly every day (either by subjective account or as observed by others)  
+
+9) Recurrent thoughts of death (not just fear of dying), recurrent suicidal ideation without a specific plan, or a suicide attempt or a specific plan for committing suicide  
+
+B. The symptoms do not meet criteria for a mixed episode.  
+
+C. The episode is not attributable to the physiological effects of a substance or to another medical condition.  
+
+Note: Criteria A-C represent a major depressive episode.  
+
+Note: Responses to a significant loss (e.g., bereavement, financial ruin, losses from a natural disaster, a serious medical illness or disability) may include feelings of intense sadness, rumination about the loss, insomnia, poor appetite and weight loss noted in Criterion A, which may resemble a depressive episode. Although such symptoms may be understandable or considered appropriate to the loss, the presence of a major depressive episode in addition to the normal response to a significant loss should also be carefully considered. This decision inevitably requires the exercise of clinical judgment based on the individual’s history of and the cultural norms for the expression of distress in the context of loss.  
+
+D. The occurrence of the major depressive episode is not better explained by schizoaffective disorder, schizophrenia, schizophreniform disorder, delusional disorder, or other specified and unspecified schizophrenia spectrum and other psychotic disorders.  
+
+E. There has never been a manic episode or a hypomanic episode.  
+
+Note: This exclusion does not apply if all of the manic-like or hypomanic-like episodes are substance-induced or are attributable to the physiological effects of another medical condition.  
+
+</details>  
+  
+    
+  
+This case study is motivated by the following two articles:  
+  
 
 #### {.reference_block}
 
@@ -67,11 +143,11 @@ Olfson, M., Blanco, C., Wang, S., Laje, G. & Correll, C. U. National Trends in t
 
 The main findings of the first [article](https://content.apa.org/record/2019-12578-001){target="_blank"} are:
 
->Rates of major depressive episode in the last year increased 52% 2005–2017 (from 8.7% to 13.2%) among adolescents aged 12 to 17 and 63% 2009–2017 (from 8.1% to 13.2%) among young adults 18–25. 
+> Rates of major depressive episode in the last year increased 52% 2005–2017 (from 8.7% to 13.2%) among adolescents aged 12 to 17 and 63% 2009–2017 (from 8.1% to 13.2%) among young adults 18–25. 
 
->Serious psychological distress in the last month and suicide-related outcomes (suicidal ideation, plans, attempts, and deaths by suicide) in the last year also increased among young adults 18–25 from 2008–2017 (with a 71% increase in serious psychological distress), with less consistent and weaker increases among adults ages 26 and over. 
+> Serious psychological distress in the last month and suicide-related outcomes (suicidal ideation, plans, attempts, and deaths by suicide) in the last year also increased among young adults 18–25 from 2008–2017 (with a 71% increase in serious psychological distress), with less consistent and weaker increases among adults ages 26 and over. 
 
->Cultural trends contributing to an increase in mood disorders and suicidal thoughts and behaviors since the mid-2000s, including the rise of electronic communication and digital media and declines in sleep duration, may have had a larger impact on younger people, creating a cohort effect.
+> Cultural trends contributing to an increase in mood disorders and suicidal thoughts and behaviors since the mid-2000s, including the rise of electronic communication and digital media and declines in sleep duration, may have had a larger impact on younger people, creating a cohort effect.
 
 While the main findings of the second [article](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"} are:
 
@@ -86,9 +162,9 @@ adults (from 23.23 to 28.48 visits) (interaction: P < .001).
 significantly faster for youths (from 2.86 to 5.71 visits).
 
 
-While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
+Again while depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
 
-In this case study we will evaluate data related to depression episodes and mental health care to evaluate trends overtime. We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm). This data was also used in the first study.  
+In this case study we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm) related to treatment and major depressive episode rate to explore how this have changed over time and how different groups compare. This data was also used in the first referenced article.  
 
 
 ## **Main Questions**
@@ -98,25 +174,32 @@ In this case study we will evaluate data related to depression episodes and ment
 <b><u> Our main questions: </u></b>
 
 1) How have depression rates in American youth changed since 2002, according to the NSDUH data?  
-2) Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (gender, ethnicity)?
+2) Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (age, gender, ethnicity)?
+
 
 ####
 
 ## **Learning Objectives** 
 *** 
 
-avocado update these!
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**It may be a good idea to provide a link to Rstudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
+<u>**Statistical Learning Objectives:**</u> 
 
-</div>
+1. Define and create a contingency table.
+2. Implementation of a chi-squared test for indepence.
+3. Interpretation of a chi-squared test for indepence.
 
-In this case study, we will determine the percent of youth in America that have had a major depressive episode in the past year since 2002. We will compare how different youth subgroups have changed over time (by age group (12-13,14-15, and 16-17), gender, ethnicity).
-We will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest). The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+<u>**Data science Learning Objectives:**</u>
+
+1. Scrape data directly from a website (`rvest`).
+2. Subset and filter data (`dplyr`).
+3. Write functions to wrangle data repetively.
+4. Work with character strings (`stringr`).
+5. Reshape data into different formats (`tidyr`).
+6. Data visualizations (`ggplot2`) with labels (`directlabels`) and facets for different groups.
+
+
+In this case study, we will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest). The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -130,6 +213,12 @@ We will begin by loading the packages that we will need:
 library(here)
 library(tidyverse)
 library(rvest)
+library(dplyr)
+library(magrittr)
+library(stringr)
+library(tidyr)
+library(directlabels)
+
 ```
 
 <style>
@@ -137,7 +226,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**I made some modifications to the table below. The `tidyverse` package hyperlink referenced `readr`. I thought this was incorrect. I changed this to the tidyverse website and provided a different description. If this was indeed a typo, it may need to be fixed in other case studies.**
+**avocado will update at the end**
 
 </div>
 
@@ -152,22 +241,22 @@ The first time we use a function, we will use the `::` to indicate which package
 ## **Context**
 *** 
 
-According to other sources the rate of suicide has increased for most age groups in the United States over the past decade and a half.
+According to the CDC the rate of suicide has also increased for most age groups in the United States over the past decade and a half.
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.png")
 ```
 
-#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-While suicide does appear to be increasing amoung youths it also appears to be increasing amoung middle aged adults as well for both females and males. 
+While suicide does appear to be increasing amoung youths it also appears to be increasing amoung middle aged adults for both females and males. 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
 ```
 
-#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
 
@@ -176,7 +265,7 @@ include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig3.png")
 ```
 
-#### [[source](https://www.cdc.gov/nchs/products/databriefs/db309.htm)]{target="_blank"}
+#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
 According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
@@ -189,32 +278,23 @@ According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){t
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality.png"))
 ```
-#### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}
 
+#### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}   
 
+  
 
-**So although sucide is on the rise for most age groups, sucide is one of the top two contributors to death for youths.** Thus this warrents further examination of mental health of American youths.
+**So although sucide is on the rise for most age groups, sucide is one of the top *two* contributors to death for youths.**   
+
+Thus this warrents further examination of the mental health of American youths.  
 
 
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality_age.png"))
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf)
+#### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf){target="_blank"}
 
 
-
-*If you are having thoughts of suicide, please know that you are not alone. If you are in danger of acting on suicidal thoughts, call 911. For support and resources, call the National Suicide Prevention Lifeline at 1-800-273-8255 or text 741-741 for the Crisis Text Line.*
-
-I took this from an article.https://www.theatlantic.com/health/archive/2020/06/why-suicide-rates-among-millennials-are-rising/612943/
-
-*If you or someone you know may be struggling with suicidal thoughts, you can call the U.S. National Suicide Prevention Lifeline at 800-273-TALK (8255) any time day or night, or chat online.*
-I thook thos from this article. https://www.usatoday.com/story/news/nation/2020/01/30/u-s-suicide-rate-rose-again-2018-how-can-suicide-prevention-save-lives/4616479002/
-
-
-
-
-covid:https://wellbeingtrust.org/areas-of-focus/policy-and-advocacy/reports/projected-deaths-of-despair-during-covid-19/
 
 Historically, suicide rates were much higher before 1950, however, we are seeing an increase in the last 20 years.
 
@@ -226,24 +306,24 @@ knitr::include_graphics(here::here("img","suicide.png"))
 
 
 
-
-
 Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased reates of depression in youths. See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the  World Health Organization about rates of depression in other countries.
 
-Great paper about what may be causing increased dpression - and the caveats of if we actually have increased depression: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/
-
-
-
-
-https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml
+See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} for an interesting discussion about what may be causing increased depression rates. 
 
 
 According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
+
+
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
 
 If you are in crisis and need help, call this toll-free number for the National Suicide Prevention Lifeline (NSPL), available 24 hours a day, every day: 1-800-273-TALK (8255). The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at www.suicidepreventionlifeline.org.
 
 The Crisis Text Line is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to 741741 and a trained crisis counselor will respond to you with support and information over text message. Visit www.crisistextline.org.
 
+</div>
 
 Also see [here](https://www.mhanational.org/depression-teens-0) for more information about how to recognise and help youths experiencing symptoms of depression.
 
@@ -255,22 +335,15 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.**
+**Michael::Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.** Carrie: This is my attempt after Michael's... open to changes!
 
 </div>
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**Wording for this section should be reviewed.**
-
-</div>
 
 There are some important considerations regarding this data analysis to keep in mind: 
 
-1) We treat sample estimates—estimates of the true population value—as observed values. This produces understimates in the p-values of statistical tests conducted.
+1) The data that we will use come from a survey and are therefore values from a sample that estimate that of the true population. In our statistical analysis we use these sample values as if they are population estimates (because this is all we have access to). Thus our results are not necessarily indicative of true differences.
 
 2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
 
@@ -281,7 +354,7 @@ There are some important considerations regarding this data analysis to keep in 
 
 We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-This survey started in 1971 and is conducted annualy in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health realted issues. Households are randomly selected and than a professional interviewer visists the addresses and asks one or two of the residents to inverview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to particpate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particuarlly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
+This survey started in 1971 and is conducted annualy in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health realted issues. Only civilian, noninstitutionalized individuals are included. Households are randomly selected and than a professional interviewer visists the addresses and asks one or two of the residents to inverview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to particpate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particuarlly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
 
 This data is made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
@@ -311,7 +384,27 @@ Table 11.4A       | Receipt of Treatment for Depression in Past Year among Perso
 Table 11.4B       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Percentages, 2004-2018
 
 
-####
+According to the [NSDUH 2018 report](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHNationalFindingsReport2018/NSDUHNationalFindingsReport2018.pdf){target="_blank"}
+
+
+> Respondents were defined as having had an MDE in
+the past 12 months if they had at least one period of 2 weeks
+or longer in the past year when they experienced a depressed
+mood or loss of interest or pleasure in daily activities,
+accompanied by problems with sleeping, eating, energy,
+concentration, or self-worth. The MDE questions are based
+on diagnostic criteria from DSM-5. Some of the wordings
+of the depression questions for adolescents aged 12 to 17
+and adults aged 18 or older differed slightly to make the
+questions more developmentally appropriate for adolescents.
+
+> Adolescents were defined as having an MDE with
+severe impairment if their depression caused severe problems
+with their ability to do chores at home, do well at work or
+school, get along with their family, or have a social life.
+
+
+
 
 ## **Data Import**
 *** 
@@ -344,9 +437,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**I could not find the animation that I referred to on several occasions.**
-
-**However, I was able to find the sources that I consulted to create the three step `rvest` process. They are included below**
+Additional resources for web scraping:
 
 [RStudio](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
 
@@ -534,7 +625,7 @@ webpage_element
 Finally, the `html_table()` function of the `rvest` package parses the html object into a data frame.
 
 ```{r}
-library(dplyr)
+
 table11.1a<-webpage_element%>%
   rvest::html_table()
 print(table11.1a, max = 2)
@@ -568,7 +659,7 @@ Functions allow us to perform the same process on multiple data inputs. See [thi
 
 In general, the process pf writing functions involves first specifying an input that is used within the function to create an output. In this case the data input is `XPATH` which will be replaced by an actual xpath and the nused in the subsequent steps to scrape the data from each table that an xpath is supplied for.
 
-We will all this function `scarper`.
+We will all this function `scraper`.
 
 ```{r}
 scraper <- function(XPATH){
@@ -649,7 +740,6 @@ We can use the `slice()` function of the `dplyr` package to remove this row, by 
 We are also going to use a special pipe opperator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reasign it at the end after all the steps have been performed.
 
 ```{r}
-library(magrittr)
 table11.1a %<>%
   dplyr::as_tibble() %>%
   slice(1:(n()-1))
@@ -754,7 +844,7 @@ mutate(MHS_setting =
 table11.1a
 ```
 
-We also want to replace the spaces with an underscore. We can see that sometimes there appears to be more than one space. We can specify that we want any occurance of 1 or more  to be replaced by using the `{1,}` notation.
+We also want to replace the spaces with a single space. We can see that sometimes there appears to be more than one space. We can specify that we want any occurance of 1 or more  to be replaced by using the `{1,}` notation.
 
 See here for an explanation of this on the cheat sheet:
 
@@ -772,7 +862,7 @@ table11.1a%<>%
 mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                         pattern = "[:blank:]{1,}", 
-                    replacement = "_"))
+                    replacement = " "))
 
 table11.1a
 ```
@@ -800,7 +890,7 @@ table11.1a %<>%
 table11.1a
 ```
 
-We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were recieved, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading line with no data.
+We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were recieved, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
 
 ```{r}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
@@ -824,7 +914,34 @@ table11.1a %<>%
 
 ```
 
-We can remove them using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
+We also want to add a variable with shorter names for labels in plots and statistical output.
+
+```{r}
+table11.1a %<>%
+mutate(short_label = c("Specialty total", 
+                       "Outpatient total", 
+                       "Therapist", 
+                       "Clinic", 
+                       "Day program",
+                       "In-home Therapist", 
+                       "Inpatient total", 
+                       "Hospital", 
+                       "Residential Center",
+                       "Nonspecialty total", 
+                       "School total", 
+                       "School Therapist", 
+                       "School Program", 
+                       "General Medicine",
+                       "Family Dr",
+                       "Justice System",
+                       "Justice System",
+                       "Welfare", 
+                       "Fostercare", 
+                       "Specialty Combination"))
+```
+
+
+We can remove the empty rows using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
 
 
 ```{r}
@@ -850,7 +967,6 @@ To specify that we want to collapse all columns except the `MHS_setting` column 
 
 
 ```{r}
-library(tidyr)
 table11.1a %<>%
   tidyr::pivot_longer(cols = contains("20"), 
                   names_to = "Year",
@@ -860,18 +976,20 @@ table11.1a %<>%
 table11.1a
 ```
 
-We can see that our table is now much longer- as we have 289 rows!
+We can see that our table is now much longer - as we have `r dim(table11.1a)[1]` rows!
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Why do we have 289 rows now?
+Why do we have `r dim(table11.1a)[1]` rows now?
 
 ####
 
 Now we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
 
 Let's take a look at what the rest of the tables contain:
+
+
 Table   | Details                                                                         
 ---|-------------
 Table 11.1A       | Settings Where Mental Health Services Were Received in Past Year among Persons Aged 12 to 17: Numbers in Thousands, 2002-2018   
@@ -908,7 +1026,7 @@ table11.1a %<>%
   mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                         pattern = "[:blank:]{1,}", 
-                    replacement = "_")) %>%
+                    replacement = " ")) %>%
   mutate(dplyr::across(.cols = -MHS_setting,
                 stringr::str_remove_all, "a|,")) %>%
   mutate(across(-MHS_setting, as.numeric)) %>%
@@ -971,7 +1089,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
   mutate({{new_col}} := 
          str_replace_all(string =pull(., {{new_col}}),
                         pattern = "[:blank:]{1,}", 
-                    replacement = "_")) %>%
+                    replacement = " ")) %>%
   mutate(dplyr::across(.cols = -{{new_col}},
                 stringr::str_remove_all, "a|,")) %>%
      mutate(across(-{{new_col}}, as.numeric)) %>%
@@ -1028,8 +1146,7 @@ We also plan to replace the first column name with `Demographic` for all of the 
 
 We also want to create a new variable that list the subgroups.
 
-We will also split the function into two so that we can check how the data looks as we expect before we change the shape of the table. We will call the function that performs `pivot_longer()` step `Make_long()`.
-
+We will also want to only wrangle the data up to the point that we cahnge the shape of the data, so that we can check how the data looks first.
 
 
 ```{r}
@@ -1044,7 +1161,7 @@ data_dem_settings <- function(TABLE){
   mutate(Demographic := 
          str_replace_all(string =pull(., Demographic),
                         pattern = "[:blank:]{1,}", 
-                    replacement = "_")) %>%
+                    replacement = " ")) %>%
   mutate(Demographic = str_replace(string = Demographic, 
                                   pattern = "1", 
                               replacement = "Age_1")) %>%
@@ -1057,13 +1174,6 @@ data_dem_settings <- function(TABLE){
      mutate(across(contains("20"), as.numeric)) %>%
      filter(rowSums(is.na(select(., is.numeric))) <
               length(select(., is.numeric)))}
-
-Make_long <-function(TABLE, pivot_col){
-  TABLE %>%
-  pivot_longer(cols = contains("20"), 
-               names_to = "Year", 
-               values_to = pivot_col)%>%
-     mutate(Year = as.numeric(Year))}
 ```
 
 from Michael
@@ -1113,218 +1223,67 @@ data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
 }
 ```
 
-
-
-We use the function to wrangle the next pair of tables. 
+We use the function to wrangle the next set of tables. We will also add a column to describe what the data is about which will be helpful for merging the data later.
 ```{r}
 table11.2a <- data_dem_settings(TABLE = table11.2a)
-
+table11.2a %<>% mutate(data_type = "Major_Depressive_Episode")
 glimpse(table11.2a)
 
 table11.2b <- data_dem_settings(TABLE = table11.2b)
-
+table11.2b %<>% mutate(data_type = "Major_Depressive_Episode")
 glimpse(table11.2b)
 
 table11.3a <- data_dem_settings(TABLE = table11.3a)
-
+table11.3a %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
 glimpse(table11.3a)
 
 table11.3b <- data_dem_settings(TABLE = table11.3b)
-
+table11.3b %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
 glimpse(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
-
+table11.4a %<>% mutate(data_type = "treatment")
 glimpse(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
-
+table11.4b %<>% mutate(data_type = "treatment")
 glimpse(table11.4b)
 
 ```
 
+Great! All of the demographic tables look good.
+
+Now let's combine the count data (the "a" tables) and the percent data (the "b" tables) using the `bind_rows()` function of the `dplyr` package. Which will append each of the subsequent tables together.
+
+We can use the `distinct()` function of the `dplyr` package to check that we indeed have all the data types now in these larger tibbles.
+
 ```{r}
-table11.2a <-table11.2a %>% Make_long(pivot_col = "Number")
-table11.3a <-table11.3a %>% Make_long(pivot_col = "Number")
-table11.4a <-table11.4a %>% Make_long(pivot_col = "Number")
+counts <-bind_rows(table11.2a, table11.3a, table11.4a)
+percents <-bind_rows(table11.2b, table11.3b, table11.4b)
 
-table11.2b <-table11.2b %>% Make_long(pivot_col = "Percent")
-table11.3b <-table11.3b %>% Make_long(pivot_col = "Percent")
-table11.4b <-table11.4b %>% Make_long(pivot_col = "Percent")
+counts %>%distinct(data_type)
+percents %>%distinct(data_type)
 ```
+Great!
 
-We can now use the functions to wrangle the remaining tables. 
+Now we will reformat both the `counts` and `percents` data to be in the long format using `pivot_longer()` once again.
 
-```{r, eval = FALSE}
-tables <- list(table11.2a = table11.2a, table11.2b = table11.2b, 
-               table11.3a = table11.3a, table11.3b = table11.3b, 
-               table11.4a = table11.4a, table11.4b = table11.4b)
+```{r}
+counts %<>%
+  pivot_longer(cols = contains("20"), 
+               names_to = "Year", 
+               values_to = "Number")%>%
+     mutate(Year = as.numeric(Year))
 
-remaining_tables <-map_df(tables, data_dem_settings)
-remaining_tables
-
-
-count_tables <- list(table11.2a = table11.2a, 
-                     table11.3a = table11.3a,
-                     table11.4a = table11.4a)
-
-percent_tables <- list(table11.2b = table11.2b, 
-                       table11.3b = table11.3b,
-                       table11.4b = table11.4b)
-
-count_tables<-map_df(count_tables, data_dem_settings)
-
-map(~count_tables, Make_long(TABLE = ., pivot_col = "Number"))
-```
-
-Now let's change the format of all of these tables.
-
-
-from Michael
-```{r, echo = FALSE, eval = FALSE}
-dim(table11.2a)
-
-table11.2a <- data_prep_dem(TABLE = table11.2a,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-        pivot_col = "Number")
-
-table11.2a %>%
-  filter(!complete.cases(.)) %>%
-  dplyr::group_by(Demographic) %>%
-  tally()
-
-table11.2a <- table11.2a %>%
-  filter(stats::complete.cases(.) | Demographic == "AIAN")
-
-table11.2a <- table11.2a %>%
-  mutate(across(c(Year, Number), as.numeric))
-```
-
-### **Table11.2b**
-
-```{r, eval = FALSE}
-dim(table11.2b)
-
-table11.2b <- data_prep_dem(TABLE = table11.2b,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-          pivot_col = "Percent")
-
-table11.2b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-table11.2b <- table11.2b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.2b <- table11.2b %>%
-  mutate(across(c(Year, Percent), as.numeric))
-```
-
-We repeat this process for the remaining tables.
-
-
-
-### **Table 11.3a**
-
-```{r, eval = FALSE}
-dim(table11.3a)
-
-table11.3a <- data_prep_dem(TABLE = table11.3a,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-          pivot_col = "Number")
-
-table11.3a %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-table11.3a <- table11.3a %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.3a <- table11.3a %>%
-  mutate(across(c(Year, Number), as.numeric))
-```
-
-
-### **Table 11.3b**
-
-```{r, eval=FALSE}
-dim(table11.3b)
-
-table11.3b <- data_prep_dem(TABLE = table11.3b,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-          pivot_col = "Percent")
-
-table11.3b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-table11.3b <- table11.3b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.3b <- table11.3b %>%
-  mutate(across(c(Year, Percent), as.numeric))
-```
-
-
-
-### **Table 11.4a**
-
-```{r, eval = FALSE}
-dim(table11.4a)
-
-table11.4a <- data_prep_dem(TABLE = table11.4a,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-          pivot_col = "Number")
-
-table11.4a %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-table11.4a <- table11.4a %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.4a <- table11.4a %>%
-  mutate(across(c(Year, Number), as.numeric))
-```
-
-
-
-### **Table 11.4b**
-
-```{r, eval =FALSE}
-dim(table11.4b)
-
-table11.4b <- data_prep_dem(TABLE = table11.4b,
-          old_col = "Demographic Characteristic",
-          new_col = "Demographic",
-          pivot_col = "Percent")
-
-table11.4b %>%
-  filter(!complete.cases(.)) %>%
-  group_by(Demographic) %>%
-  tally()
-
-table11.4b <- table11.4b %>%
-  filter(complete.cases(.) | Demographic == "AIAN")
-
-table11.4b <- table11.4b %>%
-  mutate(across(c(Year, Percent), as.numeric))
+percents %<>%
+  pivot_longer(cols = contains("20"), 
+               names_to = "Year", 
+               values_to = "Percent")%>%
+     mutate(Year = as.numeric(Year))
 ```
 
 Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
 
-Census Bureau definitions:
-**AIAN stands for American Indian and Alaska Native
-** NHOPI stands for Native Hawaiian or Other Pacific Islander
 
 ## **Data Analysis**
 *** 
@@ -1345,7 +1304,8 @@ To conduct this statistical test, we need to produce a 2x2 table.
 The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. 
 
 ```{r}
-chi_square_11.2a <- table11.2a %>%
+chi_square_11.2a <- counts %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
@@ -1363,7 +1323,9 @@ A contingency table can be produced from data in long format by transforming the
 
 ```{r}
 chi_square_11.2a <- chi_square_11.2a %>%
-  tidyr::pivot_wider(id_cols = -subgroup,
+  select(-subgroup)%>%
+  select(-data_type)%>%
+  tidyr::pivot_wider(
                      names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
@@ -1385,14 +1347,16 @@ stats::chisq.test(chi_square_11.2a)
 We can repeat this process for the remaining tables.
 
 ```{r}
-chi_square_11.3a <- table11.3a %>%
+chi_square_11.3a <- counts %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
 
 chi_square_11.3a <- chi_square_11.3a %>%
-  pivot_wider(id_cols = -subgroup,
-              names_from = Year,
+  select(-data_type) %>%
+  select(-subgroup) %>%
+  pivot_wider(names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
   column_to_rownames("Demographic")
@@ -1405,14 +1369,16 @@ chisq.test(chi_square_11.3a)
 ```
 
 ```{r}
-chi_square_11.4a <- table11.4a%>%
+chi_square_11.4a <- counts %>%
+  filter(data_type == "treatment")%>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
 
 chi_square_11.4a <- chi_square_11.4a %>%
-  pivot_wider(id_cols = -subgroup,
-              names_from = Year,
+  select(-data_type) %>%
+  select(-subgroup) %>%
+  pivot_wider(names_from = Year,
               names_prefix = "Year", 
               values_from = Number) %>%
   column_to_rownames("Demographic")
@@ -1433,7 +1399,6 @@ Ok, so now we are going to make some visualizations of the data represented in t
 
 
 ```{r}
-library(directlabels)
 plotMHS <-table11.1b %>%
   filter(stringr::str_detect(short_label, 'total') ) %>%
   ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
@@ -1453,7 +1418,6 @@ directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 
 
 ```{r}
-library(directlabels)
 plotMHS <-table11.1b %>%
   filter(!stringr::str_detect(short_label, "total")) %>%
   ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
@@ -1473,7 +1437,6 @@ directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 
 
 ```{r}
-library(directlabels)
 plotMHS <-table11.1b %>%
   filter(!stringr::str_detect(short_label, "total")) %>%
   ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
@@ -1494,39 +1457,13 @@ direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.mo
 
 
 
-
-
-https://stackoverflow.com/questions/14840542/place-a-legend-for-each-facet-wrap-grid-in-ggplot2
-option using cowplot:
- make list of plots
-ggList <- lapply(split(x, x$Server), function(i) {
-  ggplot(i, aes(Date, PercentUsed, group = 1, colour = FileSystem)) + 
-    geom_jitter(size = 2) +
-    geom_smooth(method = "loess", se = TRUE)})
-
- plot as grid in 1 columns
-cowplot::plot_grid(plotlist = ggList, ncol = 1,
-                   align = 'v', labels = levels(x$Server))
-                   
-library(gridExtra)
-
-xs <- split(x,f = x$Server)
-p1 <- ggplot(xs$A,aes(x = Date,y = PercentUsed,group = 1,colour = FileSystem)) + 
-        geom_jitter(size=0.5) + 
-        geom_smooth(method="loess", se=T) + 
-        facet_wrap(~Server, ncol=1)
-
-p2 <- p1 %+% xs$B
-p3 <- p1 %+% xs$C
-
-grid.arrange(p1,p2,p3)     
-
-
-
 ### Major Depressive Episodes in past year
 
 ```{r}
-MDE <-table11.2b %>%
+MDE <-percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(subgroup != "Race") %>%
+  filter(Demographic != "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
   geom_line() +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1536,15 +1473,69 @@ MDE <-table11.2b %>%
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
   facet_wrap(~subgroup)+
   theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
 
-#directlabels::direct.label(MDE, list("angled.boxes", cex = .8))
+directlabels::direct.label(MDE, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
 
 
 ```
+```{r}
+
+MDE <-percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(subgroup == "Race") %>%
+     mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
+  geom_line() +
+  facet_wrap(~subgroup)+
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  scale_color_viridis_d()+
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
+
+MDE
+
+```
+
+There is only one value for NHOPI, so lets remove this from the plot:
 
 ```{r}
-Age_episode <-table11.2b %>%
+percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(Demographic =="NHOPI")
+
+MDE <-  percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(subgroup == "Race") %>%
+    filter(Demographic != "NHOPI") %>%
+     mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
+  geom_line() +
+  facet_wrap(~subgroup)+
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) +
+  scale_color_viridis_d()
+
+MDE
+
+```
+
+
+```{r, eval = FALSE, echo = FALSE}
+Age_episode <-percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup == "Age") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
@@ -1562,8 +1553,9 @@ directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
 We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket. We can also see that the trend has been increasing for all three age brackets since 2011.
 
 
-```{r}
-Sex_episode <-table11.2b %>%
+```{r, eval = FALSE, echo = FALSE}
+Sex_episode <-percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup == "Sex") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
@@ -1580,34 +1572,41 @@ directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
 ```
 We can see an increase for both sexes since about 2011-2012, but there is a steeper increase for females. Furthermore Females have a much higher rate than males for all years.
 
+
+
+Census Bureau definitions:  
+1) *AIAN**stands for American Indian and Alaska Native  
+2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
+
+### Major Depressive Episode with Severe Impairment
+
 ```{r}
-Race_episode <-table11.2b %>%
-  filter(subgroup == "Race") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+MDES <-percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode")%>%
+  filter(subgroup != "Race") %>%
+  filter(Demographic != "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
   geom_line() +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
+  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(~subgroup)+
   theme_linedraw()+
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-Race_episode
-#directlabels::direct.label(Race_episode, list("far.from.others.borders", cex = .8))
+directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+
 
 ```
 
-Census Bureau definitions:
-**AIAN stands for American Indian and Alaska Native
-** NHOPI stands for Native Hawaiian or Other Pacific Islander
 
-### Major Depressive Episode with Severe Impairment
-
-
-```{r}
-Age_episode <-table11.3b %>%
+```{r, eval = FALSE, echo = FALSE}
+Age_episode <-
+  percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(subgroup == "Age") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
@@ -1624,8 +1623,9 @@ directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
 We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
 
 
-```{r}
-Sex_episode <-table11.3b %>%
+```{r, eval = FALSE, echo = FALSE}
+Sex_episode <-percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(subgroup == "Sex") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
@@ -1641,17 +1641,22 @@ directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
 ```
 
 ```{r}
-Race_episode <-table11.3b %>%
+Race_episode <-  percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(subgroup == "Race") %>%
+    mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
+  facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2006, 2018, by=1),
                      labels = seq(2006, 2018, by=1),
                      limits = c(2006, 2018)) +
   labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
   theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) +
+  scale_color_viridis_d()
 
 directlabels::direct.label(Race_episode, list(dl.trans(y = y +0.3),"far.from.others.borders", cex = .8))
 
@@ -1659,29 +1664,38 @@ Race_episode
 
 ```
 
-Census Bureau definitions:
-**AIAN stands for American Indian and Alaska Native
-** NHOPI stands for Native Hawaiian or Other Pacific Islander
-
+Census Bureau definitions:  
+1) *AIAN**stands for American Indian and Alaska Native  
+2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
 
 ### Receipt of treatment among persons with major depressive episode 
 
 ```{r}
-table11.4b %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+treat<-percents %>%
+  filter(data_type == "treatment")%>%
+  filter(subgroup != "Race")%>%
+  filter(subgroup != "Total")%>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
+  facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) + 
   labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
        subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
   theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
+
+directlabels::direct.label(treat, list("angled.boxes", cex = .8))
+
 ```
 
-```{r}
-Age_episode <-table11.4b %>%
+```{r, eval = FALSE, echo=FALSE}
+Age_episode <-percents %>%
+  filter(data_type == "treatment")%>%
   filter(subgroup == "Age") %>%
+
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1698,8 +1712,9 @@ directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
 We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
 
 
-```{r}
-Sex_episode <-table11.4b %>%
+```{r, eval = FALSE, echo = FALSE}
+Sex_episode <-percents %>%
+  filter(data_type == "treatment")%>%
   filter(subgroup == "Sex") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
   geom_line() +
@@ -1715,7 +1730,8 @@ directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
 ```
 
 ```{r}
-Race_episode <-table11.4b %>%
+Race_episode <-percents %>%
+  filter(data_type == "treatment")%>%
   filter(subgroup == "Race") %>%
   mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
@@ -1727,14 +1743,83 @@ Race_episode <-table11.4b %>%
        subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
   theme_linedraw()+
   theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) 
+        axis.text.x = element_text(angle = 90)) +
+    scale_color_viridis_d()
+
 #directlabels::direct.label(Race_episode, list("far.from.others.borders", cex = .8))
 Race_episode
 
 ```
 
 
+Ok so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode
+with severe impairment, and recieving treatment. But how do the rates of these there things compare for each group?
 
+
+```{r}
+sex_outcomes <-percents %>%
+  filter(subgroup %in% c("Sex", "Total")) %>%
+  #filter(Demographic != "NHOPI") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  geom_line(aes(linetype= data_type)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(subgroup~Demographic, strip.position = "top")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 8, face = "bold"),
+        axis.text.x = element_text(angle = 90),
+        legend.title = element_blank())+
+  guides(color = FALSE)
+sex_outcomes 
+#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+```
+
+
+```{r}
+age_outcomes <-percents %>%
+  filter(subgroup == "Age") %>%
+  #filter(Demographic != "NHOPI") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  geom_line(aes(linetype= data_type)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(~Demographic, strip.position = "top")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 8, face = "bold"),
+        axis.text.x = element_text(angle = 90),
+        legend.title = element_blank())+
+  guides(color = FALSE)
+
+age_outcomes 
+#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+```
+
+```{r}
+race_outcomes <-percents %>%
+  filter(subgroup == "Race") %>%
+  filter(Demographic != "NHOPI") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  geom_line(aes(linetype= data_type)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(~Demographic, strip.position = "top", nrow = 3)+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 8, face = "bold"),
+        axis.text.x = element_text(angle = 90),
+        legend.title = element_blank())+
+  guides(color = FALSE)
+race_outcomes
+#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+```
 
 
 ## **Summary**
@@ -1748,6 +1833,14 @@ Race_episode
 
 ### Helpful Links
 
+<style>
+div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+**It may be a good idea to provide a link to Rstudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
+
+</div>
 
 **This needs to be updated**
 
