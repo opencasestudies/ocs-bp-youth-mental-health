@@ -48,7 +48,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-bp-co2-emissions. Mental Health of American Youth (Version v1.0.0).
+Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
 
 
 ## **Motivation**
@@ -185,14 +185,14 @@ In this case study we will be using data from the [National Survey on Drug Use a
 <u>**Statistical Learning Objectives:**</u> 
 
 1. Define and create a contingency table.
-2. Implementation of a chi-squared test for indepence.
-3. Interpretation of a chi-squared test for indepence.
+2. Implementation of a chi-squared test for independence.
+3. Interpretation of a chi-squared test for independence.
 
 <u>**Data science Learning Objectives:**</u>
 
 1. Scrape data directly from a website (`rvest`).
 2. Subset and filter data (`dplyr`).
-3. Write functions to wrangle data repetively.
+3. Write functions to wrangle data repetitively.
 4. Work with character strings (`stringr`).
 5. Reshape data into different formats (`tidyr`).
 6. Data visualizations (`ggplot2`) with labels (`directlabels`) and facets for different groups.
@@ -249,7 +249,7 @@ include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.
 #### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-While suicide does appear to be increasing amoung youths it also appears to be increasing amoung middle aged adults for both females and males. 
+While suicide does appear to be increasing among youths it also appears to be increasing among middle aged adults for both females and males. 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
@@ -282,9 +282,9 @@ knitr::include_graphics(here::here("img","mortality.png"))
 
   
 
-**So although sucide is on the rise for most age groups, sucide is one of the top *two* contributors to death for youths.**   
+**So although suicide is on the rise for most age groups, suicide is one of the top *two* contributors to death for youths.**   
 
-Thus this warrents further examination of the mental health of American youths.  
+Thus this warrants further examination of the mental health of American youths.  
 
 
 ```{r, echo = FALSE, out.width="800px"}
@@ -305,7 +305,7 @@ knitr::include_graphics(here::here("img","suicide.png"))
 
 
 
-Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased reates of depression in youths. See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the  World Health Organization about rates of depression in other countries.
+Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased rates of depression in youths. See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the  World Health Organization about rates of depression in other countries.
 
 See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} for an interesting discussion about what may be causing increased depression rates. 
 
@@ -324,7 +324,7 @@ The Crisis Text Line is another free, confidential resource available 24 hours a
 
 </div>
 
-Also see [here](https://www.mhanational.org/depression-teens-0) for more information about how to recognise and help youths experiencing symptoms of depression.
+Also see [here](https://www.mhanational.org/depression-teens-0) for more information about how to recognize and help youths experiencing symptoms of depression.
 
 ## **Limitations**
 *** 
@@ -346,14 +346,14 @@ There are some important considerations regarding this data analysis to keep in 
 
 2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
 
-3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that partificipants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
+3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 ## **What are the data?**
 *** 
 
 We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-This survey started in 1971 and is conducted annualy in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health realted issues. Only civilian, noninstitutionalized individuals are included. Households are randomly selected and than a professional interviewer visists the addresses and asks one or two of the residents to inverview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to particpate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particuarlly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
+This survey started in 1971 and is conducted annually in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health related issues. Only civilian, non-institutionalized individuals are included. Households are randomly selected and than a professional interviewer visits the addresses and asks one or two of the residents to interview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to participate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particularly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
 
 This data is made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
@@ -367,7 +367,7 @@ At the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/N
 include_graphics(here::here("img", "website_overview.png"))
 ```
 
-If one clicks on the TOC botton on the far right upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
+If one clicks on the TOC button on the far right upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
 
 We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus the following tables are of interest to us are:
 
@@ -449,7 +449,7 @@ In this case study we will scrape data from the tables on the [NSDUH survey](htt
 
 Alternatively, we will use the `rvest` package to [scrape](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} the data directly from the tables on the website. Assuming the data next year would be displayed in a similar manner, this could allow us simply modify our code based on the url for the data next year to run the same analysis on the data easily. 
 
-The `rvest`  package can be thought of as the `pdftools` package for webscraping. Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
+The `rvest`  package can be thought of as the `pdftools` package for web scraping. Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
 
 ### Steps for scraping tables
 
@@ -459,12 +459,12 @@ The two web scraping steps for these tables can be broken down even further:
 
 + right-click to inspect element (webpage)
 + hover pointer over components of element (webpage) until the data has been found
-+ copy Xpath of data sought
++ copy XPath of data sought
 
 2) Save webpage element to an object in R
 
 + import html code for the webpage
-+ extract pieces of HTML documents (webpage) using Xpath
++ extract pieces of HTML documents (webpage) using XPath
 + parse the extracted data into a data frame
 
 Below is a animated overview of the process.
@@ -534,7 +534,7 @@ A window opens.
 
 This window allows us to glance at the internal mechanics of the webpage. To scrape the data from the webpage, we need to first learn a little bit about the components that make it the web page it is. 
 
-Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and clicking on the elements on the right side of the screen—we can indentify the element that contains the data we are looking for. Another option for identifying xpaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html).  
+Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and clicking on the elements on the right side of the screen—we can identify the element that contains the data we are looking for. Another option for identifying XPaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html).  
 
 ```{r,step3, echo=FALSE}
 step3 
@@ -556,7 +556,7 @@ step5
 
 ### 2) Save webpage element to an object in R 
 
-For the first table we want to scrape, the XPath is `/html/body/div[4]/div[1]/table`. We use this Xpath with functions from the `rvest` package to scrape the data from this table.
+For the first table we want to scrape, the XPath is `/html/body/div[4]/div[1]/table`. We use this XPath with functions from the `rvest` package to scrape the data from this table.
 
 
 ```{r,step5_zoom, echo=FALSE}
@@ -569,7 +569,7 @@ Let's explore this step in greater detail:
 We need to:
 
 + import html code for the webpage
-+ extract pieces (table) out of HTML documents (webpage) using Xpath
++ extract pieces (table) out of HTML documents (webpage) using XPath
 + parse the html table into a data frame
 
 To do this:
@@ -594,9 +594,9 @@ NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDU
 
 One could also directly use the url but this is less convenient for piping.  
 
-<details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` opperator</summary>  
+<details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` operator</summary>  
 
-By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which are usable when loading the tidyverse or several of the packages within the tidyverse like `dplyr` becuase they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. This allows us to perform multiple sequential steps on one data input.   
+By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which are usable when loading the tidyverse or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. This allows us to perform multiple sequential steps on one data input.   
 
 </details>  
 
@@ -637,7 +637,7 @@ table11.1a <- table11.1a[[1]]
 ```
 
 
-Putting this all of this together we can do the entire porcess like this with our pipe opperator `%>%`.
+Putting this all of this together we can do the entire process like this with our pipe operator `%>%`.
 
 ```{r}
 NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
@@ -656,7 +656,7 @@ Now need to repeat the above process for the other tables we are interested in.
 We can create a function to accomplish this succinctly. 
 Functions allow us to perform the same process on multiple data inputs. See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
 
-In general, the process pf writing functions involves first specifying an input that is used within the function to create an output. In this case the data input is `XPATH` which will be replaced by an actual xpath and the nused in the subsequent steps to scrape the data from each table that an xpath is supplied for.
+In general, the process pf writing functions involves first specifying an input that is used within the function to create an output. In this case the data input is `XPATH` which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
 
 We will all this function `scraper`.
 
@@ -672,7 +672,7 @@ scraper <- function(XPATH){
 }
 ```
 
-Now we can apply the function we created to each of the xpaths for each of the tables on the website that we would like to use in our data analysis.
+Now we can apply the function we created to each of the XPaths for each of the tables on the website that we would like to use in our data analysis.
 
 ```{r}
 table11.1b <- scraper(XPATH = "/html/body/div[4]/div[2]/table")
@@ -693,7 +693,7 @@ Now we need to wrangle the data.
 ## **Data Exploration and Wrangling**
 *** 
 
-Now that we've imported the data, let's see if we can wrangle a table. Since the data appears to be formated in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
+Now that we've imported the data, let's see if we can wrangle a table. Since the data appears to be formatted in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
 
 ### **Table11.1a**
 
@@ -727,7 +727,7 @@ legend <- table11.1a %>%
   tail(n = 1)
 ```
 
-Another way to look at the last row is to use the `n()` function of the `dplyr` package. This function can be used inside other `dplyr` functions and it counts the total number of observations of a group. Within the [`slice()` function](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} of the `dplyr` packge, it allows you to refer the full length of the object.
+Another way to look at the last row is to use the `n()` function of the `dplyr` package. This function can be used inside other `dplyr` functions and it counts the total number of observations of a group. Within the [`slice()` function](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} of the `dplyr` package, it allows you to refer the full length of the object.
 
 ```{r}
 table11.1a %>%
@@ -736,7 +736,7 @@ table11.1a %>%
 ```
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
-We are also going to use a special pipe opperator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reasign it at the end after all the steps have been performed.
+We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reassign it at the end after all the steps have been performed.
 
 ```{r}
 table11.1a %<>%
@@ -760,7 +760,7 @@ pull(legend, `2004`)
 
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. We can use the `na_if()` function to recode these values to `NA`.
 
-avocado... there isnt support for doing this in one command... but could at least do two commands
+avocado... there isn't support for doing this in one command... but could at least do two commands
 
 
 
@@ -790,7 +790,7 @@ According to the legend this indicates if "the difference between this estimate 
 
 While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
 
-Since lower case "a" values occur in the first column values, we want to makes sure we dont remove these.
+Since lower case "a" values occur in the first column values, we want to makes sure we don't remove these.
 
 So how can we do this? We can use the `stringr` package to modify character strings. and we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
 
@@ -799,7 +799,7 @@ Currently all of our data is of class character as indicated by the `<chr>` unde
 <details> <summary> Click here for an explanation of what a character string is </summary>
 
 There are several classes of data in R programming. Character is one of these classes. 
-A chacter string is an individual data value made up of characters. This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. If data is of class character, than the numeric values will not be processed like a numeric value in a mathematical sense. If you want your numeric values to be interpreted that way, they need to be converted to a numeric class. The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
+A character string is an individual data value made up of characters. This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. If data is of class character, than the numeric values will not be processed like a numeric value in a mathematical sense. If you want your numeric values to be interpreted that way, they need to be converted to a numeric class. The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
 
 </details>
 
@@ -808,14 +808,14 @@ The `stringr` package has functions that allow us to replace (the `str_replace()
 
 To use these we need to be able to specify what we want to remove and replace. 
 
-Here is a part of a [cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"} about string manipulation from rstudio.
+Here is a part of a [cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"} about string manipulation from RStudio.
 ```{r}
 knitr::include_graphics(here::here("img", "regex.png"))
 ```
 
 We can see that we can refer to any digit (such as 1,2,3 etc.) as `[:digit:]`.
-We can also see that we can refer to any punction mark as `[:punct:]`.
-Finally, we see that spaces and tabls can be refered to as `[:blank:]`.
+We can also see that we can refer to any punctuation mark as `[:punct:]`.
+Finally, we see that spaces and tabs can be referred to as `[:blank:]`.
 
 
 If we take a closer look at the first column of our table (using the `pull()` function of the `dplyr` package), we can see that besides the `"a"` values that we see adjacent to our numeric values in the body of the table, we also some large white spaces, some numeric values, instances of `\r\n`, as well as some commas and other punctuation marks. 
@@ -825,11 +825,11 @@ pull(table11.1a, MHS_setting)
 ```
 
 
-We can use the `str_remove_all()` function which is a variant of the `str_remove()` function of the `stringr` package (which allows us to remove all occurences of sepcificed characters in each row rather than just the first occurance, which is what `str_remove()` does), to remove the digit values, the `\r\n` characters and the punctionation marks from the column called `MHS_setting`.
+We can use the `str_remove_all()` function which is a variant of the `str_remove()` function of the `stringr` package (which allows us to remove all occurrences of specified characters in each row rather than just the first occurrence, which is what `str_remove()` does), to remove the digit values, the `\r\n` characters and the punctuation marks from the column called `MHS_setting`.
 
-Using the `mutate()` function we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctionation marks.
+Using the `mutate()` function we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctuation marks.
 
-We need to specify that the character strings that should be used can be found ing the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
+We need to specify that the character strings that should be used can be found in the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
 
 To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
 
@@ -843,7 +843,7 @@ mutate(MHS_setting =
 table11.1a
 ```
 
-We also want to replace the spaces with a single space. We can see that sometimes there appears to be more than one space. We can specify that we want any occurance of 1 or more  to be replaced by using the `{1,}` notation.
+We also want to replace the spaces with a single space. We can see that sometimes there appears to be more than one space. We can specify that we want any occurrence of 1 or more  to be replaced by using the `{1,}` notation.
 
 See here for an explanation of this on the cheat sheet:
 
@@ -880,7 +880,7 @@ table11.1a
 
 Our table is looking much better!
 
-We also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what varaibles we wish to mutate.
+We also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what variables we wish to mutate.
 
 ```{r}
 table11.1a %<>%
@@ -889,7 +889,7 @@ table11.1a %<>%
 table11.1a
 ```
 
-We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were recieved, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
+We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were received, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
 
 ```{r}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
@@ -940,7 +940,7 @@ mutate(short_label = c("Specialty total",
 ```
 
 
-We can remove the empty rows using the `filter()` function of the `dplyr` package. We can specify that we dont want to keep these rows by using the `!=` not equal to opperator. 
+We can remove the empty rows using the `filter()` function of the `dplyr` package. We can specify that we don't want to keep these rows by using the `!=` not equal to operator. 
 
 
 ```{r}
@@ -953,7 +953,7 @@ table11.1a
 ```
 
 
-Finally, we would like to change the shape of our table so that we have a new column that reperesents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data) for more information about different table formats, typically refreed to as wide and long or sometimes narrow.
+Finally, we would like to change the shape of our table so that we have a new column that represents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data) for more information about different table formats, typically referred to as wide and long or sometimes narrow.
 
 We will use the `pivot_longer()` function of the `tidyr` package to change the shape of our table. 
 
@@ -1057,14 +1057,14 @@ We will also add code to remove all rows that have only NA values, this means we
 
 To do this we will use the `filter()` and `select()` functions of the `dplyr` package. 
 
-We will calculate a sum of the count of `NA` values across the rows for the numeric columns (the columns for each year) using the base `rowSums()` fuction.
+We will calculate a sum of the count of `NA` values across the rows for the numeric columns (the columns for each year) using the base `rowSums()` function.
 
 To do this we first select the columns that are numeric using: `select(., is.numeric)`, where the `.` refers to the table after all the previous wrangling steps in our function.
 
-Then we get a true or false statement about which columns have na values with the base `is.na()` function (this requires numeric values).
+Then we get a true or false statement about which columns have `NA` values with the base `is.na()` function (this requires numeric values).
 
 
-Then we caculate the sum using the base `rowSums()` function.
+Then we calculate the sum using the base `rowSums()` function.
 
 
 Altogether this looks like this: `rowSums(is.na(select(., is.numeric)))`.
@@ -1137,15 +1137,15 @@ All of the rest of the tables have demographic information and have this general
 knitr::include_graphics(here::here("img", "dem_table.png"))
 ```
 
-In these tables we have age groups in our first column so we dont want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
+In these tables we have age groups in our first column so we don't want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
 
-We also want to add the word `Age` and an underscore in front of the age group listed in the tables. We can use the `str_replace()` function of the `stringr` package, becuase now we want to only replace the first instance of `1` with `Age_1`.
+We also want to add the word `Age` and an underscore in front of the age group listed in the tables. We can use the `str_replace()` function of the `stringr` package, because now we want to only replace the first instance of `1` with `Age_1`.
 
 We also plan to replace the first column name with `Demographic` for all of the tables.
 
 We also want to create a new variable that list the subgroups.
 
-We will also want to only wrangle the data up to the point that we cahnge the shape of the data, so that we can check how the data looks first.
+We will also want to only wrangle the data up to the point that we change the shape of the data, so that we can check how the data looks first.
 
 
 ```{r}
@@ -1302,9 +1302,9 @@ We are specifically interested in how the frequency of recent major depressive e
 
 Since we have counts for the two sexes: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for independence, which is also written like this: ${\chi}^2$. 
 
-This will allow us to compare if the frequencines of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
+This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
 
-The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. Thus we want to test if sex and year are independent. In otherwords, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way, Are major dperessive episode counts across the two years associated with sex.  
+The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. Thus we want to test if sex and year are independent. In other words, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way, Are major depressive episode counts across the two years associated with sex.  
 
 
 
@@ -1313,7 +1313,7 @@ According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldforma
 > Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
 
 
-Thus, to conduct this statistical test, we need to produce a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contigency table (only two levels for two variables).
+Thus, to conduct this statistical test, we need to produce a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contingency table (only two levels for two variables).
 
 Here is an example of another 2x2 table:
 
@@ -1331,13 +1331,13 @@ We can see that there are two variables: Sex and Handedness and each have two le
 
 Now let's create a table of expected values assuming sex and handedness are independent. 
 
-The total righthanded is 88 out of 100 which is equal to 88%.
-The total lefthanded is 12  out of 100 which is equal to 12%.
+The total right-handed is 88 out of 100 which is equal to 88%.
+The total left-handed is 12  out of 100 which is equal to 12%.
 
-Thus if each sex had the same amount of righthandedness and lefthandedness, we would expect 88% of the males to be righthanded and 12 % to be lefthanded; and
-we would expect the exact same proportions of 88% righthanded and 12% lefhanded for the females.
+Thus if each sex had the same amount of right-handedness and left-handedness, we would expect 88% of the males to be right-handed and 12 % to be left-handed; and
+we would expect the exact same proportions of 88% right-handed and 12% left-handed for the females.
 
-Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected freauencies:
+Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected frequencies:
 
 ```{r, echo = FALSE}
 contig <-tibble(Sex = c("Male", "Female", "Total"), Righthanded = c(44,44,88), Lefthanded = c(6,6, 12), Total = c(50,50,100))
@@ -1352,7 +1352,7 @@ The ${\chi}^2$  is calculated like so:
 $${\chi}^2=\sum_{j=1}^{m} \frac{(O_j - E_j)^2}{E_j}$$
 
 Where $O_j = j^{th}$ observed count and $E_j = j^{th}$ expected count for
-the jth cell of a contgency table with $m$ cells.
+the jth cell of a contingency table with $m$ cells.
 
 The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
 
@@ -1361,7 +1361,7 @@ Where $r$ = # of rows and $c$ = the # of columns.
 
 So to calculate the ${\chi}^2$ for handedness and sex manually, we can do the following for each of the four values in the table (besides the totals) like this:
 
-${\chi}^2$ = fraction of the square difference of the observed minus the expected, divided by expected for righthanded males + the same for lefthanded males + the same for righthanded females + the same for lefthanded females
+${\chi}^2$ = fraction of the square difference of the observed minus the expected, divided by expected for right-handed males + the same for left-handed males + the same for right-handed females + the same for left-handed females
 
 This is equal to :
 
@@ -1391,7 +1391,7 @@ See here for a more thorough explanation of the [chi-square test](https://www.li
 
 
 
-Now let's create a contigency table with our own data and see how we can implement this test in R.
+Now let's create a contingency table with our own data and see how we can implement this test in R.
 
 It is critical that we use the counts data, and not the percentage data for our analysis, as the ${\chi}^2$ requires counts. 
 
@@ -1413,7 +1413,7 @@ chi_square_11.2a <- counts %>%
   mutate(Number = Number * 1000)
 ```
 
-The resulting object contains all the values we need for out contigency table. 
+The resulting object contains all the values we need for out contingency table. 
 
 ```{r}
 chi_square_11.2a
@@ -1421,9 +1421,9 @@ chi_square_11.2a
 
  
 
-A contingency table can  now be produced from this data which is in long format by transforming the data to wide format and repurposing some values as row names. To reformat the data to wide format we can use the `pivot_wider()` function of the `tidyr` package.
+A contingency table can  now be produced from this data which is in long format by transforming the data to wide format and re-purposing some values as row names. To reformat the data to wide format we can use the `pivot_wider()` function of the `tidyr` package.
 
-For this function there are several impartant arguments:  
+For this function there are several important arguments:  
 1) names_from - this is the variable where the names of new columns will come from
 2) values_from - this is the variable where the values for the new columns will come from
 3) names_prefix - if we want to add a prefix to the new columns we can do so using this argument
@@ -1441,7 +1441,7 @@ chi_square_11.2a
 
 ```
 
-Now we can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels the rownames. Otherewise we would need to select the numeric columns to perform the stats test.
+Now we can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels the row names. Otherwise we would need to select the numeric columns to perform the stats test.
 
 ```{r}
 chi_square_11.2a %<>%
@@ -1450,7 +1450,7 @@ chi_square_11.2a %<>%
 chi_square_11.2a
 ```
 
-Note that a contigency table would also have totals for all groups as well, but this is not necessary for the `stats::chisq.test()` function.
+Note that a contingency table would also have totals for all groups as well, but this is not necessary for the `stats::chisq.test()` function.
 
 
 The chi-squared test for independence can be conducted using the `stats::chisq.test()` function. 
@@ -1518,9 +1518,9 @@ There also appears to be an influence of sex on the rate at which youths receive
 ## **Data Visualization**
 *** 
 
-Ok, so now we are going to make some visualizations to further explore our questions of interest.
+OK, so now we are going to make some visualizations to further explore our questions of interest.
 
-We will start by taking a look at where youths are recieving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
+We will start by taking a look at where youths are receiving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
 
 
 ```{r}
@@ -1540,7 +1540,7 @@ plotMHS <-table11.1b %>%
 
 directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 ```
-We can see that youths appear to be receiving care in nonspeciatly facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
+We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
 
 Let's take a look at subcategories of mental health services.
 
@@ -1587,7 +1587,7 @@ direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.mo
 
 ### Major Depressive Episodes in past year
 
-Now we will take a look at the rate of major depressive episodes amoung youths over time of the various demographic groups.
+Now we will take a look at the rate of major depressive episodes among youths over time of the various demographic groups.
 
 ```{r}
 MDE <-percents %>%
@@ -1884,8 +1884,8 @@ Race_episode
 ```
 
 
-Ok so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode
-with severe impairment, and recieving treatment. But how do the rates of these there things compare for each group?
+OK so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode
+with severe impairment, and receiving treatment. But how do the rates of these there things compare for each group?
 
 
 ```{r}
@@ -1970,7 +1970,7 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "red">
 
-**It may be a good idea to provide a link to Rstudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
+**It may be a good idea to provide a link to RStudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
 
 </div>
 
