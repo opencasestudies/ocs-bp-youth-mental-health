@@ -33,7 +33,7 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       fig.align = "center", out.width = '90%')
 library(here)
 library(knitr)
-library(magick)
+library(magick)# to create gif
 ```
 
 ## {.disclaimer_block}
@@ -173,15 +173,14 @@ In this case study we will be using data from the [National Survey on Drug Use a
 #### {.main_question_block}
 <b><u> Our main questions: </u></b>
 
-1) How have depression rates in American youth changed since 2002, according to the NSDUH data?  
-2) Do mental health services appear to be reaching more youths? How have rates differed between different youth subgroups (age, gender, ethnicity)?
+1) How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2) Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
 
 
 ####
 
 ## **Learning Objectives** 
 *** 
-
 
 <u>**Statistical Learning Objectives:**</u> 
 
@@ -1288,55 +1287,171 @@ Now that we've wrangled the data, we can go ahead and proceed with our analysis.
 ## **Data Analysis**
 *** 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+Recall what our main questions were:
 
-**In this section, we only analyzed data from tables 2-4. Data from table 1 is very different than data from tables 2-4. For expediency, I did not include an example with data frome table 1. The following code, however, can easily be repurposed to accomplish that once a specific group has been identified to conduct the test on.**
+#### {.main_question_block}
+<b><u> Our main questions: </u></b>
 
-</div>
+1) How have depression rates in American youth changed since 2004, according to the NSDUH data?  How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2) Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
 
-We would like to conduct a [chi-squared test](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true) for independence. 
 
-To conduct this statistical test, we need to produce a 2x2 table.
+####
 
-The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. 
+We are specifically interested in how the frequency of recent major depressive episodes among youths differ compared to those in 2004. We are also interested how different groups differ. We will start with examining how male and females differ across time.
+
+Since we have counts for the two sexes: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for independence, which is also written like this: ${\chi}^2$. 
+
+This will allow us to compare if the frequencines of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
+
+The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. Thus we want to test if sex and year are independent. In otherwords, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way, Are major dperessive episode counts across the two years associated with sex.  
+
+
+
+According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
+
+> Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
+
+
+Thus, to conduct this statistical test, we need to produce a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contigency table (only two levels for two variables).
+
+Here is an example of another 2x2 table:
+
+
+```{r, echo = FALSE}
+contig <-tibble(Sex = c("Male", "Female", "Total"), Righthanded = c(41,47,88), Lefthanded = c(9,3, 12), Total = c(50,50,100))
+
+contig
+```
+
+Here are all the observed values.
+
+We can see that there are two variables: Sex and Handedness and each have two levels (male and female for sex and right and left for handedness). The table also includes totals of each of the 4 possible groups as well as the overall total.
+
+
+Now let's create a table of expected values assuming sex and handedness are independent. 
+
+The total righthanded is 88 out of 100 which is equal to 88%.
+The total lefthanded is 12  out of 100 which is equal to 12%.
+
+Thus if each sex had the same amount of righthandedness and lefthandedness, we would expect 88% of the males to be righthanded and 12 % to be lefthanded; and
+we would expect the exact same proportions of 88% righthanded and 12% lefhanded for the females.
+
+Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected freauencies:
+
+```{r, echo = FALSE}
+contig <-tibble(Sex = c("Male", "Female", "Total"), Righthanded = c(44,44,88), Lefthanded = c(6,6, 12), Total = c(50,50,100))
+
+contig
+
+```
+
+
+The ${\chi}^2$  is calculated like so:
+
+$${\chi}^2=\sum_{j=1}^{m} \frac{(O_j - E_j)^2}{E_j}$$
+
+Where $O_j = j^{th}$ observed count and $E_j = j^{th}$ expected count for
+the jth cell of a contgency table with $m$ cells.
+
+The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
+
+Where $r$ = # of rows and $c$ = the # of columns.
+
+
+So to calculate the ${\chi}^2$ for handedness and sex manually, we can do the following for each of the four values in the table (besides the totals) like this:
+
+${\chi}^2$ = fraction of the square difference of the observed minus the expected, divided by expected for righthanded males + the same for lefthanded males + the same for righthanded females + the same for lefthanded females
+
+This is equal to :
+
+$${\chi}^2 =  \frac{(41-44)^2}{44} + \frac{(9-6)^2}{6}+ \frac{(47-44)^2}{44}+ \frac{(3-6)^2}{6}$$
+
+Which is equal to:
+
+${\chi}^2$ = `r ((41-44)^2)/44 +((9-6)^2)/6 + ((47-44)^2)/44 + (3-6)^2/6`
+
+Where the degrees of freedom  = $df = 92-1)(2-1) = 1$
+
+
+What does this mean? We need to consult a chi-square distribution to determine what the p-value is and if this is significant.
+
+```{r}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
+```
+#### [[source](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
+
+This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. Note on this website the notation for $df$ is ${\nu}$.
+
+Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p-value$ of 0.06484.
+
+Thus we do not have enough evidence to reject the null hypothesis.  Therefore, we conclude that sex and handedness do appear to be independent.
+
+See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
+
+
+
+Now let's create a contigency table with our own data and see how we can implement this test in R.
+
+It is critical that we use the counts data, and not the percentage data for our analysis, as the ${\chi}^2$ requires counts. 
+
+
+We will filter the count data for the `Major_Depressive_Episode` data, as well as for the `Male` and `Female` data from `2004` and `2018`.
+
+
+The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. If we take a look at the title of the table we can see that the numbers in the table represent individuals by the thousands.
+
+```{r}
+knitr::include_graphics(here::here("img", "dem_table.png"))
+```
 
 ```{r}
 chi_square_11.2a <- counts %>%
   filter(data_type == "Major_Depressive_Episode")%>%
-  filter(Year %in% c(2009, 2018)) %>%
+  filter(Year %in% c(2004, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
 ```
 
-The resulting object is still in long format.
+The resulting object contains all the values we need for out contigency table. 
 
 ```{r}
 chi_square_11.2a
 ```
 
-To conduct a chi-squared test for indepence we will need a [contingency table](https://en.wikipedia.org/wiki/Contingency_table?oldformat=true). 
+ 
 
-A contingency table can be produced from data in long format by transforming the data to wide format and repurposing some values as row names. 
+A contingency table can  now be produced from this data which is in long format by transforming the data to wide format and repurposing some values as row names. To reformat the data to wide format we can use the `pivot_wider()` function of the `tidyr` package.
+
+For this function there are several impartant arguments:  
+1) names_from - this is the variable where the names of new columns will come from
+2) values_from - this is the variable where the values for the new columns will come from
+3) names_prefix - if we want to add a prefix to the new columns we can do so using this argument
+
+So in our case we want to spread out the year data into two columns thus the names will come from the `Year` variable and the values will come from the `Number` variable. We want to add the word `Year` to the new columns. We also want the remove the `subgroup` and `data_type` variables and only keep the `Demographic`, `Year`, and `Number` variables. To do so we can use the `select()` function. Fin
 
 ```{r}
-chi_square_11.2a <- chi_square_11.2a %>%
-  select(-subgroup)%>%
-  select(-data_type)%>%
+chi_square_11.2a %<>%
+  select(Demographic, Year, Number) %>%
   tidyr::pivot_wider(
                      names_from = Year,
               names_prefix = "Year", 
-              values_from = Number) %>%
-  tibble::column_to_rownames("Demographic")
+              values_from = Number)
+chi_square_11.2a
+
 ```
 
-The final object should look like this. 
+Now we can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels the rownames. Otherewise we would need to select the numeric columns to perform the stats test.
 
 ```{r}
+chi_square_11.2a %<>%
+  tibble::column_to_rownames("Demographic")
+
 chi_square_11.2a
 ```
+
+Note that a contigency table would also have totals for all groups as well, but this is not necessary for the `stats::chisq.test()` function.
+
 
 The chi-squared test for independence can be conducted using the `stats::chisq.test()` function. 
 
@@ -1344,11 +1459,14 @@ The chi-squared test for independence can be conducted using the `stats::chisq.t
 stats::chisq.test(chi_square_11.2a)
 ```
 
-We can repeat this process for the remaining tables.
+We see that the p-value is very small, which suggests that sex does influence the count of major depressive episodes across time. 
+
+How about for severe major depressive episodes?
+
 
 ```{r}
 chi_square_11.3a <- counts %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(Year %in% c(2009, 2018)) %>%
   filter(Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000)
@@ -1367,6 +1485,11 @@ chi_square_11.3a
 ```{r}
 chisq.test(chi_square_11.3a)
 ```
+There also appears to be an influence of sex on the rate of severe major depressive episodes across the years.
+
+
+How about treatment?
+
 
 ```{r}
 chi_square_11.4a <- counts %>%
@@ -1389,13 +1512,15 @@ chi_square_11.4a
 ```{r}
 chisq.test(chi_square_11.4a)
 ```
+There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
+
 
 ## **Data Visualization**
 *** 
 
-Ok, so now we are going to make some visualizations of the data represented in the tables. We will start with table11.1b which has the percentage values for counts presented in table11.1a.
+Ok, so now we are going to make some visualizations to further explore our questions of interest.
 
-
+We will start by taking a look at where youths are recieving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
 
 
 ```{r}
@@ -1415,7 +1540,9 @@ plotMHS <-table11.1b %>%
 
 directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 ```
+We can see that youths appear to be receiving care in nonspeciatly facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
 
+Let's take a look at subcategories of mental health services.
 
 ```{r}
 plotMHS <-table11.1b %>%
@@ -1435,6 +1562,7 @@ plotMHS <-table11.1b %>%
 directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
 ```
 
+Let's try another way of labeling our lines:
 
 ```{r}
 plotMHS <-table11.1b %>%
@@ -1459,6 +1587,8 @@ direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.mo
 
 ### Major Depressive Episodes in past year
 
+Now we will take a look at the rate of major depressive episodes amoung youths over time of the various demographic groups.
+
 ```{r}
 MDE <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
@@ -1477,9 +1607,11 @@ MDE <-percents %>%
         axis.text.x = element_text(angle = 90)) 
 
 directlabels::direct.label(MDE, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
-
-
 ```
+
+
+
+
 ```{r}
 
 MDE <-percents %>%
