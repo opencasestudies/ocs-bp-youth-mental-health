@@ -1520,68 +1520,6 @@ There also appears to be an influence of sex on the rate at which youths receive
 
 OK, so now we are going to make some visualizations to further explore our questions of interest.
 
-We will start by taking a look at where youths are receiving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
-
-
-```{r}
-plotMHS <-table11.1b %>%
-  filter(stringr::str_detect(short_label, 'total') ) %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  ggplot2::geom_line() +
-  facet_wrap(~type)+
-  ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
-  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-         axis.text.x = element_text(angle = 90)) 
-
-directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
-```
-We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
-
-Let's take a look at subcategories of mental health services.
-
-```{r}
-plotMHS <-table11.1b %>%
-  filter(!stringr::str_detect(short_label, "total")) %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  ggplot2::geom_line() +
-  facet_wrap(~type)+
-  ggplot2::scale_x_continuous(breaks = seq(2000, 2019, by=1),
-                     labels = seq(2000, 2019, by=1),
-                     limits = c(2000, 2019))+
-  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-         axis.text.x = element_text(angle = 90)) 
-
-directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
-```
-
-Let's try another way of labeling our lines:
-
-```{r}
-plotMHS <-table11.1b %>%
-  filter(!stringr::str_detect(short_label, "total")) %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  ggplot2::geom_line() +
-  facet_wrap(~type)+
-  ggplot2::scale_x_continuous(breaks = seq(2002, 2019, by=1),
-                     labels = seq(2002, 2019, by=1),
-                     limits = c(2002, 2019)) +
-  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-         axis.text.x = element_text(angle = 90)) 
-
-direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1)))
-
-```
 
 
 
@@ -1589,13 +1527,14 @@ direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.mo
 
 Now we will take a look at the rate of major depressive episodes among youths over time of the various demographic groups.
 
+
 ```{r}
 MDE <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup != "Race") %>%
   filter(Demographic != "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color =Demographic)) +
-  geom_line() +
+  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  geom_line(aes(color = Demographic)) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -1610,7 +1549,60 @@ directlabels::direct.label(MDE, list(dl.trans(y = y +0.35), "far.from.others.bor
 ```
 
 
+We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket. We can also see that the trend has been increasing for all three age brackets since roughly 2010.
 
+We can also see an increase for both sexes since about 2010, but there is a steeper increase for females. Furthermore Females have a much higher rate than males for all years.
+
+Let's make the same plot with a different shaded background for the years of the increase.
+
+
+```{r}
+MDE <-percents %>%
+  filter(data_type == "Major_Depressive_Episode")%>%
+  filter(subgroup != "Race") %>%
+  filter(Demographic != "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+  geom_rect(xmin = 2010, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+  geom_line(aes(color = Demographic)) +
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  facet_wrap(~subgroup)+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(angle = 90)) 
+
+directlabels::direct.label(MDE, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+```
+
+So what might be accounting for this?
+
+
+This cross-cultural [review article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} published in 2012 suggests that aspects realted to life style due to modernity may be causing increased depression rates: 
+
+>Modern populations are increasingly overfed, malnourished, sedentary, sunlight-deficient, sleep-deprived, and socially-isolated. These changes in lifestyle each contribute to poor physical health and affect the incidence and treatment of depression.
+
+And although this may be true globally, the US has been arguably experiencing these modern lifestyle changes for years prior to this steep increase in 2010.
+
+So what might have happened in the US around this time?
+
+There is large amount of literature about how the use of smart phone and social media may have lead to increased depression rates. See this [article](https://childmind.org/article/is-social-media-use-causing-depression/) which links to many scientific articles on the subject. 
+
+This has been a controversial topic due to conflicting findings, likely due to focus on different sites and aspects of social media across different studies. 
+
+The article points out that the true relationship between social media use and depression may be nuanced. Some individuals who have high face-to-face levels of interaction or lack of the opportunity to interact with others face-to-face (due to various barriers like geography), may actually experience lower risk for depression with more social media use. 
+
+Furthermore, different social media platforms may vary for their influence on depression.
+
+Instagram was released in 2010 (which is around when our plot starts to show the upward increase in major depressive episodes, particularly in females) and according to the article:
+
+>Image-driven Instagram shows up in surveys as the platform that most leads young people to report feeling anxiety, depression and worries about body image.
+
+Furthermore, it may be secondary effects of social media use, like less phsical activity or less sleep that may increase the risk for depression. 
+
+Now let's take a look at how the rate of major depressive episodes has changed across time for different ethnicities.
 
 ```{r}
 
@@ -1635,7 +1627,7 @@ MDE
 
 ```
 
-There is only one value for NHOPI, so lets remove this from the plot:
+Unfortunately there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points(2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
 
 ```{r}
 percents %>%
@@ -1663,47 +1655,6 @@ MDE <-  percents %>%
 MDE
 
 ```
-
-
-```{r, eval = FALSE, echo = FALSE}
-Age_episode <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Age") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-
-directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
-
-```
-We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket. We can also see that the trend has been increasing for all three age brackets since 2011.
-
-
-```{r, eval = FALSE, echo = FALSE}
-Sex_episode <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Sex") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-
-directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
-
-```
-We can see an increase for both sexes since about 2011-2012, but there is a steeper increase for females. Furthermore Females have a much higher rate than males for all years.
-
 
 
 Census Bureau definitions:  
@@ -1735,42 +1686,7 @@ directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.bo
 ```
 
 
-```{r, eval = FALSE, echo = FALSE}
-Age_episode <-
-  percents %>%
-  filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup == "Age") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2006, 2018, by=1),
-                     labels = seq(2006, 2018, by=1),
-                     limits = c(2006, 2018)) +
-  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
-
-```
-We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
-
-
-```{r, eval = FALSE, echo = FALSE}
-Sex_episode <-percents %>%
-  filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup == "Sex") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2006, 2018, by=1),
-                     labels = seq(2006, 2018, by=1),
-                     limits = c(2006, 2018)) +
-  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
-
-```
+We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket. We can see a very steep increase in the data for the females after 2010.
 
 ```{r}
 Race_episode <-  percents %>%
@@ -1823,43 +1739,8 @@ directlabels::direct.label(treat, list("angled.boxes", cex = .8))
 
 ```
 
-```{r, eval = FALSE, echo=FALSE}
-Age_episode <-percents %>%
-  filter(data_type == "treatment")%>%
-  filter(subgroup == "Age") %>%
-
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
-       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-directlabels::direct.label(Age_episode, list("angled.boxes", cex = .8))
-  
-
-```
-We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket.
 
 
-```{r, eval = FALSE, echo = FALSE}
-Sex_episode <-percents %>%
-  filter(data_type == "treatment")%>%
-  filter(subgroup == "Sex") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
-  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
-       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold")) 
-directlabels::direct.label(Sex_episode, list("angled.boxes", cex = .8))
-
-```
 
 ```{r}
 Race_episode <-percents %>%
@@ -1883,9 +1764,74 @@ Race_episode
 
 ```
 
+We will start by taking a look at where youths are receiving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
+
+
+```{r}
+plotMHS <-table11.1b %>%
+  filter(stringr::str_detect(short_label, 'total') ) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  ggplot2::geom_line() +
+  facet_wrap(~type)+
+  ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                     labels = seq(2009, 2018, by=1),
+                     limits = c(2009, 2018)) +
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
+
+directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
+```
+
+We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
+
+Let's take a look at subcategories of mental health services.
+
+```{r}
+plotMHS <-table11.1b %>%
+  filter(!stringr::str_detect(short_label, "total")) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  ggplot2::geom_line() +
+  facet_wrap(~type)+
+  ggplot2::scale_x_continuous(breaks = seq(2000, 2019, by=1),
+                     labels = seq(2000, 2019, by=1),
+                     limits = c(2000, 2019))+
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
+
+directlabels::direct.label(plotMHS, list("angled.boxes", cex = .8))
+```
+
+Let's try another way of labeling our lines:
+
+```{r}
+plotMHS <-table11.1b %>%
+  filter(!stringr::str_detect(short_label, "total")) %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  ggplot2::geom_line() +
+  facet_wrap(~type)+
+  ggplot2::scale_x_continuous(breaks = seq(2002, 2019, by=1),
+                     labels = seq(2002, 2019, by=1),
+                     limits = c(2002, 2019)) +
+  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+       subtitle = "Percentages, 2002-2018")+
+  theme_linedraw()+
+  theme(strip.text = element_text(size = 14, face = "bold"),
+         axis.text.x = element_text(angle = 90)) 
+
+direct.label(plotMHS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1)))
+
+```
+
+
 
 OK so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode
-with severe impairment, and receiving treatment. But how do the rates of these there things compare for each group?
+with severe impairment, and receiving treatment. We also know where youths are typcially getting treatment. But how do the rates of having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment compare within each group?
 
 
 ```{r}
@@ -1903,7 +1849,8 @@ sex_outcomes <-percents %>%
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
         axis.text.x = element_text(angle = 90),
-        legend.title = element_blank())+
+        legend.title = element_blank(),
+        legend.position = "bottom")+
   guides(color = FALSE)
 sex_outcomes 
 #directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
@@ -1925,14 +1872,15 @@ age_outcomes <-percents %>%
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
         axis.text.x = element_text(angle = 90),
-        legend.title = element_blank())+
+        legend.title = element_blank(),
+        legend.position = "bottom")+
   guides(color = FALSE)
 
 age_outcomes 
 #directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
 ```
 
-```{r}
+```{r, fig.height=10}
 race_outcomes <-percents %>%
   filter(subgroup == "Race") %>%
   filter(Demographic != "NHOPI") %>%
@@ -1943,11 +1891,12 @@ race_outcomes <-percents %>%
                      limits = c(2004, 2018)) +
   labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~Demographic, strip.position = "top", nrow = 3)+
+  facet_wrap(~Demographic, strip.position = "top", nrow = 4)+
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
         axis.text.x = element_text(angle = 90),
-        legend.title = element_blank())+
+        legend.title = element_blank(),
+        legend.position = "bottom")+
   guides(color = FALSE)
 race_outcomes
 #directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
@@ -1957,7 +1906,16 @@ race_outcomes
 ## **Summary**
 *** 
 
-## **Suggested Homework**
+### Summary Plot
+
+Let's make a plot that summarizes all of our major findings.
+
+
+### Synopsis
+
+One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrents further investigation about what females are particularly vulnerable and why. 
+
+## **Homework**
 *** 
 
 ## **Additional Information**
@@ -1976,7 +1934,6 @@ div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
 
 **This needs to be updated**
 
-[guide](https://briatte.github.io/ggcorr/) for using GGally to create correlation plots
 
 <u>Terms and concepts covered:</u>  
 
