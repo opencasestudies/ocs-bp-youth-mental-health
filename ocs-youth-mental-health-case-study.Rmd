@@ -1174,7 +1174,7 @@ data_dem_settings <- function(TABLE){
  mutate(subgroup =c("Total",
                     rep("Age", 4), 
                     rep("Sex", 3), 
-                    rep("Race", 9)))%>%
+                    rep("Race/Ethnicity", 9)))%>%
   mutate(dplyr::across(.cols = contains("20"),
                 stringr::str_remove_all, "a|,")) %>%
      mutate(across(contains("20"), as.numeric)) %>%
@@ -1522,7 +1522,7 @@ chisq.test(chi_square_11.4a)
 There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
 
 
-acvocado.. I think it makes sense to move the visualziation section first... and use it to motivate that analysis from the year 2010 and of male and females...
+avocado.. I think it makes sense to move the visualization section first... and use it to motivate that analysis from the year 2010 and of male and females...
 
 ## **Data Visualization**
 *** 
@@ -1533,7 +1533,7 @@ We are going to use the `ggplot2` package to create our plots.
 
 <details><summary> Click here for an introduction about this package if you are  new to using `ggplot2` </summary>
 
-The [ggplot2 package](http://ggplot2.tidyverse.org) is generally intuitive for beginners beacuse it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) or the `gg` in `ggplot2`. The idea is that you can construct many sentences by learning just a few nouns, adjectives, and verbs. There are specific “words” that we will need to learn and once we do, you will be able to create (or “write”) hundreds of different plots.
+The [ggplot2 package](http://ggplot2.tidyverse.org) is generally intuitive for beginners because it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) or the `gg` in `ggplot2`. The idea is that you can construct many sentences by learning just a few nouns, adjectives, and verbs. There are specific “words” that we will need to learn and once we do, you will be able to create (or “write”) hundreds of different plots.
 
 The critical part to making graphics using `ggplot2` is the data needs to be in a _tidy_ format. 
 Given that we have just spent time putting our data in _tidy_ format, we are primed to take advantage of all that `ggplot2` has to offer! 
@@ -1543,12 +1543,12 @@ This all works because we are working
 within the _tidyverse_. 
 
 
-#### What is the `ggplot()` function? 
+**What is the `ggplot()` function?** 
 As explained by Hadley Wickham:
 
 > The grammar tells us that a statistical graphic is a mapping from data to aesthetic attributes (colour, shape, size) of geometric objects (points, lines, bars). The plot may also contain statistical transformations of the data and is drawn on a specific coordinates system.
 
-#### `ggplot2` Terminology 
+ `ggplot2` Terminology 
 * **ggplot** - the main function where you specify the dataset and variables to plot (this is where we define the `x` and
 `y` variable names)
 * **geoms** - geometric objects
@@ -1571,7 +1571,7 @@ These will define what we are interested in illustrating using the data.
 
 We will start by taking a look at the rate of major depressive episodes among youths over time of the various demographic groups.
 
-OK, we will start out by using the `ggplot()` function to specify what data we would like to plot on each axis. We will also indicate that would like to use the `Demographic` variable to group our data and to color our data.  This is our first layer of the plot, thus for subsquent layers we need to use a plus sign `+`. 
+OK, we will start out by using the `ggplot()` function to specify what data we would like to plot on each axis. We will also indicate that would like to use the `Demographic` variable to group our data and to color our data.  This is our first layer of the plot, thus for subsequent layers we need to use a plus sign `+`. 
 
 Next we will use the `geom_line()` function of the `ggplot2` package to specify that we would like to create a line plot. 
 
@@ -1583,7 +1583,7 @@ Finally we will move our legend to the bottom of the plot using the `theme()` fu
 percents %>%
     filter(data_type == "Major_Depressive_Episode")%>%
 ggplot2::ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic))+
-  geom_line() +
+  geom_line(size = 1) +
   labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
   theme(legend.position = "bottom")
@@ -1597,7 +1597,7 @@ Finally, we will drop the legend since we will only have one group using `legend
 
 We will also make the line thicker using the `size =` argument for the `geom_line()` function.
 
-The `theme_linedraw()` function changes the asthetics of the plot. See [here](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} for a list of options.
+The `theme_linedraw()` function changes the aesthetics of the plot. See [here](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} for a list of options.
 
 ```{r}
 MDE_total <-percents %>%
@@ -1649,10 +1649,10 @@ To make sure our plot is not too overwhelming, let's limit to only age and sex s
 ```{r}
 MDE_age_sex <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup != "Race") %>%
+  filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line(aes(color = Demographic)) +
+  geom_line(aes(color = Demographic), size =1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -1668,10 +1668,12 @@ MDE_age_sex
 
 Nice! Now it is much easier to tell how each group has changed over time.
 
-We can also add lables directly to the lines using the `directlabels` package. There are several methods to do so. See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  We will use the `"far.from.others.borders"` method so that our labels don't overlap one another. We will also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`).
+We can also add labels directly to the lines using the `directlabels` package. There are several methods to do so. See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  We will use the `"far.from.others.borders"` method so that our labels don't overlap one another. We will also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). We will use the `dl.move()` function of the `directlabels` package to move one of the labels to a particular location. 
+
 
 ```{r}
-directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.35, x = x -0.1), "far.from.others.borders", cex = .8))
+directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.38, x = x -0.1), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x = 2008, y =10)))
+
 ```
 
 This looks very clear now!
@@ -1685,11 +1687,11 @@ Let's make the same plot with a different shaded background for the years of the
 ```{r}
 MDE_age_sex <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup != "Race") %>%
+  filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
-  geom_line(aes(color = Demographic)) +
+  geom_line(aes(color = Demographic), size =1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -1700,7 +1702,7 @@ MDE_age_sex <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-MDE_age_sex <-directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.35, x = x -0.1), "far.from.others.borders", cex = .8))
+MDE_age_sex <-directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.38, x = x -0.2), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x = 2008, y =10)))
 MDE_age_sex
 ```
 
@@ -1727,25 +1729,25 @@ Instagram was released in 2010 (which is around when our plot starts to show the
 
 > Image-driven Instagram shows up in surveys as the platform that most leads young people to report feeling anxiety, depression and worries about body image.
 
-Furthermore, it may be secondary effects of social media use, like less phsical activity or less sleep that may increase the risk for depression. 
+Furthermore, it may be secondary effects of social media use, like less physical activity or less sleep that may increase the risk for depression. 
 
-Now let's take a look at how the rate of major depressive episodes has changed across time for different raceial/ethnic groups.
+Now let's take a look at how the rate of major depressive episodes has changed across time for different racial/ethnic groups.
 
 Since we have so many groups, we probably don't want to directly label the lines this time. Instead, we will rely on the legend that will be automatically created.
 
 We will use the the `fct_reorder` function of the `forcats` package to order the racial/ethnic groups in the legend based on the last value (using `tail()`) of the `Percent` variable.
 
-We will also manually color our lines based on a color palette called [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}, which is more decernable for individuals with color-blindness. To do so we will use the `scale_color_viridis_d()` function of the `ggplot2` package, which is intended for coloring descrete values.
+We will also manually color our lines based on a color palette called [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}, which is more discernible for individuals with color-blindness. To do so we will use the `scale_color_viridis_d()` function of the `ggplot2` package, which is intended for coloring discrete values.
 
 ```{r}
 
 MDE_race <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Race") %>%
+  filter(subgroup == "Race/Ethnicity") %>%
      mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
     ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
-  geom_line(aes(color = Demographic))+
+  geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1770,12 +1772,12 @@ percents %>%
 
 MDE_race <-  percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Race") %>%
+  filter(subgroup == "Race/Ethnicity") %>%
     filter(Demographic != "NHOPI") %>%
      mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
    ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
-  geom_line(aes(color = Demographic))+
+  geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1796,7 +1798,7 @@ Census Bureau definitions:
 1) **AIAN** stands for American Indian and Alaska Native  
 2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
 
-We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. Those group who reported as Black or African American had the lowest precentages. However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
+We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. Those group who reported as Black or African American had the lowest percentages. However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
 
 ### Major Depressive Episode with Severe Impairment
 
@@ -1805,11 +1807,11 @@ Now let's take a look at how the rate of youths reporting having a major depress
 ```{r}
 MDES <-percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup != "Race") %>%
+  filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
     ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
-  geom_line(aes(color = Demographic))+
+  geom_line(aes(color = Demographic), size =1)+
   scale_x_continuous(breaks = seq(2006, 2018, by=1),
                      labels = seq(2006, 2018, by=1),
                      limits = c(2006, 2018)) +
@@ -1820,24 +1822,24 @@ MDES <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-directlabels::direct.label(MDES, list(dl.trans(y = y +0.39, x = x -0.1), "far.from.others.borders", cex = .8))
+directlabels::direct.label(MDES, list(dl.trans(y = y +0.39, x = x -0.1), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x= 2016.5, y = 11)))
 
 
 ```
 
 
-We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket, however there appears to be a more dramatic change in the middle age groupfrom 2011-2012. We can see a very steep increase in the data for the females after 2011, again this is much more steep than the increase seen for males over time.
+We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket, however there appears to be a more dramatic change in the middle age group from 2011-2012. We can see a very steep increase in the data for the females after 2011, again this is much more steep than the increase seen for males over time.
 
 Now let's look at racial/ethnic groups.
 
 ```{r}
 Race_MDES <-  percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup == "Race") %>%
+  filter(subgroup == "Race/Ethnicity") %>%
     mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
     ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
-  geom_line(aes(color = Demographic))+
+  geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2006, 2018, by=1),
                      labels = seq(2006, 2018, by=1),
@@ -1860,9 +1862,9 @@ Census Bureau definitions:
 
 We see similar trends as we saw for the previous racial/ethnic group plot. The rate is highest for those who are two are more races and lowest for those who are Black or African American. The data for the AIAN group is sparse, so it is unclear if their levels would be lowest on the last year.
 
-### Receipt of treatment among persons with major depressive episode 
+### Receipt of treatment for depression 
 
-Now we will take a look at those who recieved treatment. First let's look overall.
+Now we will take a look at those who received treatment. First let's look overall.
 ```{r}
 Treat_total <-percents %>%
   filter(data_type == "treatment")%>%
@@ -1887,10 +1889,10 @@ Treat_total
 ```{r}
 treat<-percents %>%
   filter(data_type == "treatment")%>%
-  filter(subgroup != "Race")%>%
+  filter(subgroup != "Race/Ethnicity")%>%
   filter(subgroup != "Total")%>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
+  geom_line( size =1) +
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1901,7 +1903,7 @@ treat<-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-treat<-directlabels::direct.label(treat, list(dl.trans(y = y +0.35, x = x -0.1), "far.from.others.borders", cex = .8))
+treat<-directlabels::direct.label(treat, list(dl.trans(y = y -1.5, x = x -0.4), "far.from.others.borders", cex = .8, dl.move("Age_16-17", x = 2010, y = 42), dl.move("Age_14-15", x = 2015, y = 38)))
 
 treat
 ```
@@ -1912,10 +1914,10 @@ There seems to be an upward trend, but it isn't nearly as much as the trend we s
 ```{r}
 Race_treat <-percents %>%
   filter(data_type == "treatment")%>%
-  filter(subgroup == "Race") %>%
+  filter(subgroup == "Race/Ethnicity") %>%
   mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
-  geom_line() +
+  geom_line(size =1) +
   scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
                      limits = c(2009, 2018)) +
@@ -1929,18 +1931,21 @@ Race_treat <-percents %>%
 Race_treat
 
 ```
-It looks as though youths who report as being white recieved the most care from mental health services.
+It looks as though youths who report as being white received the most care from mental health services.
 
+
+### Mental Health Services
 
 We will also take a look at where youths are receiving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
 
-We will use the `dl.move()` function of the `directlabels` package to move one of the labels to a particular location.
+
+We can use the `str_detect()` function of the `stringr` package to filter for the values of the `short_label` variable that has the word `total` in it. 
 
 ```{r}
 plotMHS <-table11.1b %>%
-  filter(stringr::str_detect(short_label, 'total') ) %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  ggplot2::geom_line() +
+  filter(stringr::str_detect(short_label, "total") ) %>%
+  ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  geom_line(size =1) +
   facet_wrap(~type)+
   ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
@@ -1959,37 +1964,38 @@ plotMHS
 We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
 
 Let's take a look at subcategories of mental health services.
+So now we will filter for values within the `short_label` variable that do not contain the word "total" by using a `!` in front of the `str_dectect` statement.
 
 ```{r}
 plotMHSS <-table11.1b %>%
-  filter(!stringr::str_detect(short_label, "total")) %>%
-  ggplot2::ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  ggplot2::geom_line() +
+  filter(!str_detect(short_label, "total")) %>%
+  ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
+  geom_line(size =1) +
   facet_wrap(~type)+
-  ggplot2::scale_x_continuous(breaks = seq(2002, 2019, by=1),
+  scale_x_continuous(breaks = seq(2002, 2019, by=1),
                      labels = seq(2002, 2019, by=1),
                      limits = c(2002, 2019)) +
-  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
+  labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
        subtitle = "Percentages, 2002-2018")+
   theme_linedraw()+
   theme(strip.text = element_text(size = 14, face = "bold"),
          axis.text.x = element_text(angle = 90)) 
 
-plotMHSS <-direct.label(plotMHSS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1)))
+plotMHSS <-direct.label(plotMHSS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1), dl.move("Therapist", x=2009, y = 10.5)))
 plotMHSS
 ```
 
 
 
-OK so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode
-with severe impairment, and receiving treatment. We also know where youths are typcially getting treatment. But how do the rates of having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment compare within each group?
+OK, so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment. We also know where youths are typically getting treatment. But how do the rates of having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment compare within each group?
 
+### Overall outcomes by group
 
 ```{r}
 sex_outcomes <-percents %>%
   filter(Demographic %in% c("Male", "Female", "TOTAL")) %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
-  geom_line(aes(linetype= data_type)) +
+  geom_line(aes(linetype= data_type), size = 1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -2003,16 +2009,20 @@ sex_outcomes <-percents %>%
         legend.position = "bottom")+
   guides(color = FALSE)
 sex_outcomes 
-#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
 ```
 
+We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they recieve a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to selfreport depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
+
+Lukily all groups appear to be receiving treatment at a higher percentage, than those reporting symptoms.
+
+Avocado... do those getting treatment then not report symptoms? or if they had symptoms earlier in the year... then they would be in both?
 
 ```{r}
 age_outcomes <-percents %>%
   filter(subgroup == "Age") %>%
   #filter(Demographic != "NHOPI") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
-  geom_line(aes(linetype= data_type)) +
+  geom_line(aes(linetype= data_type), size = 1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -2027,15 +2037,15 @@ age_outcomes <-percents %>%
   guides(color = FALSE)
 
 age_outcomes 
-#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+
 ```
 
 ```{r, fig.height=10}
 race_outcomes <-percents %>%
-  filter(subgroup == "Race") %>%
+  filter(subgroup == "Race/Ethnicity") %>%
   filter(Demographic != "NHOPI") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
-  geom_line(aes(linetype= data_type)) +
+  geom_line(aes(linetype= data_type), size=1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -2049,7 +2059,7 @@ race_outcomes <-percents %>%
         legend.position = "bottom")+
   guides(color = FALSE)
 race_outcomes
-#directlabels::direct.label(MDES, list(dl.trans(y = y +0.35), "far.from.others.borders", cex = .8))
+
 ```
 
 
@@ -2062,30 +2072,32 @@ Let's make a plot that summarizes our major findings.
 
 We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text.
 
-
 ```{r, fig.height=10, echo=FALSE, message=FALSE, warning=FALSE}
 library(cowplot)
 title_plots <- ggdraw() + 
   draw_label(
-    "Self-Reported Depression Amoung American Youths",
+    "Self-Reported Depression Among American Youths",
     fontface = 'bold',
     size=18,
     x = 0,
     hjust = -0.01
   ) +
   theme(
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(0, 0, 0, 0.5)
   )
+```
 
+We can also make a subtitle in the same way.
 
+```{r}
 
 forward <- ggdraw() + 
   draw_label(
-    "The percentage of youths experiencing Major Depressive Episodes and recieving treatment\n for depression has increased especially since 2011",
+    "The percentage of youths experiencing major depressive episodes and receiving treatment\n for depression has increased especially since 2011",
     fontface = 'bold',
-    size=10,
+    size=14,
     x = 0,
-    hjust = -0.02
+    hjust = -0.01
   ) +
   theme(
     plot.margin = margin(0, 0, 0, 0)
@@ -2099,31 +2111,37 @@ forward <- ggdraw() +
 ```{r}
 
 MDE_total_for_mp <-MDE_total +
-  theme(plot.title= element_text(size = 10, color = "black"),
+  theme(plot.title= element_text(size = 14, color = "black"),
+        plot.subtitle = element_blank(),
         axis.title.x = element_blank(),
-        plot.subtitle = element_blank()) +
-  labs(title = "The percent of youths who reported having a\n Major Depressive Episode") 
+        axis.text = element_text(color = "black")) +
+  labs(title = "The percent of youths who reported having a\nmajor depressive episode") 
 
 treat_for_mp <- Treat_total +
-  theme(plot.title = element_text(size = 10, color = "black"),
+  theme(plot.title = element_text(size = 14, color = "black"),
         axis.title.x = element_blank(),
-        plot.subtitle = element_blank()) +
-  labs(title = "The percent of youths who reported reciving\n treatment for Depression", subtitle = "", x = "")
+        plot.subtitle = element_blank(),
+        axis.text = element_text(color = "black")) +
+  labs(title = "The percent of youths who reported receiving\ntreatment for depression", subtitle = "", x = "")
 
 
 MDE_age_sex_for_mp <- MDE_age_sex +
-  theme(plot.title= element_text(size = 10, color = "black"),
+  theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
          axis.title.x = element_blank()) +
   labs(title = "Females and older youths have highest rates and show\nthe steepest increase") 
 
+# MDE_age_sex_for_mp <-directlabels::direct.label(MDE_age_sex_for_mp, list(dl.trans(y = y +0.35, x = x -0.1)))
+
+
 MDE_race_for_mp_leg <- MDE_race +
-  theme(plot.title= element_text(size = 10, color = "black"),
+  theme(plot.title= element_text(size = 14, color = "black"),
         legend.position = "bottom", 
         legend.title = element_blank(),
         axis.title.x = element_blank(),
-        plot.subtitle = element_blank()) +
-  labs(title = "All racial/ethnic groups show\nsimilar increases since 2011")+ guides(col = guide_legend(nrow = 2))
+        plot.subtitle = element_blank(),
+        legend.text = element_text(size = 14)) +
+  labs(title = "All racial/ethnic groups show similar\nincreases since 2011")+ guides(col = guide_legend(nrow = 2))
 
 MDE_race_for_mp <-MDE_race_for_mp_leg +
   theme(legend.position = "none")
@@ -2136,7 +2154,8 @@ row_2 <- plot_grid(MDE_age_sex_for_mp,
                    nrow = 1, rel_widths = c(1.2, 0.8))
 
 legend <-get_legend(MDE_race_for_mp_leg)
-png(filename = here::here("img", "mainplot.png"))
+
+png(filename = here::here("img", "mainplot.png"), res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 
           forward,
           row_1,
@@ -2154,7 +2173,7 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 
 ### Synopsis
 
-One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrents further investigation about which females are particularly vulnerable and why. 
+One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
 
 ## **Homework**
 *** 
