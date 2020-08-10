@@ -217,30 +217,34 @@ We will begin by loading the packages that we will need:
 
 ```{r}
 library(here)
-library(tidyverse)
 library(rvest)
 library(dplyr)
 library(magrittr)
 library(stringr)
 library(tidyr)
+library(tibble)
+library(ggplot2)
 library(directlabels)
-
+library(forcats)
+library(cowplot)
 ```
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**avocado will update at the end**
-
-</div>
 
  Package   | Use                                                                         
 ---------- |-------------
-[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
-[tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
-[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
+[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
+[tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
+[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
+
 
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
 
@@ -320,31 +324,22 @@ See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank
 According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+#### {.emphasis_block}
 
-If you are in crisis and need help, call this toll-free number for the National Suicide Prevention Lifeline (NSPL), available 24 hours a day, every day: 1-800-273-TALK (8255). The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at www.suicidepreventionlifeline.org.
+If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
 
-The Crisis Text Line is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to 741741 and a trained crisis counselor will respond to you with support and information over text message. Visit www.crisistextline.org.
+The **Crisis Text Line** is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to **741741** and a trained crisis counselor will respond to you with support and information over text message. Visit [www.crisistextline.org](www.crisistextline.org){target="_blank"}.
 
-</div>
+####
 
 Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression.
 
 ## **Limitations**
 *** 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
 
-**Michael::Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.** Carrie: This is my attempt after Michael's... open to changes!
 
-</div>
-
+avocado -Michael:Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.-Carrie:This is my attempt after Michael's... open to changes!
 
 
 There are some important considerations regarding this data analysis to keep in mind: 
@@ -438,18 +433,16 @@ We accomplish STEP 1 with our web browser.
 
 We accomplish STEP 2 in the `R` programming environment. 
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+#### {.resource_block} 
 
-Additional resources for web scraping:
+<u>Additional resources for web scraping</u>:
 
-[RStudio](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
+- [Vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
+- [Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
+- [Blog](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}
+- [Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}
 
-[Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
-
-</div>
+####
 
 In this case study we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. This data is available in a large PDF with all the results form the year. However it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract the data from the pdf with `pdftools`. Again, if we instead decided to copy paste the data from the website to another file that we would also need to import, this would not be as efficient or reproducible and might result in errors. 
 
@@ -477,7 +470,8 @@ The two web scraping steps for these tables can be broken down even further:
 Below is a animated overview of the process.
 
 ```{r, echo = FALSE}
-step1 <- image_read(here::here("img", "webpage_screenshot.png"))
+step1 <- image_read(here::here("img", 
+"webpage_screenshot.png"))
 step2 <- image_read(here::here("img", "table_screenshot_inspect.png"))
 step3 <- image_read(here::here("img", "table_screenshot_inspect_table.png"))
 step4 <- image_read(here::here("img", "table_screenshot_inspect_table_xpath.png"))
@@ -510,7 +504,8 @@ educational_gif <- image_resize(img, '1440x900!') %>%
   image_animate(delay = 20,
                 optimize = TRUE)
 
-image_write(educational_gif, here::here("img", "educational.gif"))
+image_write(educational_gif,
+      here::here("img", "educational.gif"))
 ```
 
 ```{r, echo=FALSE}
@@ -647,7 +642,6 @@ table11.1a <- table11.1a[[1]]
 Putting this all of this together we can do the entire process like this with our pipe operator `%>%`.
 
 ```{r}
-NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
 table11.1a <- NSDUH_url %>%
   xml2::read_html() %>%
   rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table') %>%
@@ -744,6 +738,8 @@ table11.1a %>%
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
 We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reassign it at the end after all the steps have been performed.
+
+We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist).), which is the tidyverse version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
 
 ```{r}
 table11.1a %<>%
@@ -1582,7 +1578,10 @@ Finally we will move our legend to the bottom of the plot using the `theme()` fu
 ```{r}
 percents %>%
     filter(data_type == "Major_Depressive_Episode")%>%
-ggplot2::ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic))+
+ggplot2::ggplot(aes(x = Year, 
+                    y = Percent, 
+                group = Demographic, 
+                color = Demographic))+
   geom_line(size = 1) +
   labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
@@ -1603,7 +1602,10 @@ The `theme_linedraw()` function changes the aesthetics of the plot. See [here](h
 MDE_total <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         group = Demographic, 
+         color = Demographic)) +
   geom_line(aes(color = Demographic), size = 1.5) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1627,9 +1629,10 @@ MDE_total <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(Demographic == "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size = 1.5) +
-  #geom_smooth(method = "loess", se = FALSE)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -1651,7 +1654,10 @@ MDE_age_sex <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         group = Demographic, 
+         color = Demographic)) +
   geom_line(aes(color = Demographic), size =1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1672,7 +1678,11 @@ We can also add labels directly to the lines using the `directlabels` package. T
 
 
 ```{r}
-directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.38, x = x -0.1), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x = 2008, y =10)))
+directlabels::direct.label(MDE_age_sex, list(
+  dl.trans(y = y +0.38, x = x -0.1), 
+  "far.from.others.borders",
+  cex = .8, 
+  dl.move("Age_14-15", x = 2008, y =10)))
 
 ```
 
@@ -1690,7 +1700,9 @@ MDE_age_sex <-percents %>%
   filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size =1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -1702,7 +1714,11 @@ MDE_age_sex <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-MDE_age_sex <-directlabels::direct.label(MDE_age_sex, list(dl.trans(y = y +0.38, x = x -0.2), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x = 2008, y =10)))
+MDE_age_sex <-direct.label(MDE_age_sex, list(
+  dl.trans(y = y +0.38, x = x -0.2), 
+  "far.from.others.borders", 
+  cex = .8, 
+  dl.move("Age_14-15", x = 2008, y =10)))
 MDE_age_sex
 ```
 
@@ -1744,9 +1760,17 @@ We will also manually color our lines based on a color palette called [viridis](
 MDE_race <-percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup == "Race/Ethnicity") %>%
-     mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
-    ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+     mutate(Demographic = fct_reorder(Demographic, 
+                                      Percent, 
+                                      tail, 
+                                      n = 1, 
+                                      .desc = TRUE)) %>%
+    ggplot(aes(x = Year, 
+               y = Percent,
+           group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,   
+            ymin = -Inf, ymax = Inf,   
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1774,9 +1798,17 @@ MDE_race <-  percents %>%
   filter(data_type == "Major_Depressive_Episode")%>%
   filter(subgroup == "Race/Ethnicity") %>%
     filter(Demographic != "NHOPI") %>%
-     mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
-   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+     mutate(Demographic = fct_reorder(Demographic,
+                                      Percent, 
+                                      tail, 
+                                      n = 1, 
+                                      .desc = TRUE)) %>%
+   ggplot(aes(x = Year, 
+              y = Percent, 
+          group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,   
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1809,8 +1841,12 @@ MDES <-percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(subgroup != "Race/Ethnicity") %>%
   filter(Demographic != "TOTAL") %>%
-    ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+    ggplot(aes(x = Year, 
+               y = Percent,
+           group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size =1)+
   scale_x_continuous(breaks = seq(2006, 2018, by=1),
                      labels = seq(2006, 2018, by=1),
@@ -1822,7 +1858,11 @@ MDES <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-directlabels::direct.label(MDES, list(dl.trans(y = y +0.39, x = x -0.1), "far.from.others.borders", cex = .8, dl.move("Age_14-15", x= 2016.5, y = 11)))
+direct.label(MDES, list(
+  dl.trans(y = y +0.39, x = x -0.1), 
+  "far.from.others.borders",
+  cex = .8, 
+  dl.move("Age_14-15", x= 2016.5, y = 11)))
 
 
 ```
@@ -1836,9 +1876,17 @@ Now let's look at racial/ethnic groups.
 Race_MDES <-  percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode")%>%
   filter(subgroup == "Race/Ethnicity") %>%
-    mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
-    ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+    mutate(Demographic = fct_reorder(Demographic, 
+                                     Percent, 
+                                     tail,
+                                     n = 1, 
+                                     .desc = TRUE)) %>%
+    ggplot(aes(x = Year,
+               y = Percent,
+           group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size =1)+
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2006, 2018, by=1),
@@ -1870,8 +1918,12 @@ Now we will take a look at those who received treatment. First let's look overal
 Treat_total <-percents %>%
   filter(data_type == "treatment")%>%
   filter(Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   ymin = -Inf, ymax = Inf,   fill = "light gray")+
+  ggplot(aes(x = Year, 
+             y = Percent, 
+             group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,   
+            fill = "light gray")+
   geom_line(aes(color = Demographic), size = 1.5) +
   #geom_smooth(method = "loess", se = FALSE)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1895,7 +1947,10 @@ treat<-percents %>%
   filter(data_type == "treatment")%>%
   filter(subgroup != "Race/Ethnicity")%>%
   filter(subgroup != "Total")%>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+             group = Demographic, 
+             color = Demographic)) +
   geom_line( size =1) +
   facet_wrap(~subgroup)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
@@ -1907,7 +1962,12 @@ treat<-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-treat<-directlabels::direct.label(treat, list(dl.trans(y = y -1.5, x = x -0.4), "far.from.others.borders", cex = .8, dl.move("Age_16-17", x = 2010, y = 42), dl.move("Age_14-15", x = 2015, y = 38)))
+treat<-direct.label(treat, list(
+  dl.trans(y = y -1.5, x = x -0.4),
+  "far.from.others.borders", 
+  cex = .8, 
+  dl.move("Age_16-17", x = 2010, y = 42),
+  dl.move("Age_14-15", x = 2015, y = 38)))
 
 treat
 ```
@@ -1919,8 +1979,15 @@ There seems to be an upward trend, but it isn't nearly as much as the trend we s
 Race_treat <-percents %>%
   filter(data_type == "treatment")%>%
   filter(subgroup == "Race/Ethnicity") %>%
-  mutate(Demographic = fct_reorder(Demographic, Percent, tail, n = 1, .desc = TRUE)) %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic, color = Demographic)) +
+  mutate(Demographic = fct_reorder(Demographic, 
+                                   Percent, 
+                                   tail,
+                                   n = 1, 
+                                   .desc = TRUE)) %>%
+  ggplot(aes(x = Year,
+             y = Percent, 
+         group = Demographic, 
+         color = Demographic)) +
   geom_line(size =1) +
   scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
@@ -1948,8 +2015,11 @@ We can use the `str_detect()` function of the `stringr` package to filter for th
 ```{r}
 plotMHS <-table11.1b %>%
   filter(stringr::str_detect(short_label, "total") ) %>%
-  ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  geom_line(size =1) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         group = MHS_setting, 
+         color = short_label)) +
+  geom_line(size = 1) +
   facet_wrap(~type)+
   ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
                      labels = seq(2009, 2018, by=1),
@@ -1960,7 +2030,11 @@ plotMHS <-table11.1b %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
          axis.text.x = element_text(angle = 90)) 
 
-plotMHS <-directlabels::direct.label(plotMHS, list(dl.trans(y = y +0.35, x = x -0.1), "far.from.others.borders", cex = .8, dl.move("Outpatient total", x = 2015, y =11)))
+plotMHS <-direct.label(plotMHS, list(
+  dl.trans(y = y +0.35, x = x -0.1),
+  "far.from.others.borders", 
+  cex = .8, 
+  dl.move("Outpatient total", x = 2015, y =11)))
 
 plotMHS
 ```
@@ -1973,9 +2047,12 @@ So now we will filter for values within the `short_label` variable that do not c
 ```{r}
 plotMHSS <-table11.1b %>%
   filter(!str_detect(short_label, "total")) %>%
-  ggplot(aes(x = Year, y = Percent, group = MHS_setting, color = short_label)) +
-  geom_line(size =1) +
-  facet_wrap(~type)+
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         group = MHS_setting, 
+         color = short_label)) +
+  geom_line(size = 1) +
+  facet_wrap(~ type)+
   scale_x_continuous(breaks = seq(2002, 2019, by=1),
                      labels = seq(2002, 2019, by=1),
                      limits = c(2002, 2019)) +
@@ -1985,7 +2062,12 @@ plotMHSS <-table11.1b %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
          axis.text.x = element_text(angle = 90)) 
 
-plotMHSS <-direct.label(plotMHSS, list(dl.trans(y = y +0.3),"far.from.others.borders", dl.move("School Therapist", 2010, 10), dl.move("Fostercare", 2010, 1), dl.move("Therapist", x=2009, y = 10.5)))
+plotMHSS <-direct.label(plotMHSS, list(
+  dl.trans(y = y +0.3),
+  "far.from.others.borders", 
+  dl.move("School Therapist", 2010, 10), 
+  dl.move("Fostercare", 2010, 1), 
+  dl.move("Therapist", x=2009, y = 10.5)))
 plotMHSS
 ```
 
@@ -1998,7 +2080,9 @@ OK, so now we know how the rates of different subgroups compare for having a maj
 ```{r}
 sex_outcomes <-percents %>%
   filter(Demographic %in% c("Male", "Female", "TOTAL")) %>%
-  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         color = Demographic)) +
   geom_line(aes(linetype= data_type), size = 1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -2008,20 +2092,23 @@ sex_outcomes <-percents %>%
   facet_wrap(~Demographic, strip.position = "top")+
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
-        axis.text.x = element_text(angle = 90),
-        legend.title = element_blank(),
-        legend.position = "bottom")+
+       axis.text.x = element_text(angle = 90),
+      legend.title = element_blank(),
+   legend.position = "bottom") +
   guides(color = FALSE)
+
 sex_outcomes 
 ```
 
-We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they recieve a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to self-report depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
+We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they receive a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to self-report depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
 
 ```{r}
 age_outcomes <-percents %>%
   filter(subgroup == "Age") %>%
   #filter(Demographic != "NHOPI") %>%
-  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         color = Demographic)) +
   geom_line(aes(linetype= data_type), size = 1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -2031,9 +2118,9 @@ age_outcomes <-percents %>%
   facet_wrap(~Demographic, strip.position = "top")+
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
-        axis.text.x = element_text(angle = 90),
-        legend.title = element_blank(),
-        legend.position = "bottom")+
+       axis.text.x = element_text(angle = 90),
+      legend.title = element_blank(),
+   legend.position = "bottom")+
   guides(color = FALSE)
 
 age_outcomes 
@@ -2044,7 +2131,9 @@ All age groups show a similar ratio of severe major depressive episodes for thos
 race_outcomes <-percents %>%
   filter(subgroup == "Race/Ethnicity") %>%
   filter(Demographic != "NHOPI") %>%
-  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  ggplot(aes(x = Year, 
+             y = Percent, 
+         color = Demographic)) +
   geom_line(aes(linetype= data_type), size=1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
@@ -2054,9 +2143,9 @@ race_outcomes <-percents %>%
   facet_wrap(~Demographic, strip.position = "top", nrow = 4)+
   theme_linedraw()+
   theme(strip.text = element_text(size = 8, face = "bold"),
-        axis.text.x = element_text(angle = 90),
-        legend.title = element_blank(),
-        legend.position = "bottom")+
+       axis.text.x = element_text(angle = 90),
+      legend.title = element_blank(),
+   legend.position = "bottom")+
   guides(color = FALSE)
 race_outcomes
 
@@ -2074,7 +2163,6 @@ Let's make a plot that summarizes our major findings.
 We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text.
 
 ```{r, fig.height=10, echo=FALSE, message=FALSE, warning=FALSE}
-library(cowplot)
 title_plots <- ggdraw() + 
   draw_label(
     "Self-Reported Depression Among American Youths",
@@ -2108,45 +2196,67 @@ forward <- ggdraw() +
 
 ```
 
+Now we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
 
-```{r}
+```{r, comment = FALSE}
 
 MDE_total_for_mp <-MDE_total +
-  theme(plot.title= element_text(size = 14, color = "black"),
-        plot.subtitle = element_blank(),
-        axis.title.x = element_blank(),
-        axis.text = element_text(color = "black")) +
+  theme(plot.title = element_text(size = 14, 
+                                 color = "black"),
+     plot.subtitle = element_blank(),
+      axis.title.x = element_blank(),
+         axis.text = element_text(color = "black")) +
   labs(title = "The percent of youths who reported having a\nmajor depressive episode") 
 
 treat_for_mp <- Treat_total +
-  theme(plot.title = element_text(size = 14, color = "black"),
-        axis.title.x = element_blank(),
-        plot.subtitle = element_blank(),
-        axis.text = element_text(color = "black")) +
+  theme(plot.title = element_text(size = 14, 
+                                 color = "black"),
+     plot.subtitle = element_blank(),
+      axis.title.x = element_blank(),
+         axis.text = element_text(color = "black")) +
   labs(title = "The percent of youths who reported receiving\ntreatment for depression", subtitle = "", x = "")
 
 
 MDE_age_sex_for_mp <- MDE_age_sex +
-  theme(plot.title= element_text(size = 14, color = "black"),
+  theme(plot.title= element_text(size = 14, 
+                                color = "black"),
         plot.subtitle = element_blank(),
-         axis.title.x = element_blank()) +
+        axis.title.x = element_blank()) +
   labs(title = "Females and older youths have highest rates and show\nthe steepest increase") 
 
-# MDE_age_sex_for_mp <-directlabels::direct.label(MDE_age_sex_for_mp, list(dl.trans(y = y +0.35, x = x -0.1)))
+```
 
-
+For this last plot we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that doesn't shrink the size of our plot to accommodate the legend. We can use the `get_legend()` function of the `cowplot` package to do this. However, beforehand, we also want to change the way the legend is displayed. We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 rows like so `guides(guide_legend(nrow = 2))`.
+```{r}
 MDE_race_for_mp_leg <- MDE_race +
-  theme(plot.title= element_text(size = 14, color = "black"),
+  theme(plot.title= element_text(size = 14, 
+                                color = "black"),
+        plot.subtitle = element_blank(),
+        axis.title.x = element_blank(),
         legend.position = "bottom", 
         legend.title = element_blank(),
-        axis.title.x = element_blank(),
-        plot.subtitle = element_blank(),
         legend.text = element_text(size = 14)) +
-  labs(title = "All racial/ethnic groups show similar\nincreases since 2011")+ guides(col = guide_legend(nrow = 2))
+  labs(title = "All racial/ethnic groups show similar\nincreases since 2011") +
+  guides(guide_legend(nrow = 2))
 
+legend <-get_legend(MDE_race_for_mp_leg)
+
+```
+
+Now we will remove the legend for this plot:
+```{r}
 MDE_race_for_mp <-MDE_race_for_mp_leg +
   theme(legend.position = "none")
 
+```
+
+OK, now we are ready to start putting our plots together using the `plot_grid()` function of the `cowplot` package. 
+
+It is helpful to first make rows by combining the plots that we want to be displayed next to each other and then combining these with the title and subtitle, called `forward`. 
+
+We can use the `rel_widths` argument to modify how wide each plot is displayed.
+
+```{r}
 row_1 <- plot_grid(MDE_total_for_mp,
                    treat_for_mp,
                    nrow = 1)
@@ -2154,9 +2264,16 @@ row_2 <- plot_grid(MDE_age_sex_for_mp,
                    MDE_race_for_mp,
                    nrow = 1, rel_widths = c(1.2, 0.8))
 
-legend <-get_legend(MDE_race_for_mp_leg)
+```
 
-png(filename = here::here("img", "mainplot.png"), res = 300, width = 10, height = 10, units = "in")
+
+Now we can combine everything together using `plot_grid()` yet again. Now that we have rows, we can combine everything as a single column and easily modify the relative heights using the `rel_heights()` function so that our title, subtitle and legend are all relative short relative to the plots. We will make the first row half the height of the second row. 
+
+Finally, we will use the `png()` function of the `grDevices` package which is automatically loaded in RStudio sessions to save the plot. We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`. We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
+
+```{r}
+png(filename = here::here("img", "mainplot.png"), 
+         res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 
           forward,
           row_1,
@@ -2168,6 +2285,8 @@ plot_grid(title_plots,
 dev.off()
 ```
 
+The `dev.off()` function is necessary to close the graphics device. This is good practice to allow you to create another plot again later.
+
 ```{r,echo = FALSE}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
@@ -2176,13 +2295,14 @@ avocado: I want to add something about self-reporting bias to the  objectives
 
 ### Synopsis
 
-In this case study we  evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths reciving treatment for depression. We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
+In this case study we evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths receiving treatment for depression. We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
 
-By analysing and plotting our data, it is clear that depression rates appear to be increasing, particularly since 2011. However, it is possible that respondents had similar rates in previous years, but now feel less stigma about responding about depression symptoms when filling out the survey. The survey has always been anonymous, but [reporting bias](https://en.wikipedia.org/wiki/Self-report_study#:~:text=Self%2Dreport%20studies%20are%20inherently,answers%20will%20be%20more%20positive.){target="_blank"} can sometimes cause individuals to exaggerate or minimize their symptoms because of what they think researchers want their response to be or out of shame or embarassement, among other reasons. However, the data suggests that youths may be experiencing more symptoms of depression and that the rate of increase is quite high. Now nearly a quarter of all individuals that were female and of age 12-17 reported experiencing symptoms of depression. This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. Furthemore,if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
+By analyzing and plotting our data, it is clear that depression rates appear to be increasing, particularly since 2011. However, it is possible that respondents had similar rates in previous years, but now feel less stigma about responding about depression symptoms when filling out the survey. The survey has always been anonymous, but [reporting bias](https://en.wikipedia.org/wiki/Self-report_study#:~:text=Self%2Dreport%20studies%20are%20inherently,answers%20will%20be%20more%20positive.){target="_blank"} can sometimes cause individuals to exaggerate or minimize their symptoms because of what they think researchers want their response to be or out of shame or embarrassment, among other reasons. However, the data suggests that youths may be experiencing more symptoms of depression and that the rate of increase is quite high. Now nearly a quarter of all individuals that were female and of age 12-17 reported experiencing symptoms of depression. This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. Furthermore,if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
 
 
 ## **Homework**
 *** 
+
 Ask students to scrape tables 11.5A and 11.5B from the website which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform chi-square tests to evaluate how groups compare over time.
 
 
@@ -2191,32 +2311,73 @@ Ask students to scrape tables 11.5A and 11.5B from the website which contain dat
 
 ### Helpful Links
 
-avocado need to do this section
+[RStudio](https://rstudio.com/products/rstudio/features/){target="_blank"}  
+[Cheatsheet on RStuido IDE](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf){target="_blank"}  
+[Other RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}   
+[Tidyverse](https://www.tidyverse.org/){target="_blank"}   
+[Selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"}  
+[Sampling methods](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}   
+[Sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"}  
+[DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}</summary>    
+[National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"}   
+[Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}   
+[U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}   
+[NSDUH Survey Results Website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} (where we got the data for this case study)    
+[Details about the Survey](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"}  
+[Report about the 2018 NSDUH Survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"}  
+[Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"}  
+[Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}  
+See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}, this [blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}, and this [vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"} for more information about web scraping  
+[CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
+[Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
+[Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}
+Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"}  for more information on writing functions.   
+[String manipulation cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
+[Table formats](https://en.wikipedia.org/wiki/Wide_and_narrow_data){target="_blank"}
+[Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
+[contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}  
+[Chi-square distribution](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}  
+[chi-square distribution applet](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
+See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}   
+[`ggplot2` package](http://ggplot2.tidyverse.org){target="_blank"}    
+Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
+[grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html){target="_blank"}  
+[`ggplot2` themes](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"}   
+[`directlabels` package methods](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}  
+[Viridis palette for colorblind friendly plots](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}  
+[Motivating article for this case study about depression rates](https://pubmed.ncbi.nlm.nih.gov/30869927/){target="_blank"} (Access is possible for those at Hopkins by using their email address)    
 
-<style>
-div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "red">
+[Motivating article about the rate of youths seeking mental health services](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"}    
 
-**It may be a good idea to provide a link to RStudio's webpage. For the first few months using R, I did not differentiate between R and R Studio. It may be a good distinction to make at least implicitly by providing a link.**
+[Cross-cultural review article about possible causes for increased depression](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"}
 
-</div>
-
-**This needs to be updated**
+[Review article about social media and depression](https://childmind.org/article/is-social-media-use-causing-depression/){target="_blank"}
 
 
-<u>Terms and concepts covered:</u>  
+<u>**Packages used in this case study:** </u>
 
-[Tidyverse](https://www.tidyverse.org/){target="_blank"}  
-[RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
-
-<u>Packages used in this case study: </u>
-
- Package   | Use                                                                         
+Package   | Use                                                                         
 ---------- |-------------
-[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data 
-[tidyverse](https://www.tidyverse.org/){target="_blank"}      | R packages for data science
-[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
+[rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
+[tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert a column to row names  
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
+[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
+
+#### {.emphasis_block}
+If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
+
+The **Crisis Text Line** is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to **741741** and a trained crisis counselor will respond to you with support and information over text message. Visit [www.crisistextline.org](www.crisistextline.org){target="_blank"}.
+
+####
+
+Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression
 
 
 ### Acknowledgements
@@ -2226,14 +2387,5 @@ We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/dir
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/){target="_blank"} for funding this work. 
 
 
-### **RA Notes**
 
-[This is the motivating article for this case study](https://pubmed.ncbi.nlm.nih.gov/30869927/){target="_blank"}. In this article, they web scrape to obtain the data they need. 
 
-[Here is the Lieber Institute's resource on web scrape](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}
-
-[Here is a resouce the Lieber Institute source above referse to](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
-
-[Here as a good resource to learn how to web scrape](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
-
-[This is the set of tables we would like to consider](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"}

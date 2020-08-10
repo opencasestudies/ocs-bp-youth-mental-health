@@ -72,3 +72,16 @@ li.toctree-l2:first-child {
    display: inline-block;
 }
 
+.resource_block {
+    padding: 15px;
+    border-radius: 5px;
+    background: #8FBC8F;
+    color: black
+}
+
+.emphasis_block {
+    border-radius: 5px; 
+    padding: 20px;
+    background: #FFE6E6;
+    color: black;
+}
