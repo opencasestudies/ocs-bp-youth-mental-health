@@ -304,7 +304,8 @@ markdown file (`README.md`).
 
 #### For instructors
 
-avocado fill this out
+Instructors can start at the Data Analysis or Data Visualization section
+if they choose to skip the Data Import and Data Wrangling sections.
 
 #### Target audience
 

@@ -175,7 +175,7 @@ Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"}
 There is a [`Makefile`](Makefile) in this folder that allows you to type `make` to knit the case study contained in the `index.Rmd` to `index.html` and it will also knit the [`README.Rmd`](README.Rmd) to a markdown file (`README.md`). 
 
 #### For instructors
-avocado fill this out
+Instructors can start at the Data Analysis or Data Visualization section if they choose to skip the Data Import and  Data Wrangling sections.
 
 #### Target audience 
 

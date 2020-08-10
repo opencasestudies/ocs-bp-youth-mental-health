@@ -1286,10 +1286,16 @@ percents %<>%
 
 Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
 
+```{r, eval = FALSE, echo = FALSE}
+save(percents, counts, table11.1a, table11.1b, file = here::here("data", "wrangled_data.rda"))
+```
 
 ## **Data Analysis**
 *** 
 
+```{r, echo = FALSE}
+load(file = here::here("data", "wrangled_data.rda"))
+```
 Recall what our main questions were:
 
 #### {.main_question_block}
@@ -1522,6 +1528,10 @@ avocado.. I think it makes sense to move the visualization section first... and 
 
 ## **Data Visualization**
 *** 
+
+```{r, echo = FALSE}
+load(file = here::here("data", "wrangled_data.rda"))
+```
 
 OK, so now we are going to make some visualizations to further explore our questions of interest.
 
@@ -2162,7 +2172,7 @@ Let's make a plot that summarizes our major findings.
 
 We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text.
 
-```{r, fig.height=10, echo=FALSE, message=FALSE, warning=FALSE}
+```{r}
 title_plots <- ggdraw() + 
   draw_label(
     "Self-Reported Depression Among American Youths",
@@ -2198,7 +2208,7 @@ forward <- ggdraw() +
 
 Now we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
 
-```{r, comment = FALSE}
+```{r}
 
 MDE_total_for_mp <-MDE_total +
   theme(plot.title = element_text(size = 14, 
@@ -2271,7 +2281,7 @@ Now we can combine everything together using `plot_grid()` yet again. Now that w
 
 Finally, we will use the `png()` function of the `grDevices` package which is automatically loaded in RStudio sessions to save the plot. We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`. We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
-```{r}
+```{r, eval = FALSE}
 png(filename = here::here("img", "mainplot.png"), 
          res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 
