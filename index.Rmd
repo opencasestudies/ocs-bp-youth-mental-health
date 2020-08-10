@@ -1798,7 +1798,7 @@ Census Bureau definitions:
 1) **AIAN** stands for American Indian and Alaska Native  
 2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
 
-We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. Those group who reported as Black or African American had the lowest percentages. However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
+We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. Those group who reported as Black or African American had the lowest percentages. However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. It is possible that this group may be less likely to report experiencing symptoms of depression.
 
 ### Major Depressive Episode with Severe Impairment
 
@@ -1862,9 +1862,10 @@ Census Bureau definitions:
 
 We see similar trends as we saw for the previous racial/ethnic group plot. The rate is highest for those who are two are more races and lowest for those who are Black or African American. The data for the AIAN group is sparse, so it is unclear if their levels would be lowest on the last year.
 
-### Receipt of treatment for depression 
+### Receipt of treatment for depression for youths who had a major depressive episode
 
 Now we will take a look at those who received treatment. First let's look overall.
+
 ```{r}
 Treat_total <-percents %>%
   filter(data_type == "treatment")%>%
@@ -1885,6 +1886,9 @@ Treat_total
 
 ```
 
+Overall roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. 
+
+This rate is increasing overtime like the trend of those who had a major depressive episode, yet the data is much more variable from one year to the next. 
 
 ```{r}
 treat<-percents %>%
@@ -2011,11 +2015,7 @@ sex_outcomes <-percents %>%
 sex_outcomes 
 ```
 
-We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they recieve a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to selfreport depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
-
-Lukily all groups appear to be receiving treatment at a higher percentage, than those reporting symptoms.
-
-Avocado... do those getting treatment then not report symptoms? or if they had symptoms earlier in the year... then they would be in both?
+We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they recieve a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to self-report depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
 
 ```{r}
 age_outcomes <-percents %>%
@@ -2039,7 +2039,7 @@ age_outcomes <-percents %>%
 age_outcomes 
 
 ```
-
+All age groups show a similar ratio of severe major depressive episodes for those that experienced an episode. 
 ```{r, fig.height=10}
 race_outcomes <-percents %>%
   filter(subgroup == "Race/Ethnicity") %>%
@@ -2062,6 +2062,7 @@ race_outcomes
 
 ```
 
+All racial and ethnic groups also show a similar rate of severe episodes relative to general episode rate. The rate of receiving treatment is fairly similar relative to the percentage of youths that reported having symptoms for each group.
 
 ## **Summary**
 *** 
@@ -2171,17 +2172,26 @@ dev.off()
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
+avocado: I want to add something about self-reporting bias to the  objectives
+
 ### Synopsis
 
-One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
+In this case study we  evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths reciving treatment for depression. We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
+
+By analysing and plotting our data, it is clear that depression rates appear to be increasing, particularly since 2011. However, it is possible that respondents had similar rates in previous years, but now feel less stigma about responding about depression symptoms when filling out the survey. The survey has always been anonymous, but [reporting bias](https://en.wikipedia.org/wiki/Self-report_study#:~:text=Self%2Dreport%20studies%20are%20inherently,answers%20will%20be%20more%20positive.){target="_blank"} can sometimes cause individuals to exaggerate or minimize their symptoms because of what they think researchers want their response to be or out of shame or embarassement, among other reasons. However, the data suggests that youths may be experiencing more symptoms of depression and that the rate of increase is quite high. Now nearly a quarter of all individuals that were female and of age 12-17 reported experiencing symptoms of depression. This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. Furthemore,if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
+
 
 ## **Homework**
 *** 
+Ask students to scrape tables 11.5A and 11.5B from the website which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform chi-square tests to evaluate how groups compare over time.
+
 
 ## **Additional Information**
 ***
 
 ### Helpful Links
+
+avocado need to do this section
 
 <style>
 div.red { background-color:#FFE6E6; border-radius: 5px; padding: 20px;}
