@@ -2,6 +2,11 @@
 OpenCaseStudies
 ===============
 
+<!-- badges: start -->
+[![R build
+status](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/actions)
+<!-- badges: end -->
+
 ### Disclaimer
 
 The purpose of the [Open Case
