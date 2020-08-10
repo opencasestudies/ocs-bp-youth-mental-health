@@ -339,7 +339,7 @@ Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"}
 
 
 
-avocado -Michael:Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.-Carrie:This is my attempt after Michael's... open to changes!
+avocado -Michael:Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.-Carrie:This is my attempt after Micheal's... open to changes!
 
 
 There are some important considerations regarding this data analysis to keep in mind: 
@@ -1075,6 +1075,7 @@ Finally we compare this to the number of columns that are numeric by using: `len
               
 Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
 
+See [here](https://adv-r.hadley.nz/quasiquotation.html#tidy-dots){target="_blank"} for information about the `:=` colon-equals operator. This operator is more flexible than the normal `=`. It allows expressions on both sides, thus it allows us to use an expression (the values for `new_col`) as the input value to the expressions that follow the `:=` operator.
 
 ```{r}
 data_prep_settings <- function(TABLE, new_col, pivot_col){
@@ -1160,7 +1161,7 @@ data_dem_settings <- function(TABLE){
   na_if("") %>%
   na_if("*") %>%
     rename(Demographic := names(.)[1]) %>%
-  mutate(Demographic := 
+    mutate(Demographic := 
          str_replace_all(string =pull(., Demographic),
                         pattern = "[:blank:]{1,}", 
                     replacement = " ")) %>%
@@ -1178,9 +1179,10 @@ data_dem_settings <- function(TABLE){
               length(select(., is.numeric)))}
 ```
 
-from Michael
+
 
 ```{r, eval=FALSE, echo=FALSE}
+#from Michael - I left this in case we decide we want to include something from this instead
 data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
   TABLE <- TABLE[-dim(TABLE)[1],]
   TABLE <- TABLE %>%
@@ -1385,10 +1387,11 @@ Where the degrees of freedom  = $df = 92-1)(2-1) = 1$
 
 What does this mean? We need to consult a chi-square distribution to determine what the p-value is and if this is significant.
 
-```{r}
+```{r, echo = FALSE}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
 ```
-#### [[source](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
+
+#### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
 This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. Note on this website the notation for $df$ is ${\nu}$.
 
@@ -1437,7 +1440,17 @@ For this function there are several important arguments:
 2) values_from - this is the variable where the values for the new columns will come from
 3) names_prefix - if we want to add a prefix to the new columns we can do so using this argument
 
-So in our case we want to spread out the year data into two columns thus the names will come from the `Year` variable and the values will come from the `Number` variable. We want to add the word `Year` to the new columns. We also want the remove the `subgroup` and `data_type` variables and only keep the `Demographic`, `Year`, and `Number` variables. To do so we can use the `select()` function. Fin
+So in our case we want to spread out the year data into two columns thus the names will come from the `Year` variable and the values will come from the `Number` variable. We want to add the word `Year` to the new columns. We also want the remove the `subgroup` and `data_type` variables and only keep the `Demographic`, `Year`, and `Number` variables. To do so we can use the `select()` function.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Using what you just learned about `pivot_wider()` and `select()` and without scrolling up, try to come up with the code to do the wrangling for this data.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
 
 ```{r}
 chi_square_11.2a %<>%
@@ -1449,6 +1462,8 @@ chi_square_11.2a %<>%
 chi_square_11.2a
 
 ```
+
+</details>
 
 Now we can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels the row names. Otherwise we would need to select the numeric columns to perform the stats test.
 
@@ -1469,6 +1484,13 @@ stats::chisq.test(chi_square_11.2a)
 ```
 
 We see that the p-value is very small, which suggests that sex does influence the count of major depressive episodes across time. 
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Using what you learned about the chi-squared test, describe the results in reference to the null hypothesis.
+
+####
 
 How about for severe major depressive episodes?
 
@@ -1494,10 +1516,23 @@ chi_square_11.3a
 ```{r}
 chisq.test(chi_square_11.3a)
 ```
+
+
+
 There also appears to be an influence of sex on the rate of severe major depressive episodes across the years.
 
 
 How about treatment?
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try performing the same wrangling as we did for the percentage of each demographic that reported having a major depressive episode for the data about treatment.
+
+####
+
+
+<details> <summary> Click here to reveal the code. </summary>
 
 
 ```{r}
@@ -1517,14 +1552,18 @@ chi_square_11.4a <- chi_square_11.4a %>%
 
 chi_square_11.4a
 ```
+</details>
+
 
 ```{r}
 chisq.test(chi_square_11.4a)
 ```
+
+
 There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
 
 
-avocado.. I think it makes sense to move the visualization section first... and use it to motivate that analysis from the year 2010 and of male and females...
+avocado.. I think it might make sense to move the visualization section first... and use it to motivate that analysis from the year 2010 and of male and females...
 
 ## **Data Visualization**
 *** 
@@ -1686,6 +1725,8 @@ Nice! Now it is much easier to tell how each group has changed over time.
 
 We can also add labels directly to the lines using the `directlabels` package. There are several methods to do so. See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  We will use the `"far.from.others.borders"` method so that our labels don't overlap one another. We will also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). We will use the `dl.move()` function of the `directlabels` package to move one of the labels to a particular location. 
 
+avocado: the dl.move functions are set up for the rendering the rmarkdown - so if you are viewing the case study from RStudio the labels will overlap.
+
 
 ```{r}
 directlabels::direct.label(MDE_age_sex, list(
@@ -1797,7 +1838,17 @@ MDE_race
 
 ```
 
-Unfortunately, there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points(2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
+Unfortunately, there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points (2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+How might we remove the `NHOPI` group from the legend?
+
+####
+
+
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
 percents %>%
@@ -1830,11 +1881,13 @@ MDE_race <-  percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) +
   scale_color_viridis_d()
-
-MDE_race
-
 ```
+</details>
 
+
+```{r}
+MDE_race
+```
 
 Census Bureau definitions:  
 1) **AIAN** stands for American Indian and Alaska Native  
@@ -1845,6 +1898,17 @@ We can see that the group of individuals who reported as being two or more races
 ### Major Depressive Episode with Severe Impairment
 
 Now let's take a look at how the rate of youths reporting having a major depressive episode with severe impairment has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+
+<details> <summary> Click here to reveal the code. </summary>
+
 
 ```{r}
 MDES <-percents %>%
@@ -1868,7 +1932,7 @@ MDES <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-direct.label(MDES, list(
+MDES <-direct.label(MDES, list(
   dl.trans(y = y +0.39, x = x -0.1), 
   "far.from.others.borders",
   cex = .8, 
@@ -1876,7 +1940,11 @@ direct.label(MDES, list(
 
 
 ```
+</details>
 
+```{r}
+MDES
+```
 
 We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket, however there appears to be a more dramatic change in the middle age group from 2011-2012. We can see a very steep increase in the data for the females after 2011, again this is much more steep than the increase seen for males over time.
 
@@ -1935,7 +2003,6 @@ Treat_total <-percents %>%
             ymin = -Inf, ymax = Inf,   
             fill = "light gray")+
   geom_line(aes(color = Demographic), size = 1.5) +
-  #geom_smooth(method = "loess", se = FALSE)+
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -1985,6 +2052,15 @@ treat
 There seems to be an upward trend, but it isn't nearly as much as the trend we saw for the increase of major depressive episodes. In general, the data seems to vary much more as well.
 
 
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
 ```{r}
 Race_treat <-percents %>%
   filter(data_type == "treatment")%>%
@@ -2008,10 +2084,14 @@ Race_treat <-percents %>%
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) +
     scale_color_viridis_d()
-
-Race_treat
-
 ```
+</details>
+
+```{r}
+Race_treat
+```
+
+
 It looks as though youths who report as being white received the most care from mental health services.
 
 
@@ -2080,8 +2160,7 @@ plotMHSS <-direct.label(plotMHSS, list(
   dl.move("Therapist", x=2009, y = 10.5)))
 plotMHSS
 ```
-
-
+It looks like most youths are receiving care from either a therapist or a school therapist.
 
 OK, so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment. We also know where youths are typically getting treatment. But how do the rates of having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment compare within each group?
 
@@ -2093,7 +2172,7 @@ sex_outcomes <-percents %>%
   ggplot(aes(x = Year, 
              y = Percent, 
          color = Demographic)) +
-  geom_line(aes(linetype= data_type), size = 1) +
+  geom_line(aes(linetype = data_type), size = 1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
@@ -2115,7 +2194,6 @@ We can see that a large portion of individuals experiencing a major depressive e
 ```{r}
 age_outcomes <-percents %>%
   filter(subgroup == "Age") %>%
-  #filter(Demographic != "NHOPI") %>%
   ggplot(aes(x = Year, 
              y = Percent, 
          color = Demographic)) +
@@ -2170,7 +2248,15 @@ All racial and ethnic groups also show a similar rate of severe episodes relativ
 
 Let's make a plot that summarizes our major findings.
 
-We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text.
+We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text. The `x = 0` argument places the title on the far left edge of the plot area. The `hjust` argument moves the label in the horizontal direction. Thus if we use a value of -0.01 it will move the title just a bit away from the left edge of the plot area.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+What happens if we modify the hjust value?
+
+####
+
 
 ```{r}
 title_plots <- ggdraw() + 
@@ -2180,9 +2266,6 @@ title_plots <- ggdraw() +
     size=18,
     x = 0,
     hjust = -0.01
-  ) +
-  theme(
-    plot.margin = margin(0, 0, 0, 0.5)
   )
 ```
 
@@ -2194,16 +2277,10 @@ forward <- ggdraw() +
   draw_label(
     "The percentage of youths experiencing major depressive episodes and receiving treatment\n for depression has increased especially since 2011",
     fontface = 'bold',
-    size=14,
+    size = 14,
     x = 0,
     hjust = -0.01
-  ) +
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
   )
-
-
-
 ```
 
 Now we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
@@ -2237,6 +2314,7 @@ MDE_age_sex_for_mp <- MDE_age_sex +
 ```
 
 For this last plot we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that doesn't shrink the size of our plot to accommodate the legend. We can use the `get_legend()` function of the `cowplot` package to do this. However, beforehand, we also want to change the way the legend is displayed. We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 rows like so `guides(guide_legend(nrow = 2))`.
+
 ```{r}
 MDE_race_for_mp_leg <- MDE_race +
   theme(plot.title= element_text(size = 14, 
@@ -2253,12 +2331,25 @@ legend <-get_legend(MDE_race_for_mp_leg)
 
 ```
 
-Now we will remove the legend for this plot:
+Now we will remove the legend for this plot.
+
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Do you recall how to do this? Without scrolling up, see if you can figure out how.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
 ```{r}
 MDE_race_for_mp <-MDE_race_for_mp_leg +
   theme(legend.position = "none")
 
 ```
+</details>
+
 
 OK, now we are ready to start putting our plots together using the `plot_grid()` function of the `cowplot` package. 
 
@@ -2281,7 +2372,7 @@ Now we can combine everything together using `plot_grid()` yet again. Now that w
 
 Finally, we will use the `png()` function of the `grDevices` package which is automatically loaded in RStudio sessions to save the plot. We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`. We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 png(filename = here::here("img", "mainplot.png"), 
          res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 

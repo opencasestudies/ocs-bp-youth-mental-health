@@ -58,9 +58,9 @@ A
 also shows that youths appear to be seeking more care from mental health
 services.
 
-We will explore the rate of self-reported depression amoung american
+We will explore the rate of self-reported depression among american
 youths age 12-17 from roughly 2004 to 2018. We will also explore data
-about the rate at which youths that have expereinced depression symptoms
+about the rate at which youths that have experienced depression symptoms
 are receiving mental health services. We also investigate where youths
 are receiving care.
 
@@ -129,7 +129,7 @@ files with unusual header structures and with similar data in multiple
 tables within the same file. This involves using the `stringr` package
 to split, subset, detect, extract, and modify patterns of text. This
 also involves using the `tidyr` package to change data shape and using
-the `dplyr` package to summarise, select, filter, modify, and join data.
+the `dplyr` package to summarize, select, filter, modify, and join data.
 They case study also covers using various `map_*()` functions of the
 `purrr` package to perform functions across tibbles within lists and the
 `across()` function of the `dplyr` package to perform functions across
@@ -144,7 +144,7 @@ to directly add labels to plots. We also demonstrate how to use the
 `dl.trans()` and `dl.move()` functions. We especially demonstrate how to
 visualize many overlapping groups longitudinally using direct labels and
 faceting. We also provide a thorough explanation of how to combine plots
-using the `cowplot` package. In doing so, we also demostrate how to
+using the `cowplot` package. In doing so, we also demonstrate how to
 modify the layout of a legend using the `guides()` function of the
 `ggplot2` package.
 
@@ -158,7 +158,7 @@ We demonstrate how to manually calculate the *χ*<sup>2</sup> and degrees
 of freedom, as well as how to implement the test in R using the
 `chisq.test()` function of the `stats` package. We also discuss how to
 interpret the results. We perform the test to compare the frequency of
-individuals reporting a major depressive episode in the past year amoung
+individuals reporting a major depressive episode in the past year among
 two groups across two years.
 
 ### Other notes and resources
