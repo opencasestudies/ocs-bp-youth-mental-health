@@ -1,5 +1,5 @@
 ---
-title: "Open Case Studies : Mental Health of American Youth"
+title: "Open Case Studies: Mental Health of American Youth"
 css: style.css
 output:
   html_document:
@@ -41,6 +41,8 @@ library(magick)# to create gif
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
+AVOCADO: I really like the plot! Should clarify what the bottom two plots are referring to? i.e. % of major depressive episode (vs treatment which is only in the top left plot)? Also, the color legend only is relevant for the bottom right plot. Should we move those closer? 
+
 ####
 
 ## {.disclaimer_block}
@@ -61,11 +63,12 @@ Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hi
 ## **Motivation**
 *** 
 
-Rates of depression appear to have been increasing among American youths since around 2010 according to a recent [report](https://content.apa.org/record/2019-12578-001){target="_blank"}. A [recent study](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"}) also shows that youths appear to be seeking more care from mental health services.
+Rates of depression appear to have been increasing among American youths since around 2010 according to a recent [report](https://content.apa.org/record/2019-12578-001){target="_blank"}. A [recent study](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"} also shows that youths appear to be seeking more care from mental health services.
 
 
 
-This case study will explore how rates of major depressive episodes have changed since the early 2000s. As well as how rates of treatment for depression of youths have changed over time.
+This case study will explore how rates of major depressive episodes have changed since the early 2000s and across different youth subgroups (age, gender, ethnicity). 
+We also will explore how rates of treatment for depression of youths have changed over time.
 
 
 ```{r,echo = FALSE, out.width="40%"}
@@ -85,46 +88,49 @@ The major symptoms of a major depressive episode include:
 **P**sychomotor retardation or agitation  
 **S**uicidality  
 
-#### [[source]](https://www.icsi.org/guideline/depression/diagnose-and-characterize-major-depression-persistent-depressive-disorder-with-clinical-interview/){target="_blank"}  
+##### [[source]](https://www.icsi.org/guideline/depression/diagnose-and-characterize-major-depression-persistent-depressive-disorder-with-clinical-interview/){target="_blank"}  
 
 
 ```{r, echo = FALSE, out.width="80%"}
 knitr::include_graphics(here::here("img", "depression-symptoms-and-treatment-768x768.jpg"))
 ```
 
-#### [[source]](https://newmilfordcounselingcenter.com/depression-2/){target="_blank"}  
+##### [[source]](https://newmilfordcounselingcenter.com/depression-2/){target="_blank"}  
 
-<details> <summary> Click here to see the diagnostic requirements for a major depressive episode according to the [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}</summary>    
+***
+<details> <summary> Click here to see the diagnostic requirements for a major depressive episode (MSE) according to the [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}.</summary>    
+
+AVOCADO: Was there suppose to be an "A." below? I see a "B." and "C"
 
 Five or more of the following symptoms have been present and documented during the same two-week period and represent a change from previous functioning; at least one of the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.  
 
-Note: Do not include symptoms that are clearly attributable to another medical condition.  
+**Note**: Do not include symptoms that are clearly attributable to another medical condition.  
 
-1) Depressed mood most of the day, nearly every day, as indicated by either subjective report (e.g., feels sad, empty, hopeless) or observation made by others (e.g., appears tearful)  
+1. Depressed mood most of the day, nearly every day, as indicated by either subjective report (e.g., feels sad, empty, hopeless) or observation made by others (e.g., appears tearful)  
 
-2) Markedly diminished interest or pleasure in all, or almost all, activities most of the day, nearly every day (as indicated by either subjective account or observation)  
+2. Markedly diminished interest or pleasure in all, or almost all, activities most of the day, nearly every day (as indicated by either subjective account or observation)  
 
-3) Significant weight loss when not dieting or weight gain (e.g., a change of more than 5% of body weight in a month), or decrease or increase in appetite nearly every day  
+3. Significant weight loss when not dieting or weight gain (e.g., a change of more than 5% of body weight in a month), or decrease or increase in appetite nearly every day  
 
-4) Insomnia or hypersomnia nearly every day  
+4. Insomnia or hypersomnia nearly every day  
 
-5) Psychomotor agitation or retardation nearly every day (observable by others, not merely subjective feelings of restlessness or being slowed down)  
+5. Psychomotor agitation or retardation nearly every day (observable by others, not merely subjective feelings of restlessness or being slowed down)  
 
-6) Fatigue or loss of energy nearly every day  
+6. Fatigue or loss of energy nearly every day  
 
-7) Feelings of worthlessness or excessive or inappropriate guilt (which may be delusional) nearly every day (not merely self-reproach or guilt about being sick)  
+7. Feelings of worthlessness or excessive or inappropriate guilt (which may be delusional) nearly every day (not merely self-reproach or guilt about being sick)  
 
-8) Diminished ability to think or concentrate, or indecisiveness, nearly every day (either by subjective account or as observed by others)  
+8. Diminished ability to think or concentrate, or indecisiveness, nearly every day (either by subjective account or as observed by others)  
 
-9) Recurrent thoughts of death (not just fear of dying), recurrent suicidal ideation without a specific plan, or a suicide attempt or a specific plan for committing suicide  
+9. Recurrent thoughts of death (not just fear of dying), recurrent suicidal ideation without a specific plan, or a suicide attempt or a specific plan for committing suicide  
 
 B. The symptoms do not meet criteria for a mixed episode.  
 
 C. The episode is not attributable to the physiological effects of a substance or to another medical condition.  
 
-Note: Criteria A-C represent a major depressive episode.  
+**Note**: Criteria A-C represent a major depressive episode.  
 
-Note: Responses to a significant loss (e.g., bereavement, financial ruin, losses from a natural disaster, a serious medical illness or disability) may include feelings of intense sadness, rumination about the loss, insomnia, poor appetite and weight loss noted in Criterion A, which may resemble a depressive episode. Although such symptoms may be understandable or considered appropriate to the loss, the presence of a major depressive episode in addition to the normal response to a significant loss should also be carefully considered. This decision inevitably requires the exercise of clinical judgment based on the individual’s history of and the cultural norms for the expression of distress in the context of loss.  
+**Note**: Responses to a significant loss (e.g., bereavement, financial ruin, losses from a natural disaster, a serious medical illness or disability) may include feelings of intense sadness, rumination about the loss, insomnia, poor appetite and weight loss noted in Criterion A, which may resemble a depressive episode. Although such symptoms may be understandable or considered appropriate to the loss, the presence of a major depressive episode in addition to the normal response to a significant loss should also be carefully considered. This decision inevitably requires the exercise of clinical judgment based on the individual’s history of and the cultural norms for the expression of distress in the context of loss.  
 
 D. The occurrence of the major depressive episode is not better explained by schizoaffective disorder, schizophrenia, schizophreniform disorder, delusional disorder, or other specified and unspecified schizophrenia spectrum and other psychotic disorders.  
 
@@ -133,11 +139,11 @@ E. There has never been a manic episode or a hypomanic episode.
 Note: This exclusion does not apply if all of the manic-like or hypomanic-like episodes are substance-induced or are attributable to the physiological effects of another medical condition.  
 
 </details>  
-  
-    
-  
+
+***   
+
+
 This case study is motivated by the following two articles:  
-  
 
 #### {.reference_block}
 
@@ -158,20 +164,21 @@ The main findings of the first [article](https://content.apa.org/record/2019-125
 
 While the main findings of the second [article](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"} are:
 
->Compared with adult mental health care, the mental health
+> Compared with adult mental health care, the mental health
 care of young people has increased more rapidly.
 
->Between 1995-1998 and 2007-2010, visits resulting in mental disorder diagnoses
+> Between 1995-1998 and 2007-2010, visits resulting in mental disorder diagnoses
 per 100 population increased significantly faster for youths (from 7.78 to 15.30 visits) than for
 adults (from 23.23 to 28.48 visits) (interaction: P < .001). 
 
->Psychiatrist visits also increased
+> Psychiatrist visits also increased
 significantly faster for youths (from 2.86 to 5.71 visits).
 
 
-Again while depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
+**Summary**: While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
 
-In this case study we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode rate to explore how this have changed over time and how different groups compare. This data was also used in the first referenced article.  
+In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode rate to explore how this have changed over time and how different groups compare. 
+This data was also used in the first referenced article.  
 
 
 ## **Main Questions**
@@ -180,8 +187,8 @@ In this case study we will be using data from the [National Survey on Drug Use a
 #### {.main_question_block}
 <b><u> Our main questions: </u></b>
 
-1) How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
-2) Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
+1. How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2. Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
 
 
 ####
@@ -206,6 +213,8 @@ In this case study we will be using data from the [National Survey on Drug Use a
 
 
 In this case study, we will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+
+AVOCADO: should we update the "R especially efficient" text?
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -251,58 +260,61 @@ The first time we use a function, we will use the `::` to indicate which package
 ## **Context**
 *** 
 
-According to the CDC the rate of suicide has also increased for most age groups in the United States over the past decade and a half.
+To motivate the examination of the mental health of American youths, we begin by exploring the rate of suicide in the United States (US). 
+According to the CDC the rate of suicide has increased for most age groups in the US over the past decade and a half.
+
+AVOCADO: unsure if you meant to show a different plot (i.e. one stratified by age groups) or if you meant to write different text in the sentence above (i.e. stratified by gender)? 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.png")
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
+##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-While suicide does appear to be increasing among youths it also appears to be increasing among middle aged adults for both females and males. 
+While suicide does appear to be increasing among youths it also appears to be increasing among middle aged adults for both females: 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
+##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-
+and males:
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig3.png")
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
+##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
 According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
 
 > Since 2008, suicide has ranked as the 10th leading cause of death for all ages in the United States. In 2016, suicide became the **second leading cause of death** among those aged **10–34** and the fourth leading cause among those aged 35–54.
 
-
-
+AVOCADO: Do we need the plot below? It's not super clear to me how the text above relates as suicide is so far down the list? Also it doesn't have age in the plot? 
 
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality.png"))
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}   
+##### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}   
 
   
 
 **So although suicide is on the rise for most age groups, suicide is one of the top *two* contributors to death for youths.**   
 
-Thus this warrants further examination of the mental health of American youths.  
+Thus, this warrants further examination of the mental health of American youths.  
 
+AVOCADO: oh i see, i think this is the plot you were referring to in the text above. Yeah, I would get ride of the `img/mortality.png` plot and just use this plot. However, the age groups don't quite match up. The pie chart doesn't have a category 35-54? 
 
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality_age.png"))
 ```
 
-#### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf){target="_blank"}
+##### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf){target="_blank"}
 
 
 
@@ -312,11 +324,12 @@ Historically, suicide rates were much higher before 1950, however, we are seeing
 knitr::include_graphics(here::here("img","suicide.png"))
 ```
 
-#### [[source]](https://time.com/5609124/us-suicide-rate-increase/){target="_blank"}
+##### [[source]](https://time.com/5609124/us-suicide-rate-increase/){target="_blank"}
 
 
 
-Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased rates of depression in youths. See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the  World Health Organization about rates of depression in other countries.
+Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased rates of depression in youths. 
+See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the World Health Organization (WHO) about rates of depression in other countries.
 
 See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} for an interesting discussion about what may be causing increased depression rates. 
 
@@ -337,33 +350,28 @@ Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"}
 ## **Limitations**
 *** 
 
-
-
-avocado -Michael:Perhaps "underestimates in the p-values..." is not the correct way to phrase this. I would look for a better way to word this.-Carrie:This is my attempt after Micheal's... open to changes!
-
-
 There are some important considerations regarding this data analysis to keep in mind: 
 
-1) The data that we will use come from a survey and are therefore values from a sample that estimate that of the true population. In our statistical analysis we use these sample values as if they are population estimates (because this is all we have access to). Thus our results are not necessarily indicative of true differences.
+1. The data that we will use come from a survey and are therefore values from a sample that estimate that of the true population. In our statistical analysis we use these sample values as if they are population estimates (because this is all we have access to). Thus, our results are not necessarily indicative of population differences.
 
-2) Furthermore, the sampling mechanism utilized can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
+2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
 
-3) Data is collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
+3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 ## **What are the data?**
 *** 
 
 We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-This survey started in 1971 and is conducted annually in all 50 states and the District of Columbia. Approximately 70,000 people (age 12 and up) are interviewed each year about health related issues. Only civilian, non-institutionalized individuals are included. Households are randomly selected and than a professional interviewer visits the addresses and asks one or two of the residents to interview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to participate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particularly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
+This survey started in 1971 and is conducted annually in all 50 states and the District of Columbia. Approximately 70,000 people (ages 12 and up) are interviewed each year about health related issues. Only civilian, non-institutionalized individuals are included. Households are randomly selected and than a professional interviewer visits the addresses and asks one or two of the residents to interview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to participate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particularly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
 
-This data is made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
+The data are made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
 include_graphics(here::here("img", "nsudh_screenshot_webpage.png"))
 ```
 
-At the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} for the survey data, you can see that the results are displayed in many tables. Importantly, there is no obvious way to download the data directly from this particular website.
+On the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} with the survey data, you can see that the results are displayed in many tables. Importantly, there is no obvious way to download the data directly from this particular website.
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
 include_graphics(here::here("img", "website_overview.png"))
@@ -371,7 +379,7 @@ include_graphics(here::here("img", "website_overview.png"))
 
 If one clicks on the TOC button on the far right upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
 
-We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus the following tables are of interest to us are:
+We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus, the following tables are of interest to us are:
 
 Table   | Details                                                                         
 ---|-------------
@@ -384,9 +392,12 @@ Table 11.3B       | Major Depressive Episode with Severe Impairment in Past Year
 Table 11.4A       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Numbers in Thousands, 2004-2018
 Table 11.4B       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Percentages, 2004-2018
 
+Our goal is to bring these data into R so we can explore them. 
+
+***
+<details> <summary>Click here for the NSDUH defines a major depressive episode (MDE) </summary>  
 
 According to the [NSDUH 2018 report](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHNationalFindingsReport2018/NSDUHNationalFindingsReport2018.pdf){target="_blank"}
-
 
 > Respondents were defined as having had an MDE in
 the past 12 months if they had at least one period of 2 weeks
@@ -404,30 +415,31 @@ severe impairment if their depression caused severe problems
 with their ability to do chores at home, do well at work or
 school, get along with their family, or have a social life.
 
-
+</details>
+*** 
 
 
 ## **Data Import**
 *** 
 
-Data is often made available online. Usually, the data we are interested in is made available for download on the page as a delimited text file or an excel file. However, sometimes data is not made available in this manner, such as the [NSDUH survey data](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"}.
+Data are often made available online. Sometimes, the data we are interested in is made available for download on a web page as a delimited text file or an excel file. However, sometimes data are not made available in this manner, such as the [NSDUH survey data](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"}.
 
 How do we proceed in this scenario?
 
 We can manually copy each cell of data, however, this process is often inefficient, subject to error, and not reproducible. Say we wanted to run an analysis next year on the next years data and it happens to be formatted in the same way. 
 
-We can also use `R` for web scraping. 
+Alternatively, we could use `R` for to scrape the data from the web! 
 
-[Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} is the process of extracting data from a website.
+Formally, [web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} is the process of extracting data from a webpage. Let's learn how to do this for our case study. 
 
 
 ### Basic steps of web scraping
 
 There are two main steps to web scraping:  
 
-1. Identify location of data on the webpage that will be scraped  
+1. Identify **location** of data on the webpage that will be scraped.
 
-2. Save the webpage element to an object  
+2. Save the webpage **element** to an R **object**.
 
 We accomplish STEP 1 with our web browser.
 
@@ -444,24 +456,29 @@ We accomplish STEP 2 in the `R` programming environment.
 
 ####
 
-In this case study we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. This data is available in a large PDF with all the results form the year. However it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract the data from the pdf with `pdftools`. Again, if we instead decided to copy paste the data from the website to another file that we would also need to import, this would not be as efficient or reproducible and might result in errors. 
 
+In this case study, we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. 
+These data are available in a large PDF with all the results by year. 
+However, it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract the data from the pdf with `pdftools`. 
+Again, if we instead decided to copy paste the data from the website to another file that we would also need to import, this would not be as efficient or reproducible and might result in errors. 
 
-Alternatively, we will use the `rvest` package to [scrape](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} the data directly from the tables on the website. Assuming the data next year would be displayed in a similar manner, this could allow us simply modify our code based on the url for the data next year to run the same analysis on the data easily. 
+Alternatively, we will use the `rvest` package to [scrape](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} the data directly from the tables on the website. 
+Assuming the data next year would be displayed in a similar manner, this could allow us simply modify our code based on the url for the data next year to run the same analysis on the data easily. 
 
-The `rvest`  package can be thought of as the `pdftools` package for web scraping. Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
+The `rvest`  package can be thought of as the `pdftools` package for web scraping. 
+Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
 
-### Steps for scraping tables
+### Scraping tables into R
 
 The two web scraping steps for these tables can be broken down even further: 
 
-1) Identify location of data that will be scraped
+1. Identify location of data that will be scraped
 
 + right-click to inspect element (webpage)
 + hover pointer over components of element (webpage) until the data has been found
 + copy XPath of data sought
 
-2) Save webpage element to an object in R
+2. Save webpage element to an object in R
 
 + import html code for the webpage
 + extract pieces of HTML documents (webpage) using XPath
@@ -470,8 +487,7 @@ The two web scraping steps for these tables can be broken down even further:
 Below is a animated overview of the process.
 
 ```{r, echo = FALSE}
-step1 <- image_read(here::here("img", 
-"webpage_screenshot.png"))
+step1 <- image_read(here::here("img", "webpage_screenshot.png"))
 step2 <- image_read(here::here("img", "table_screenshot_inspect.png"))
 step3 <- image_read(here::here("img", "table_screenshot_inspect_table.png"))
 step4 <- image_read(here::here("img", "table_screenshot_inspect_table_xpath.png"))
@@ -512,11 +528,13 @@ image_write(educational_gif,
 knitr::include_graphics(here::here("img","educational.gif"))
 ```
 
+AVOCADO: Should we mentioned how all the functions `image_read()` work from magick? it's really cool! Seems like a data science learning objective? 
+
 ***
 
 Now let's go through each step together:
 
-### 1) Identify location of data that will be scraped
+#### 1) Identify location of data that will be scraped
 
 First, let's go to the [web page](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} with all the tables we are interested in scraping
 
@@ -524,9 +542,9 @@ First, let's go to the [web page](https://www.samhsa.gov/data/sites/default/file
 step1
 ```
 
-Once on the webpage, there aren't any visible options to download the data. 
+Once on the webpage, there are not any visible options to download the data. 
 
-Right-click and select "Inspect" 
+Right-click and select "Inspect".
 
 ```{r, step2, echo=FALSE}
 step2
@@ -536,7 +554,9 @@ A window opens.
 
 This window allows us to glance at the internal mechanics of the webpage. To scrape the data from the webpage, we need to first learn a little bit about the components that make it the web page it is. 
 
-Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents. By hovering over several elements—and clicking on the elements on the right side of the screen—we can identify the element that contains the data we are looking for. Another option for identifying XPaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}.  
+Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents.
+By hovering over several elements—and clicking on the elements on the right side of the screen—we can identify the element that contains the data we are looking for. 
+Another option for identifying XPaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}.  
 
 ```{r,step3, echo=FALSE}
 step3 
@@ -556,7 +576,7 @@ step5
 
 ***
 
-### 2) Save webpage element to an object in R 
+#### 2) Save webpage element to an object in R 
 
 For the first table we want to scrape, the XPath is `/html/body/div[4]/div[1]/table`. We use this XPath with functions from the `rvest` package to scrape the data from this table.
 
@@ -588,52 +608,57 @@ In fact, when we load `rvest` the first time we see:
 knitr::include_graphics(here::here("img", "rvest.png"))
 ```
 
-In this case, we are scraping table 11.1a from the website. First we assign the url to a character string to use within the `read_html()` function of the `xml2` package. 
+In this case, we are scraping Table 11.1A from the website. 
+First, we assign the URL to a character string to use within the `read_html()` function in the `xml2` package. 
 
 ```{r}
 NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
 ```
 
-One could also directly use the url but this is less convenient for piping.  
+One could also directly use the URL but this is less convenient for piping.  
 
+***
 <details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` operator</summary>  
 
-By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which are usable when loading the tidyverse or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. This allows us to perform multiple sequential steps on one data input.   
+By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. 
+This allows us to perform multiple sequential steps on one data input.   
 
 </details>  
-
+***
   
-The `read_html()` function then allows us to save the html document for the webpage inside R. 
+Then, the `read_html()` function allows us to save the html document for the webpage inside R. 
 
 ```{r}
-webpage <- NSDUH_url %>%
+webpage <- 
+  NSDUH_url %>%
   xml2::read_html() 
 webpage
 ```
 
-Then we use the `html_nodes()` function of the `rvest` package to select just the table11.1a element of the webpage.
+Then, we use the `html_nodes()` function of the `rvest` package to select just the Table 11.1A element of the webpage.
 
 See this [tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"} in case you get stuck) on CSS selectors to understand more about how this function works to use the `xpath` to select the elements of interest from the webpage.
 
-
 ```{r}
-webpage_element <-webpage %>%
+webpage_element <-
+  webpage %>%
   rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table')
 webpage_element 
-
 ```
 
 Finally, the `html_table()` function of the `rvest` package parses the html object into a data frame.
 
 ```{r}
-
-table11.1a<-webpage_element%>%
+table11.1a <- 
+  webpage_element %>%
   rvest::html_table()
+
 print(table11.1a, max = 2)
 glimpse(table11.1a)
 ```
 
 We can see that the output is a list with one element, to extract the data from the list we will use brackets `[[]]` to select the first element of the list.
+
 ```{r}
 table11.1a <- table11.1a[[1]]
 ```
@@ -642,7 +667,8 @@ table11.1a <- table11.1a[[1]]
 Putting this all of this together we can do the entire process like this with our pipe operator `%>%`.
 
 ```{r}
-table11.1a <- NSDUH_url %>%
+table11.1a <- 
+  NSDUH_url %>%
   xml2::read_html() %>%
   rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table') %>%
   rvest::html_table()
@@ -650,16 +676,19 @@ table11.1a <- table11.1a[[1]]
 ```
 
 
-Now need to repeat the above process for the other tables we are interested in. 
+Now, we need to repeat the above process for the other tables we are interested in. 
 
 ### Writing a function to scrape multiple tables
 
-We can create a function to accomplish this succinctly. 
-Functions allow us to perform the same process on multiple data inputs. See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
+One option is to copy and paste code we wrote above. 
+However, this is not very efficient and is error prone.
+Alternatively, we can create a R function to accomplish this succinctly. 
+Functions allow us to perform the same process on multiple data inputs. 
+See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
 
-In general, the process pf writing functions involves first specifying an input that is used within the function to create an output. In this case the data input is `XPATH` which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
+In general, the process of writing functions involves first specifying an input that is used within the function to create an output. In this case, the data input is `XPATH`, which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
 
-We will all this function `scraper`.
+We will call this function `scraper`.
 
 ```{r}
 scraper <- function(XPATH){
@@ -686,19 +715,24 @@ table11.4b <- scraper(XPATH = '/html/body/div[4]/div[8]/table')
 ```
 
 
-Great! We have successfully scraped the data.
+Great! We have successfully scraped the data from the web into R!
 
-Now we need to wrangle the data.
+Next, we need to wrangle the data.
 
 
 ## **Data Exploration and Wrangling**
 *** 
 
-Now that we've imported the data, let's see if we can wrangle a table. Since the data appears to be formatted in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. This is because well-maintained data sources often format different datasets similarly. We can take advantage of this similarity to speed up the wrangling process. 
+Now that we have imported the data, let's see if we can wrangle a table. 
+Since the data appear to be formatted in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. 
+This is because well-maintained data sources often format different datasets similarly. 
+We can take advantage of this similarity to speed up the wrangling process. 
+
 
 ### **Table11.1a**
 
-First we want to remove the last row of our data frame, which happens to be the legend of our table. Recall from looking at the website that there is a legend for this table.
+First, we want to remove the last row of our data frame, which happens to be the legend of our table. 
+Recall from looking at the website that there is a legend for this table.
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
@@ -712,7 +746,8 @@ table11.1a %>%
   tail(n = 1)
 ```
 
-We can see that the legend is repeated for every column. Let's take a look at the year 2004 column.
+We can see that the legend is repeated for every column. 
+Let's take a look at the year 2004 column.
 ```{r}
 table11.1a %>%
   dplyr::as_tibble() %>%  
@@ -728,7 +763,9 @@ legend <- table11.1a %>%
   tail(n = 1)
 ```
 
-Another way to look at the last row is to use the `n()` function of the `dplyr` package. This function can be used inside other `dplyr` functions and it counts the total number of observations of a group. Within the [`slice()` function](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} of the `dplyr` package, it allows you to refer the full length of the object.
+Another way to look at the last row is to use the `n()` function of the `dplyr` package. 
+This function can be used inside other `dplyr` functions and it counts the total number of observations of a group. 
+Within the [`slice()` function](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} of the `dplyr` package, it allows you to refer the full length of the object.
 
 ```{r}
 table11.1a %>%
@@ -737,9 +774,10 @@ table11.1a %>%
 ```
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
-We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. This allows us to use the table11.1a as our input and reassign it at the end after all the steps have been performed.
+We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. 
+This allows us to use the `table11.1a` as our input and reassign it at the end after all the steps have been performed.
 
-We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist).), which is the tidyverse version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
+We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist).), which is the `tidyverse` version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
 
 ```{r}
 table11.1a %<>%
@@ -749,23 +787,21 @@ table11.1a %<>%
 
 Now let's take a look at data:
 ```{r}
-table11.1a
+head(table11.1a)
 ```
 
 Great! We can see the the legend is no longer part of the data.
 
-Now let's use the legend to recode the data. There are many different values for missing data, that we would like to replace with `NA` instead.
+Now let's use the legend to recode the data. 
+There are many different values for missing data, that we would like to replace with `NA` instead.
 We can use the `pull()` function of the `dplyr` package to take a look at the legend data:
 
 ```{r}
 pull(legend, `2004`)
 ```
 
-Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. We can use the `na_if()` function to recode these values to `NA`.
-
-avocado... there isn't support for doing this in one command... but could at least do two commands
-
-
+Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. 
+We can use the `na_if()` function to recode these values to `NA`.
 
 ```{r}
 table11.1a %<>%
@@ -774,14 +810,20 @@ table11.1a %<>%
   dplyr::na_if("") %>%
   dplyr::na_if("*")
 
-table11.1a 
+head(table11.1a)
+```
+Let's look at the column names in our table: 
+```{r}
+colnames(table11.1a)
 ```
 
-Now let's rename the first column using the `rename()` function of the `dplyr` package. This requires listing the new name first like so: `new_name = old_name`.
+Let's rename the first column using the `rename()` function of the `dplyr` package. 
+This requires listing the new name first like so: `new_name = old_name`.
+
 ```{r}
 table11.1a %<>%
-  dplyr::rename(MHS_setting = 
-                  `Setting Where Mental Health ServiceWas Received`)
+  dplyr::rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
+
 head(table11.1a)
 ```
 
@@ -789,162 +831,172 @@ Nice!
 
 Now you may notice that the individual values have an `"a"` after the numeric value.
 
-According to the legend this indicates if "the difference between this estimate and the 2018 estimate is significant at the .05 level."
+According to the legend this indicates if "the difference between this estimate and the 2018 estimate is significant at the $\alpha$=.05 level."
 
 While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
 
 Since lower case "a" values occur in the first column values, we want to makes sure we don't remove these.
 
-So how can we do this? We can use the `stringr` package to modify character strings. and we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
+So how can we do this? We can use the `stringr` package to modify character strings. 
+Also, we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
 
-Currently all of our data is of class character as indicated by the `<chr>` under the column names. 
+Currently all of our data are character strings as indicated by the `<chr>` under the column names. 
 
+***
 <details> <summary> Click here for an explanation of what a character string is </summary>
 
-There are several classes of data in R programming. Character is one of these classes. 
-A character string is an individual data value made up of characters. This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. If data is of class character, than the numeric values will not be processed like a numeric value in a mathematical sense. If you want your numeric values to be interpreted that way, they need to be converted to a numeric class. The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
+There are several classes of data in R programming. 
+Character is one of these classes. 
+A character string is an individual data value made up of characters. 
+This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. 
+If data are of class character, than the numeric values will not be processed like a numeric value in a mathematical sense. 
+If you want your numeric values to be interpreted that way, they need to be converted to a numeric class. 
+The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
 
 </details>
-
+***
   
-The `stringr` package has functions that allow us to replace (the `str_replace()` function) or remove(the `str_remove()` function) characters. 
+The `stringr` package has functions that allow us to replace (using the `str_replace()` function) or remove (using the `str_remove()` function) characters. 
 
-To use these we need to be able to specify what we want to remove and replace. 
+To use these, we need to be able to specify what we want to remove and replace. 
 
 Here is a part of a [cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"} about string manipulation from RStudio.
-```{r}
+
+```{r, echo=FALSE}
 knitr::include_graphics(here::here("img", "regex.png"))
 ```
 
-We can see that we can refer to any digit (such as 1,2,3 etc.) as `[:digit:]`.
+We can see that we can refer to any digit (such as 1, 2, 3 etc.) as `[:digit:]`.
 We can also see that we can refer to any punctuation mark as `[:punct:]`.
 Finally, we see that spaces and tabs can be referred to as `[:blank:]`.
 
-
-If we take a closer look at the first column of our table (using the `pull()` function of the `dplyr` package), we can see that besides the `"a"` values that we see adjacent to our numeric values in the body of the table, we also some large white spaces, some numeric values, instances of `\r\n`, as well as some commas and other punctuation marks. 
+If we take a closer look at the first column of our table (using the `pull()` function of the `dplyr` package), we can see that besides the `"a"` values that we see adjacent to our numeric values in the body of the table, we also have some large white spaces, some numeric values, instances of `\r\n`, as well as some commas and other punctuation marks. 
 
 ```{r}
-pull(table11.1a, MHS_setting)
+table11.1a %>% 
+  pull(MHS_setting)
 ```
 
 
-We can use the `str_remove_all()` function which is a variant of the `str_remove()` function of the `stringr` package (which allows us to remove all occurrences of specified characters in each row rather than just the first occurrence, which is what `str_remove()` does), to remove the digit values, the `\r\n` characters and the punctuation marks from the column called `MHS_setting`.
+We can use the `str_remove_all()` function, which is a variant of the `str_remove()` function of the `stringr` package. 
+This allows us to remove all occurrences of specified characters in each row rather than just the first occurrence (which is what `str_remove()` does) to remove the digit values, the `\r\n` characters and the punctuation marks from the column called `MHS_setting`.
 
-Using the `mutate()` function we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctuation marks.
+Using the `mutate()` function, we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctuation marks.
 
 We need to specify that the character strings that should be used can be found in the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
 
 To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
 
-
 ```{r}
 table11.1a %<>%
 mutate(MHS_setting = 
          str_remove_all(string = MHS_setting, 
-                       pattern = "[:digit:]|\r\n|[:punct:]|"))
+                        pattern = "[:digit:]|\r\n|[:punct:]|"))
 
-table11.1a
+head(table11.1a)
 ```
 
-We also want to replace the spaces with a single space. We can see that sometimes there appears to be more than one space. We can specify that we want any occurrence of 1 or more  to be replaced by using the `{1,}` notation.
+We also want to replace the spaces with a single space. 
+We can see that sometimes there appears to be more than one space. 
+We can specify that we want any occurrence of 1 or more to be replaced by using the `{1,}` notation.
 
 See here for an explanation of this on the cheat sheet:
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics(here::here("img", "quantifiers.png"))
 ```
 
-So now we will use the `str_replace_all()` function of the `stringr` package.
-In this case we also need to specify a replacement with the `replacement = ` argument.
-
-
+So, we will use the `str_replace_all()` function of the `stringr` package.
+In this case, we also need to specify a replacement with the `replacement = ` argument.
 
 ```{r} 
-table11.1a%<>%
+table11.1a %<>%
 mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
-                        pattern = "[:blank:]{1,}", 
-                    replacement = " "))
+                         pattern = "[:blank:]{1,}", 
+                         replacement = " "))
 
-table11.1a
+head(table11.1a)
 ```
 
-Now to finally remove the "a" values and the commas from the body of the table we can use `str_remove_all()` function yet again. However this time to specify that we want all columns except the first column called `MHS_setting`, we can use the `across()` function of the `dplyr` package. This allows us to specify what columns we want to mutate by using the `.cols = ` argument. We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
-
-
+Next, we will remove the "a" values and the commas from the body of the table using the `str_remove_all()` function yet again.
+However, this time to specify that we want all columns except the first column called `MHS_setting`, we can use the `across()` function of the `dplyr` package. 
+This allows us to specify what columns we want to mutate by using the `.cols = ` argument. 
+We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
 
 ```{r}
-table11.1a%<>%
-mutate(dplyr::across(.cols = -MHS_setting,
-                stringr::str_remove_all, "a|,"))
+table11.1a %<>%
+  mutate(dplyr::across(.cols = -MHS_setting,
+                       stringr::str_remove_all, "a|,"))
 
-table11.1a
+head(table11.1a)
 ```
 
 Our table is looking much better!
 
-We also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. We can use the base `as.numeric()` function. Again we will use the `across()` function to indicate what variables we wish to mutate.
+We also want to change our values to be numeric as opposed to character so that we can use them in mathematical functions. 
+We can use the base `as.numeric()` function. 
+Again we will use the `across()` function to indicate what variables we wish to mutate.
 
 ```{r}
 table11.1a %<>%
   mutate(across(.cols =-MHS_setting, as.numeric))
 
-table11.1a
+head(table11.1a)
 ```
 
-We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were received, as well as remove a couple of rows that are completely empty. These are the rows where the first column values are `Genearl_Medicine` and `Juvenile_Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
+We would also like to add a `type` and `subtype` variable, that specifies the general categories of settings where services were received, as well as remove a couple of rows that are completely empty. 
+These are the rows where the first column values are `General Medicine` and `Juvenile Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
 ```
 
-First we will add the `type` and `subtype` variables using the `mutate` function.
-
+First, we will add the `type` and `subtype` variables using the `mutate` function.
 
 ```{r}
 table11.1a %<>%
-  mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
-  mutate(subtype =c("Specialty_total", 
-                    rep("Outpatient", 5), 
-                    rep("Inpatient", 3), 
-                    "Nonspecialty_total", 
-                    rep("Education", 3), 
-                    rep("General_medicine", 2),
-                    rep("Juvenile_Justice", 2),
-                    rep("Child_Welfare", 2), 
-                    "combination"))
-
+  mutate(type = c(rep("Specialty", 9), 
+                  rep("Nonspecialty", 11))) %>%
+  mutate(subtype = c("Specialty_total", 
+                     rep("Outpatient", 5), 
+                     rep("Inpatient", 3), 
+                     "Nonspecialty_total", 
+                     rep("Education", 3), 
+                     rep("General_medicine", 2),
+                     rep("Juvenile_Justice", 2), 
+                     rep("Child_Welfare", 2), 
+                     "combination"))
 ```
 
 We also want to add a variable with shorter names for labels in plots and statistical output.
 
 ```{r}
 table11.1a %<>%
-mutate(short_label = c("Specialty total", 
-                       "Outpatient total", 
-                       "Therapist", 
-                       "Clinic", 
-                       "Day program",
-                       "In-home Therapist", 
-                       "Inpatient total", 
-                       "Hospital", 
-                       "Residential Center",
-                       "Nonspecialty total", 
-                       "School total", 
-                       "School Therapist", 
-                       "School Program", 
-                       "General Medicine",
-                       "Family Dr",
-                       "Justice System",
-                       "Justice System",
-                       "Welfare", 
-                       "Fostercare", 
-                       "Specialty Combination"))
+  mutate(short_label = c("Specialty total", 
+                         "Outpatient total", 
+                         "Therapist", 
+                         "Clinic", 
+                         "Day program",
+                         "In-home Therapist", 
+                         "Inpatient total", 
+                         "Hospital", 
+                         "Residential Center",
+                         "Nonspecialty total", 
+                         "School total", 
+                         "School Therapist", 
+                         "School Program", 
+                         "General Medicine",
+                         "Family Dr",
+                         "Justice System",
+                         "Justice System",
+                         "Welfare", 
+                         "Fostercare", 
+                         "Specialty Combination"))
 ```
 
-
-We can remove the empty rows using the `filter()` function of the `dplyr` package. We can specify that we don't want to keep these rows by using the `!=` not equal to operator. 
-
+We can remove the empty rows using the `filter()` function of the `dplyr` package. 
+We can specify that we don't want to keep these rows by using the `!=` not equal to operator. 
 
 ```{r}
 table11.1a %<>%
@@ -952,30 +1004,32 @@ table11.1a %<>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare")
 
-table11.1a 
+head(table11.1a)
 ```
 
-
-Finally, we would like to change the shape of our table so that we have a new column that represents the year and a new column that represents the value for that year. To do so we will be making our table "longer", meaning that it will have fewer rows and more columns.  See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data){target="_blank"} for more information about different table formats, typically referred to as wide and long or sometimes narrow.
+Finally, we would like to change the shape of our table so that we have a new column that represents the year and a new column that represents the value for that year. 
+To do so we will be making our table "longer", meaning that it will have fewer columns and more rows. 
+See [here](https://en.wikipedia.org/wiki/Wide_and_narrow_data){target="_blank"} for more information about different table formats, typically referred to as wide and long or sometimes narrow.
 
 We will use the `pivot_longer()` function of the `tidyr` package to change the shape of our table. 
 
 There are 3 main arguments in this function:   
-1) cols - which specifies what columns to collapse  
-2) names_to - which specifies the name of the new column that will be created that will contain the column names of the columns you are collapsing  
-3) values_to - which specifies the name of the new column that will be created that will contain the values from the columns you are collapsing 
 
-To specify that we want to collapse all columns except the `MHS_setting` column we can again use the minus sign. Finally, we will make the `Year` variable numeric as well.
+1. `cols` - which specifies what columns to collapse  
+2. `names_to` - which specifies the name of the new column that will be created that will contain the column names of the columns you are collapsing  
+3. `values_to` - which specifies the name of the new column that will be created that will contain the values from the columns you are collapsing 
 
+To specify that we want to collapse **all columns except** the `MHS_setting` column, we can again use the minus sign. 
+Finally, we will make the `Year` variable numeric as well.
 
 ```{r}
 table11.1a %<>%
   tidyr::pivot_longer(cols = contains("20"), 
-                  names_to = "Year",
-                 values_to = "Number") %>%
+                      names_to = "Year",
+                      values_to = "Number") %>%
   mutate(Year = as.numeric(Year))
 
-table11.1a
+head(table11.1a)
 ```
 
 We can see that our table is now much longer - as we have `r dim(table11.1a)[1]` rows!
@@ -987,9 +1041,9 @@ Why do we have `r dim(table11.1a)[1]` rows now?
 
 ####
 
-Now we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
+Now, we see that the `Year` and `Number` variables are of class double because of the `<dbl>` under the column name.
 
-Let's take a look at what the rest of the tables contain:
+Let's remind ourselves what the rest of the tables contain:
 
 
 Table   | Details                                                                         
@@ -1003,14 +1057,9 @@ Table 11.3B       | Major Depressive Episode with Severe Impairment in Past Year
 Table 11.4A       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Numbers in Thousands, 2004-2018
 Table 11.4B       | Receipt of Treatment for Depression in Past Year among Persons Aged 12 to 17 with Major Depressive Episode in Past Year, by Demographic Characteristics: Percentages, 2004-2018
 
-OK, so the next table is very similar to Table11.1A, while the remaining tables have information about demographics.
-
-
-
+OK, so the next table (Table11.1B) is very similar to Table11.1A, while the remaining tables have information about demographics.
 
 As a reminder here are all of the steps that we performed to wrangle `table11.1a`:
-
-
 
 ```{r, eval = FALSE}
 table11.1a %<>%
@@ -1054,7 +1103,13 @@ table11.1a %<>%
 
 Now we want to wrangle table11.1B which is formatted the most similarly. To do so we can simply run these steps on the using the `table11.1B` as the input. For the sake of education however, we will show you how you could make a function if we had several more similar tables to wrangle. This will also make it easier to write a function to wrangle the other demographic tables.
 
-Last time we wrote a function in this case study, we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col` which will be the name of the column that will be created after pivoting that will take the values from each of the years.
+Last time we wrote a function in this case study, we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col`, which will be the name of the column that will be created after pivoting that will take the values from each of the years.
+
+```{r, eval=FALSE}
+function(TABLE, new_col, pivot_col){
+    <add code here> 
+  }
+```
 
 We will also add code to remove all rows that have only NA values, this means we don't need to know what rows ahead of time.
 
@@ -1064,55 +1119,49 @@ We will calculate a sum of the count of `NA` values across the rows for the nume
 
 To do this we first select the columns that are numeric using: `select(., is.numeric)`, where the `.` refers to the table after all the previous wrangling steps in our function.
 
-Then we get a true or false statement about which columns have `NA` values with the base `is.na()` function (this requires numeric values).
+Then, we get a true or false statement about which columns have `NA` values with the base `is.na()` function (this requires numeric values).
 
-
-Then we calculate the sum using the base `rowSums()` function.
-
-
+Then, we calculate the sum using the base `rowSums()` function.
 Altogether this looks like this: `rowSums(is.na(select(., is.numeric)))`.
-Finally we compare this to the number of columns that are numeric by using: `length(select(., is.numeric)))`, with the idea that if the number of `NA` values is less than the number of columns that could have `NA` values, then we know it is not an empty row.
+
+Finally, we compare this to the number of columns that are numeric by using: `length(select(., is.numeric)))`, with the idea that if the number of `NA` values is less than the number of columns that could have `NA` values, then we know it is not an empty row.
               
 Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
 
-See [here](https://adv-r.hadley.nz/quasiquotation.html#tidy-dots){target="_blank"} for information about the `:=` colon-equals operator. This operator is more flexible than the normal `=`. It allows expressions on both sides, thus it allows us to use an expression (the values for `new_col`) as the input value to the expressions that follow the `:=` operator.
+See [here](https://adv-r.hadley.nz/quasiquotation.html#tidy-dots){target="_blank"} for information about the `:=` colon-equals operator. 
+This operator is more flexible than the normal `=`. It allows expressions on both sides, thus it allows us to use an expression (the values for `new_col`) as the input value to the expressions that follow the `:=` operator.
 
 ```{r}
 data_prep_settings <- function(TABLE, new_col, pivot_col){
   dplyr::as_tibble(TABLE) %>%
-  slice(1:(n()-1))%>%
+  slice(1:(n()-1)) %>%
   na_if("nc") %>%
   na_if("--") %>%
   na_if("") %>%
   na_if("*") %>%
-    rename({{new_col}} := names(.)[1]) %>%
-     mutate({{new_col}} := 
+  rename({{new_col}} := names(.)[1]) %>%
+  mutate({{new_col}} := 
          str_remove_all(string = pull(., {{new_col}}), 
-                       pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
+                        pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
   mutate({{new_col}} := 
          str_replace_all(string =pull(., {{new_col}}),
-                        pattern = "[:blank:]{1,}", 
-                    replacement = " ")) %>%
+                         pattern = "[:blank:]{1,}", 
+                         replacement = " ")) %>%
   mutate(dplyr::across(.cols = -{{new_col}},
-                stringr::str_remove_all, "a|,")) %>%
-     mutate(across(-{{new_col}}, as.numeric)) %>%
-    mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
-     mutate(subtype =c("Specialty_total", 
-                    rep("Outpatient", 5), 
-                    rep("Inpatient", 3), 
-                    "Nonspecialty_total", 
-                    rep("Education", 3), 
-                    rep("General_medicine", 2),
-                    rep("Juvenile_Justice", 2),
-                    rep("Child_Welfare", 2), 
+                       stringr::str_remove_all, "a|,")) %>%
+  mutate(across(-{{new_col}}, as.numeric)) %>%
+  mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+  mutate(subtype = c("Specialty_total", rep("Outpatient", 5), 
+                     rep("Inpatient", 3), "Nonspecialty_total", 
+                     rep("Education", 3), rep("General_medicine", 2),
+                    rep("Juvenile_Justice", 2), rep("Child_Welfare", 2), 
                     "combination")) %>%
-      mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
-     filter(rowSums(is.na(select(., is.numeric))) <
-              length(select(., is.numeric))) %>%
+  mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
+  filter(rowSums(is.na(select(., is.numeric))) < length(select(., is.numeric))) %>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
                values_to = pivot_col)%>%
-     mutate(Year = as.numeric(Year))
+  mutate(Year = as.numeric(Year))
 }
 ```
 
@@ -1121,152 +1170,106 @@ Now we can apply the function to `table11.1b`.
 ### **Table11.1b**
 
 ```{r}
-table11.1b<- data_prep_settings(
-                    TABLE = table11.1b,
-                  new_col = "MHS_setting",
-                pivot_col = "Percent")
+table11.1b <- 
+  data_prep_settings(TABLE = table11.1b, 
+                     new_col = "MHS_setting",
+                     pivot_col = "Percent")
 
-table11.1b
+head(table11.1b)
 ```
 
 Great!
 
 What about the subsequent tables?
 
+
 ### **Demographic Tables**
 
 All of the rest of the tables have demographic information and have this general structure:
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics(here::here("img", "dem_table.png"))
 ```
 
-In these tables we have age groups in our first column so we don't want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
+In these tables, we have age groups in our first column so we don't want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
 
-We also want to add the word `Age` and an underscore in front of the age group listed in the tables. We can use the `str_replace()` function of the `stringr` package, because now we want to only replace the first instance of `1` with `Age_1`.
+We also want to add the word `Age` and an underscore in front of the age group listed in the tables.
+We can use the `str_replace()` function of the `stringr` package, because now we want to only replace the first instance of `1` with `Age_1`.
 
-We also plan to replace the first column name with `Demographic` for all of the tables.
+We will replace the first column name with `Demographic` for all of the tables.
 
-We also want to create a new variable that list the subgroups.
+We will create a new variable that list the subgroups.
 
 We will also want to only wrangle the data up to the point that we change the shape of the data, so that we can check how the data looks first.
 
+OK let's put this all together into a `data_dem_settings()` function: 
 
 ```{r}
 data_dem_settings <- function(TABLE){
   dplyr::as_tibble(TABLE) %>%
-  slice(1:(n()-1))%>%
+  slice(1:(n()-1)) %>%
   na_if("nc") %>%
   na_if("--") %>%
   na_if("") %>%
   na_if("*") %>%
-    rename(Demographic := names(.)[1]) %>%
-    mutate(Demographic := 
-         str_replace_all(string =pull(., Demographic),
-                        pattern = "[:blank:]{1,}", 
-                    replacement = " ")) %>%
+  rename(Demographic := names(.)[1]) %>%
+  mutate(Demographic := str_replace_all(string = pull(., Demographic),
+                                        pattern = "[:blank:]{1,}", 
+                                        replacement = " ")) %>%
   mutate(Demographic = str_replace(string = Demographic, 
-                                  pattern = "1", 
-                              replacement = "Age_1")) %>%
- mutate(subgroup =c("Total",
-                    rep("Age", 4), 
-                    rep("Sex", 3), 
-                    rep("Race/Ethnicity", 9)))%>%
+                                   pattern = "1", 
+                                   replacement = "Age_1")) %>%
+  mutate(subgroup = c("Total", rep("Age", 4), 
+                    rep("Sex", 3), rep("Race/Ethnicity", 9))) %>%
   mutate(dplyr::across(.cols = contains("20"),
-                stringr::str_remove_all, "a|,")) %>%
-     mutate(across(contains("20"), as.numeric)) %>%
-     filter(rowSums(is.na(select(., is.numeric))) <
-              length(select(., is.numeric)))}
+                       stringr::str_remove_all, "a|,")) %>%
+  mutate(across(contains("20"), as.numeric)) %>%
+  filter(rowSums(is.na(select(., is.numeric))) < length(select(., is.numeric)))
+  }
 ```
 
 
+Now, we use the `data_dem_settings()` function to wrangle the next set of tables. 
+We will also add a column to describe what the data are about which will be helpful for merging the data later.
 
-```{r, eval=FALSE, echo=FALSE}
-#from Michael - I left this in case we decide we want to include something from this instead
-data_prep_dem <- function(TABLE, old_col, new_col, pivot_col){
-  TABLE <- TABLE[-dim(TABLE)[1],]
-  TABLE <- TABLE %>%
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*")
-  TABLE <- TABLE %>%
-    as_tibble() %>%
-    rename({{new_col}} := {{old_col}})
-  partA <- TABLE %>%
-    dplyr::select({{new_col}})
-  partB <- TABLE %>%
-    dplyr::select(-{{new_col}})
-  partA <- partA %>%
-  mutate({{new_col}} := partA %>%
-           dplyr::select({{new_col}}) %>%
-           pull({{new_col}}) %>%
-           gsub("[\r\n]|[[:punct:]]|([[:blank:]])\\1+",
-                        "", .))
-  partA <- partA %>%
-  mutate({{new_col}} := dplyr::case_when(stringr::str_detect(!!base::as.name(new_col), pattern = "1") ~ base::paste("Age",
-                                                        stringr::str_sub(!!base::as.name(new_col),
-                                                                start = 1,
-                                                                end =2),
-                                                        stringr::str_sub(!!base::as.name(new_col),
-                                                                start = 3,
-                                                                end = 4),
-                                                        sep="_"),
-                                 TRUE ~ !!base::as.name(new_col)))
-  partB <- partB %>%
-    mutate(across(.cols = everything(),
-                str_remove_all, "a")) %>%
-    mutate(across(.cols = everything(),
-                str_remove_all, ","))
-  rm(TABLE)
-  TABLE <- bind_cols(partA,
-                     partB)
-  TABLE <- TABLE %>%
-  pivot_longer(cols = contains("20"), names_to = "Year", values_to = pivot_col)
-  TABLE
-}
-```
-
-We use the function to wrangle the next set of tables. We will also add a column to describe what the data is about which will be helpful for merging the data later.
 ```{r}
 table11.2a <- data_dem_settings(TABLE = table11.2a)
 table11.2a %<>% mutate(data_type = "Major_Depressive_Episode")
-glimpse(table11.2a)
+head(table11.2a)
 
 table11.2b <- data_dem_settings(TABLE = table11.2b)
 table11.2b %<>% mutate(data_type = "Major_Depressive_Episode")
-glimpse(table11.2b)
+head(table11.2b)
 
 table11.3a <- data_dem_settings(TABLE = table11.3a)
 table11.3a %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
-glimpse(table11.3a)
+head(table11.3a)
 
 table11.3b <- data_dem_settings(TABLE = table11.3b)
 table11.3b %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
-glimpse(table11.3b)
+head(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
 table11.4a %<>% mutate(data_type = "treatment")
-glimpse(table11.4a)
+head(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
 table11.4b %<>% mutate(data_type = "treatment")
-glimpse(table11.4b)
-
+head(table11.4b)
 ```
 
 Great! All of the demographic tables look good.
 
-Now let's combine the count data (the "a" tables) and the percent data (the "b" tables) using the `bind_rows()` function of the `dplyr` package. Which will append each of the subsequent tables together.
+Next, let's combine the count data (the "a" tables) and the percent data (the "b" tables) using the `bind_rows()` function of the `dplyr` package, which will append each of the subsequent tables together.
 
 We can use the `distinct()` function of the `dplyr` package to check that we indeed have all the data types now in these larger tibbles.
 
 ```{r}
-counts <-bind_rows(table11.2a, table11.3a, table11.4a)
-percents <-bind_rows(table11.2b, table11.3b, table11.4b)
+counts <- bind_rows(table11.2a, table11.3a, table11.4a)
+percents <- bind_rows(table11.2b, table11.3b, table11.4b)
 
-counts %>%distinct(data_type)
-percents %>%distinct(data_type)
+counts %>% distinct(data_type)
+percents %>% distinct(data_type)
 ```
 Great!
 
@@ -1276,21 +1279,24 @@ Now we will reformat both the `counts` and `percents` data to be in the long for
 counts %<>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
-               values_to = "Number")%>%
-     mutate(Year = as.numeric(Year))
+               values_to = "Number") %>%
+  mutate(Year = as.numeric(Year))
 
 percents %<>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
-               values_to = "Percent")%>%
-     mutate(Year = as.numeric(Year))
+               values_to = "Percent") %>%
+  mutate(Year = as.numeric(Year))
 ```
 
-Now that we've wrangled the data, we can go ahead and proceed with our analysis. 
+We finished wrangling the data and we are ready to proceed with our analysis. 
 
 ```{r, eval = FALSE, echo = FALSE}
-save(percents, counts, table11.1a, table11.1b, file = here::here("data", "wrangled_data.rda"))
+save(percents, counts, table11.1a, table11.1b, 
+     file = here::here("data", "wrangled_data.rda"))
 ```
+
+
 
 ## **Data Analysis**
 *** 
@@ -1391,7 +1397,7 @@ What does this mean? We need to consult a chi-square distribution to determine w
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
 ```
 
-#### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
+##### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
 This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. Note on this website the notation for $df$ is ${\nu}$.
 
@@ -2017,7 +2023,7 @@ Treat_total
 
 Overall roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. 
 
-This rate is increasing overtime like the trend of those who had a major depressive episode, yet the data is much more variable from one year to the next. 
+This rate is increasing overtime like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
 
 ```{r}
 treat<-percents %>%
