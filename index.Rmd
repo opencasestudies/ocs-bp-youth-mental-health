@@ -33,7 +33,7 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       fig.align = "center", out.width = '90%')
 library(here)
 library(knitr)
-library(magick)# to create gif
+library(magick) # to create gif
 ```
 
 #### {.outline }
@@ -189,7 +189,6 @@ This data was also used in the first referenced article.
 
 1. How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
 2. Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
-
 
 ####
 
@@ -604,7 +603,7 @@ To do this:
 
 In fact, when we load `rvest` the first time we see:
 
-```{r, out.width= "60%"}
+```{r, out.width= "60%", echo=FALSE}
 knitr::include_graphics(here::here("img", "rvest.png"))
 ```
 
@@ -720,7 +719,7 @@ Great! We have successfully scraped the data from the web into R!
 Next, we need to wrangle the data.
 
 
-## **Data Exploration and Wrangling**
+## **Data Wrangling**
 *** 
 
 Now that we have imported the data, let's see if we can wrangle a table. 
@@ -1111,6 +1110,8 @@ function(TABLE, new_col, pivot_col){
   }
 ```
 
+AVOCADO: these sentences are a bit dense. Could we break them up a bit with code in between? 
+
 We will also add code to remove all rows that have only NA values, this means we don't need to know what rows ahead of time.
 
 To do this we will use the `filter()` and `select()` functions of the `dplyr` package. 
@@ -1297,280 +1298,6 @@ save(percents, counts, table11.1a, table11.1b,
 ```
 
 
-
-## **Data Analysis**
-*** 
-
-```{r, echo = FALSE}
-load(file = here::here("data", "wrangled_data.rda"))
-```
-Recall what our main questions were:
-
-#### {.main_question_block}
-<b><u> Our main questions: </u></b>
-
-1) How have depression rates in American youth changed since 2004, according to the NSDUH data?  How have rates differed between different youth subgroups (age, gender, ethnicity)?
-2) Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
-
-
-####
-
-We are specifically interested in how the frequency of recent major depressive episodes among youths differ compared to those in 2004. We are also interested how different groups differ. We will start with examining how male and females differ across time.
-
-Since we have counts for the two sexes: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for independence, which is also written like this: ${\chi}^2$. 
-
-This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
-
-The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. Thus we want to test if sex and year are independent. In other words, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way, Are major depressive episode counts across the two years associated with sex.  
-
-
-
-According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
-
-> Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
-
-
-Thus, to conduct this statistical test, we need to produce a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contingency table (only two levels for two variables).
-
-Here is an example of another 2x2 table:
-
-
-```{r, echo = FALSE}
-contig <-tibble(Sex = c("Male", "Female", "Total"), Righthanded = c(41,47,88), Lefthanded = c(9,3, 12), Total = c(50,50,100))
-
-contig
-```
-
-Here are all the observed values.
-
-We can see that there are two variables: Sex and Handedness and each have two levels (male and female for sex and right and left for handedness). The table also includes totals of each of the 4 possible groups as well as the overall total.
-
-
-Now let's create a table of expected values assuming sex and handedness are independent. 
-
-The total right-handed is 88 out of 100 which is equal to 88%.
-The total left-handed is 12  out of 100 which is equal to 12%.
-
-Thus if each sex had the same amount of right-handedness and left-handedness, we would expect 88% of the males to be right-handed and 12 % to be left-handed; and
-we would expect the exact same proportions of 88% right-handed and 12% left-handed for the females.
-
-Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected frequencies:
-
-```{r, echo = FALSE}
-contig <-tibble(Sex = c("Male", "Female", "Total"), Righthanded = c(44,44,88), Lefthanded = c(6,6, 12), Total = c(50,50,100))
-
-contig
-
-```
-
-
-The ${\chi}^2$  is calculated like so:
-
-$${\chi}^2=\sum_{j=1}^{m} \frac{(O_j - E_j)^2}{E_j}$$
-
-Where $O_j = j^{th}$ observed count and $E_j = j^{th}$ expected count for
-the jth cell of a contingency table with $m$ cells.
-
-The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
-
-Where $r$ = # of rows and $c$ = the # of columns.
-
-
-So to calculate the ${\chi}^2$ for handedness and sex manually, we can do the following for each of the four values in the table (besides the totals) like this:
-
-${\chi}^2$ = fraction of the square difference of the observed minus the expected, divided by expected for right-handed males + the same for left-handed males + the same for right-handed females + the same for left-handed females
-
-This is equal to :
-
-$${\chi}^2 =  \frac{(41-44)^2}{44} + \frac{(9-6)^2}{6}+ \frac{(47-44)^2}{44}+ \frac{(3-6)^2}{6}$$
-
-Which is equal to:
-
-${\chi}^2$ = `r ((41-44)^2)/44 +((9-6)^2)/6 + ((47-44)^2)/44 + (3-6)^2/6`
-
-Where the degrees of freedom  = $df = 92-1)(2-1) = 1$
-
-
-What does this mean? We need to consult a chi-square distribution to determine what the p-value is and if this is significant.
-
-```{r, echo = FALSE}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
-```
-
-##### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
-
-This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. Note on this website the notation for $df$ is ${\nu}$.
-
-Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p-value$ of 0.06484.
-
-Thus we do not have enough evidence to reject the null hypothesis.  Therefore, we conclude that sex and handedness do appear to be independent.
-
-See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
-
-
-
-Now let's create a contingency table with our own data and see how we can implement this test in R.
-
-It is critical that we use the counts data, and not the percentage data for our analysis, as the ${\chi}^2$ requires counts. 
-
-
-We will filter the count data for the `Major_Depressive_Episode` data, as well as for the `Male` and `Female` data from `2004` and `2018`.
-
-
-The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. If we take a look at the title of the table we can see that the numbers in the table represent individuals by the thousands.
-
-```{r}
-knitr::include_graphics(here::here("img", "dem_table.png"))
-```
-
-```{r}
-chi_square_11.2a <- counts %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(Year %in% c(2004, 2018)) %>%
-  filter(Demographic %in% c("Male","Female")) %>%
-  mutate(Number = Number * 1000)
-```
-
-The resulting object contains all the values we need for out contingency table. 
-
-```{r}
-chi_square_11.2a
-```
-
- 
-
-A contingency table can  now be produced from this data which is in long format by transforming the data to wide format and re-purposing some values as row names. To reformat the data to wide format we can use the `pivot_wider()` function of the `tidyr` package.
-
-For this function there are several important arguments:  
-1) names_from - this is the variable where the names of new columns will come from
-2) values_from - this is the variable where the values for the new columns will come from
-3) names_prefix - if we want to add a prefix to the new columns we can do so using this argument
-
-So in our case we want to spread out the year data into two columns thus the names will come from the `Year` variable and the values will come from the `Number` variable. We want to add the word `Year` to the new columns. We also want the remove the `subgroup` and `data_type` variables and only keep the `Demographic`, `Year`, and `Number` variables. To do so we can use the `select()` function.
-
-#### {.question_block}
-<b><u> Question Opportunity </u></b>
-
-Using what you just learned about `pivot_wider()` and `select()` and without scrolling up, try to come up with the code to do the wrangling for this data.
-
-####
-
-<details> <summary> Click here to reveal the code. </summary>
-
-
-```{r}
-chi_square_11.2a %<>%
-  select(Demographic, Year, Number) %>%
-  tidyr::pivot_wider(
-                     names_from = Year,
-              names_prefix = "Year", 
-              values_from = Number)
-chi_square_11.2a
-
-```
-
-</details>
-
-Now we can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels the row names. Otherwise we would need to select the numeric columns to perform the stats test.
-
-```{r}
-chi_square_11.2a %<>%
-  tibble::column_to_rownames("Demographic")
-
-chi_square_11.2a
-```
-
-Note that a contingency table would also have totals for all groups as well, but this is not necessary for the `stats::chisq.test()` function.
-
-
-The chi-squared test for independence can be conducted using the `stats::chisq.test()` function. 
-
-```{r}
-stats::chisq.test(chi_square_11.2a)
-```
-
-We see that the p-value is very small, which suggests that sex does influence the count of major depressive episodes across time. 
-
-#### {.question_block}
-<b><u> Question Opportunity </u></b>
-
-Using what you learned about the chi-squared test, describe the results in reference to the null hypothesis.
-
-####
-
-How about for severe major depressive episodes?
-
-
-```{r}
-chi_square_11.3a <- counts %>%
-  filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(Year %in% c(2009, 2018)) %>%
-  filter(Demographic %in% c("Male","Female")) %>%
-  mutate(Number = Number * 1000)
-
-chi_square_11.3a <- chi_square_11.3a %>%
-  select(-data_type) %>%
-  select(-subgroup) %>%
-  pivot_wider(names_from = Year,
-              names_prefix = "Year", 
-              values_from = Number) %>%
-  column_to_rownames("Demographic")
-
-chi_square_11.3a
-```
-
-```{r}
-chisq.test(chi_square_11.3a)
-```
-
-
-
-There also appears to be an influence of sex on the rate of severe major depressive episodes across the years.
-
-
-How about treatment?
-
-#### {.question_block}
-<b><u> Question Opportunity </u></b>
-
-Try performing the same wrangling as we did for the percentage of each demographic that reported having a major depressive episode for the data about treatment.
-
-####
-
-
-<details> <summary> Click here to reveal the code. </summary>
-
-
-```{r}
-chi_square_11.4a <- counts %>%
-  filter(data_type == "treatment")%>%
-  filter(Year %in% c(2009, 2018)) %>%
-  filter(Demographic %in% c("Male","Female")) %>%
-  mutate(Number = Number * 1000)
-
-chi_square_11.4a <- chi_square_11.4a %>%
-  select(-data_type) %>%
-  select(-subgroup) %>%
-  pivot_wider(names_from = Year,
-              names_prefix = "Year", 
-              values_from = Number) %>%
-  column_to_rownames("Demographic")
-
-chi_square_11.4a
-```
-</details>
-
-
-```{r}
-chisq.test(chi_square_11.4a)
-```
-
-
-There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
-
-
-avocado.. I think it might make sense to move the visualization section first... and use it to motivate that analysis from the year 2010 and of male and females...
-
 ## **Data Visualization**
 *** 
 
@@ -1578,13 +1305,23 @@ avocado.. I think it might make sense to move the visualization section first...
 load(file = here::here("data", "wrangled_data.rda"))
 ```
 
-OK, so now we are going to make some visualizations to further explore our questions of interest.
+In this section, we will create some data visualizations to explore our data and questions of interest: 
+
+#### {.main_question_block}
+<b><u> Our main questions: </u></b>
+
+1. How have depression rates in American youth changed since 2004, according to the NSDUH data?  How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2. Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
+
+####
 
 We are going to use the `ggplot2` package to create our plots.
 
+***
 <details><summary> Click here for an introduction about this package if you are  new to using `ggplot2` </summary>
 
-The [ggplot2 package](http://ggplot2.tidyverse.org) is generally intuitive for beginners because it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) or the `gg` in `ggplot2`. The idea is that you can construct many sentences by learning just a few nouns, adjectives, and verbs. There are specific “words” that we will need to learn and once we do, you will be able to create (or “write”) hundreds of different plots.
+The [ggplot2 package](http://ggplot2.tidyverse.org) is generally intuitive for beginners because it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) or the `gg` in `ggplot2`. 
+The idea is that you can construct many sentences by learning just a few nouns, adjectives, and verbs. There are specific “words” that we will need to learn and once we do, you will be able to create (or “write”) hundreds of different plots.
 
 The critical part to making graphics using `ggplot2` is the data needs to be in a _tidy_ format. 
 Given that we have just spent time putting our data in _tidy_ format, we are primed to take advantage of all that `ggplot2` has to offer! 
@@ -1593,21 +1330,21 @@ We will show how it is easy to pipe _tidy_ data (output) as input to other funct
 This all works because we are working 
 within the _tidyverse_. 
 
-
 **What is the `ggplot()` function?** 
 As explained by Hadley Wickham:
 
 > The grammar tells us that a statistical graphic is a mapping from data to aesthetic attributes (colour, shape, size) of geometric objects (points, lines, bars). The plot may also contain statistical transformations of the data and is drawn on a specific coordinates system.
 
- `ggplot2` Terminology 
-* **ggplot** - the main function where you specify the dataset and variables to plot (this is where we define the `x` and
+`ggplot2` Terminology: 
+
+- **ggplot** - the main function where you specify the dataset and variables to plot (this is where we define the `x` and
 `y` variable names)
-* **geoms** - geometric objects
-    * e.g. `geom_point()`, `geom_bar()`, `geom_line()`, `geom_histogram()`
-* **aes** - aesthetics
-    * shape, transparency, color, fill, line types
-* **scales** - define how your data will be plotted
-    * continuous, discrete, log, etc
+- **geoms** - geometric objects
+    - e.g. `geom_point()`, `geom_bar()`, `geom_line()`, `geom_histogram()`
+- **aes** - aesthetics
+    - shape, transparency, color, fill, line types
+- **scales** - define how your data will be plotted
+    - continuous, discrete, log, etc
 
 The function `aes()` is an aesthetic mapping function inside the `ggplot()` object. 
 We use this function to specify plot attributes (e.g. `x` and `y` variable names) that will not change as we add more layers.  
@@ -1618,34 +1355,40 @@ These will define what we are interested in illustrating using the data.
 
 </details>
 
-### Major Depressive Episodes in past year
+***
 
-We will start by taking a look at the rate of major depressive episodes among youths over time of the various demographic groups.
+### MDE across time
 
-OK, we will start out by using the `ggplot()` function to specify what data we would like to plot on each axis. We will also indicate that would like to use the `Demographic` variable to group our data and to color our data.  This is our first layer of the plot, thus for subsequent layers we need to use a plus sign `+`. 
+We will start by taking a look at the rate of major depressive episodes (MDE) among youths across time in various demographic groups.
+For this we will use the `percents` dataset that we wrangled in the section above.
 
-Next we will use the `geom_line()` function of the `ggplot2` package to specify that we would like to create a line plot. 
+OK, we will start out by using the `ggplot()` function to specify what data we would like to plot on each axis. 
+We will also indicate that would like to use the `Demographic` variable in our dataset to group our data and to color our data.
+This is our first layer of the plot, thus for subsequent layers we need to use a plus sign `+`. 
 
-Then we will add labels for the title and subtitle using the `labs()` function of the `ggplot2` package. 
+Next, we will use the `geom_line()` function of the `ggplot2` package to specify that we would like to create a line plot. 
 
-Finally we will move our legend to the bottom of the plot using the `theme()` function which helps us control various details about our plot. 
+Then, we will add labels for the title and subtitle using the `labs()` function of the `ggplot2` package. 
+
+Finally, we will move our legend to the bottom of the plot using the `theme()` function which helps us control various details about our plot. 
 
 ```{r}
 percents %>%
-    filter(data_type == "Major_Depressive_Episode")%>%
-ggplot2::ggplot(aes(x = Year, 
-                    y = Percent, 
-                group = Demographic, 
-                color = Demographic))+
-  geom_line(size = 1) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+  filter(data_type == "Major_Depressive_Episode") %>%
+  ggplot2::ggplot(aes(x = Year, y = Percent, 
+                      color = Demographic)) +
+      geom_line(size = 1) +
+      labs(title = "Major Depressive Episode among Persons Aged 12 to 17",
+           subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
   theme(legend.position = "bottom")
 ```
- This plot very difficult to read because there are so very many groups. 
-Now let's look at just the total across time. We can do so by first filtering our data for total values. 
 
-It would also nice to include every year in the x-axis. We can do so by using the `scale_x_continuous()` function which gives us greater control about how the x-axis is displayed.
+This plot is very difficult to read because there are so many groups. 
+Now let's look at just the total across time. 
+We can do so by first filtering our data for `TOTAL` values. 
+
+It would also BE nice to include every year in the x-axis. 
+We can do so by using the `scale_x_continuous()` function which gives us greater control about how the x-axis is displayed.
 
 Finally, we will drop the legend since we will only have one group using `legend.position = "none"` and we can change the angle of the x-axis text using `axis.text.x = element_text(angle = 90)` within the `theme()` function.
 
@@ -1654,36 +1397,37 @@ We will also make the line thicker using the `size =` argument for the `geom_lin
 The `theme_linedraw()` function changes the aesthetics of the plot. See [here](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} for a list of options.
 
 ```{r}
-MDE_total <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         group = Demographic, 
-         color = Demographic)) +
+MDE_total <-
+  percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+         Demographic == "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
   geom_line(aes(color = Demographic), size = 1.5) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
   labs(title = "Percent of Persons Aged 12 to 17 Reporting Having a \n Major Depressive Episode in the Past Year ")+
-  theme_linedraw()+
+  theme_linedraw() +
   theme(axis.text.x = element_text(angle = 90),
         legend.position = "none") 
 
 MDE_total
 ```
 
-We can see that there is a steep increase after around 2011:
+We can see that there is a steep increase after around 2011! 
 
 Let's add a different background color for the years since 2011.
 We can do so by adding a `geom_rect()` layer before we plot the line.
 We just need to specify the location of the rectangle on our plot.
 
+We also use the `theme_classic()` theme. 
+
 ```{r}
-MDE_total <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+MDE_total <-
+  percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+         Demographic == "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,  
             ymin = -Inf, ymax = Inf,  
             fill = "light gray")+
@@ -1691,36 +1435,51 @@ MDE_total <-percents %>%
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "The Rate of Youths Aged 12 to 17 Reporting Having a \n Major Depressive Episode in the Past Year is Increasing")+
-  theme_classic()+
+  labs(title = "The Rate of Youths Aged 12 to 17 Reporting Having a \n Major Depressive Episode is Increasing")+
+  theme_classic() +
   theme(axis.text.x = element_text(angle = 90),
         legend.position = "none") 
 
 MDE_total
-
 ```
+
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+What do you expect will happen when if we had used the `+` symbol to add the `geom_rect()` function with `MDE_total` like so? 
+Is that what you anticipated? Why or why not? 
+
+```{r, eval=FALSE}
+MDE_total + 
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray")
+```
+
+####
+
 
 Now let's look at group differences.  
 
-To make sure our plot is not too overwhelming, let's limit to only age and sex subgroups. Thus we will filter out the data about totals and different racial/ethnic groups for now. We will also use the `facet_wrap()` function to make subplots based on the demographic categories, which we put in a variable called `subgroups` earlier when we wrangled the data.
+To make sure our plot is not too overwhelming, let's limit to only age and sex subgroups. 
+Thus, we will filter out the data about totals and different racial/ethnic groups for now. 
+We will also use the `facet_wrap()` function to make subplots based on the demographic categories, which we put in a variable called `subgroups` earlier when we wrangled the data.
 
 ```{r}
 MDE_age_sex <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup != "Race/Ethnicity") %>%
-  filter(Demographic != "TOTAL") %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         group = Demographic, 
-         color = Demographic)) +
+  filter(data_type == "Major_Depressive_Episode", 
+         subgroup != "Race/Ethnicity", 
+         Demographic != "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
   geom_line(aes(color = Demographic), size =1) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+  labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~subgroup)+
-  theme_linedraw()+
+  facet_wrap(~ subgroup)+
+  theme_linedraw() +
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
@@ -1729,33 +1488,42 @@ MDE_age_sex
 
 Nice! Now it is much easier to tell how each group has changed over time.
 
-We can also add labels directly to the lines using the `directlabels` package. There are several methods to do so. See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  We will use the `"far.from.others.borders"` method so that our labels don't overlap one another. We will also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). We will use the `dl.move()` function of the `directlabels` package to move one of the labels to a particular location. 
+We can also add labels directly to the lines using the `directlabels` package. 
+There are several methods to do so. 
+See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  
+We use the `"far.from.others.borders"` method so that our labels do not overlap one another. 
+We also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). 
+The `dl.move()` function of the `directlabels` package is used to move one of the labels to a particular location. 
 
 avocado: the dl.move functions are set up for the rendering the rmarkdown - so if you are viewing the case study from RStudio the labels will overlap.
 
 
 ```{r}
-directlabels::direct.label(MDE_age_sex, list(
-  dl.trans(y = y +0.38, x = x -0.1), 
-  "far.from.others.borders",
-  cex = .8, 
-  dl.move("Age_14-15", x = 2008, y =10)))
-
+directlabels::direct.label(
+  MDE_age_sex, 
+  list(dl.trans(y = y + 0.38, x = x -0.1), 
+       "far.from.others.borders",
+       cex = .8, 
+       dl.move("Age_14-15", x = 2008, y = 10))
+  )
 ```
 
 This looks very clear now!
 
-We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket. We can also see that the trend has been increasing for all three age brackets since roughly 2011.
+We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket (16-17 compared to 12-13). 
+We can also see that the trend has been increasing for all three age brackets since roughly 2011.
 
-We can also see an increase for both sexes since about 2011, but there is a steeper increase for females. Furthermore Females have a much higher rate than males for all years.
+We can also see an increase for both sexes since about 2011, but there is a steeper increase for females. 
+Furthermore, females have a much higher rate than males across all years.
 
 Let's make the same plot with a different shaded background for the years of the increase like we did for the total plot.
 
 ```{r}
-MDE_age_sex <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup != "Race/Ethnicity") %>%
-  filter(Demographic != "TOTAL") %>%
+MDE_age_sex <-
+  percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+         subgroup != "Race/Ethnicity", 
+         Demographic != "TOTAL") %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,  
             ymin = -Inf, ymax = Inf,  
@@ -1764,23 +1532,33 @@ MDE_age_sex <-percents %>%
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+  labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~subgroup)+
-  theme_linedraw()+
+  facet_wrap(~ subgroup) +
+  theme_linedraw() +
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
-MDE_age_sex <-direct.label(MDE_age_sex, list(
-  dl.trans(y = y +0.38, x = x -0.2), 
-  "far.from.others.borders", 
-  cex = .8, 
-  dl.move("Age_14-15", x = 2008, y =10)))
+MDE_age_sex <- direct.label(
+  MDE_age_sex, 
+  list(dl.trans(y = y +0.38, x = x -0.2), 
+       "far.from.others.borders", 
+       cex = .8,
+       dl.move("Age_14-15", x = 2008, y =10))
+  )
 MDE_age_sex
 ```
 
-So what might be accounting for this?
+In the next section, we will formally test whether `Sex` is independent of the differences in rates of MDE across time. 
 
+whether there is a statistically significant difference between the expected frequencies and the observed frequencies in one or more categories of a contingency table.
+
+While, it is very intriguing that there is an increase around 2011, we do not go into details here as to why that might be happening. 
+However, we summarize a few articles that did investigate increased depression rates. 
+
+***
+
+<details> <summary> Click here for a summary on a few articles investigating increased depression rates. </summary>
 
 This cross-cultural [review article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} published in 2012 suggests that aspects related to life-style due to modernity may be causing increased depression rates: 
 
@@ -1804,45 +1582,52 @@ Instagram was released in 2010 (which is around when our plot starts to show the
 
 Furthermore, it may be secondary effects of social media use, like less physical activity or less sleep that may increase the risk for depression. 
 
-Now let's take a look at how the rate of major depressive episodes has changed across time for different racial/ethnic groups.
+</details>
 
-Since we have so many groups, we probably don't want to directly label the lines this time. Instead, we will rely on the legend that will be automatically created.
+***
 
-We will use the the `fct_reorder` function of the `forcats` package to order the racial/ethnic groups in the legend based on the last value (using `tail()`) of the `Percent` variable.
+Next, let's take a look at how the rate of major depressive episodes has changed across time for different racial/ethnic groups.
+
+Since we have so many groups, we probably don't want to directly label the lines this time. 
+Instead, we will rely on the legend that will be automatically created.
+
+We will use the the `fct_reorder()` function of the `forcats` package to order the racial/ethnic groups in the legend based on the last value (using `tail()`) of the `Percent` variable.
 
 We will also manually color our lines based on a color palette called [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}, which is more discernible for individuals with color-blindness. To do so we will use the `scale_color_viridis_d()` function of the `ggplot2` package, which is intended for coloring discrete values.
 
 ```{r}
-
-MDE_race <-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Race/Ethnicity") %>%
-     mutate(Demographic = fct_reorder(Demographic, 
-                                      Percent, 
-                                      tail, 
-                                      n = 1, 
-                                      .desc = TRUE)) %>%
-    ggplot(aes(x = Year, 
-               y = Percent,
-           group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,   
-            ymin = -Inf, ymax = Inf,   
-            fill = "light gray")+
-  geom_line(aes(color = Demographic), size =1)+
-  facet_wrap(~subgroup)+
+MDE_race <-
+  percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+         subgroup == "Race/Ethnicity") %>%
+  mutate(Demographic = 
+           fct_reorder(Demographic, Percent, 
+                       tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,   
+              ymin = -Inf, ymax = Inf,   
+              fill = "light gray") +
+  geom_line(aes(color = Demographic), size =1) +
+  facet_wrap(~ subgroup) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  scale_color_viridis_d()+
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+  scale_color_viridis_d() +
+  labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  theme_linedraw()+
+  theme_linedraw() +
   theme(strip.text = element_text(size = 14, face = "bold"),
         axis.text.x = element_text(angle = 90)) 
 
 MDE_race
-
 ```
+
+Using the definition from the Census Bureau: 
+
+1. **AIAN** stands for American Indian and Alaska Native  
+2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
+
+AVOCADO: should we add a source link here to the census bureau? 
 
 Unfortunately, there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points (2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
 
@@ -1857,53 +1642,46 @@ How might we remove the `NHOPI` group from the legend?
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(Demographic =="NHOPI")
-
-MDE_race <-  percents %>%
-  filter(data_type == "Major_Depressive_Episode")%>%
-  filter(subgroup == "Race/Ethnicity") %>%
-    filter(Demographic != "NHOPI") %>%
-     mutate(Demographic = fct_reorder(Demographic,
-                                      Percent, 
-                                      tail, 
-                                      n = 1, 
-                                      .desc = TRUE)) %>%
-   ggplot(aes(x = Year, 
-              y = Percent, 
-          group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,  
-            ymin = -Inf, ymax = Inf,   
-            fill = "light gray")+
-  geom_line(aes(color = Demographic), size =1)+
-  facet_wrap(~subgroup)+
+MDE_race <-
+  percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+         subgroup == "Race/Ethnicity", 
+         Demographic != "NHOPI") %>%
+  mutate(Demographic = 
+           fct_reorder(Demographic, Percent, 
+                       tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,   
+              ymin = -Inf, ymax = Inf,   
+              fill = "light gray") +
+  geom_line(aes(color = Demographic), size =1) +
+  facet_wrap(~ subgroup) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
+  scale_color_viridis_d() +
+  labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
        subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  theme_linedraw()+
+  theme_linedraw() +
   theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) +
-  scale_color_viridis_d()
+        axis.text.x = element_text(angle = 90)) 
 ```
 </details>
 
 
-```{r}
+```{r, echo=FALSE}
 MDE_race
 ```
 
-Census Bureau definitions:  
-1) **AIAN** stands for American Indian and Alaska Native  
-2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
+We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. 
+Those group who reported as Black or African American had the lowest percentages. 
+However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. 
+Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
+It is possible that this group may be less likely to report experiencing symptoms of depression.
 
-We can see that the group of individuals who reported as being two or more races, had the highest percentages of having a major depressive episode in the past year. Those group who reported as Black or African American had the lowest percentages. However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. It is possible that this group may be less likely to report experiencing symptoms of depression.
+### MDE with Severe Impairment
 
-### Major Depressive Episode with Severe Impairment
-
-Now let's take a look at how the rate of youths reporting having a major depressive episode with severe impairment has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
+Now let's take a look at how the rate of youths reporting having a major depressive episode (MDE) **with severe impairment** has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -1912,146 +1690,149 @@ Try to come up with the code for this plot on your own before you reveal it.
 
 ####
 
-
 <details> <summary> Click here to reveal the code. </summary>
 
-
 ```{r}
-MDES <-percents %>%
-  filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup != "Race/Ethnicity") %>%
-  filter(Demographic != "TOTAL") %>%
-    ggplot(aes(x = Year, 
-               y = Percent,
-           group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,  
-            ymin = -Inf, ymax = Inf,  
-            fill = "light gray")+
-  geom_line(aes(color = Demographic), size =1)+
-  scale_x_continuous(breaks = seq(2006, 2018, by=1),
+MDES <-
+  percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode", 
+         subgroup != "Race/Ethnicity", 
+         Demographic != "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,  
+              ymin = -Inf, ymax = Inf,  
+              fill = "light gray") +
+    geom_line(aes(color = Demographic), size =1)+
+    scale_x_continuous(breaks = seq(2006, 2018, by=1),
                      labels = seq(2006, 2018, by=1),
                      limits = c(2006, 2018)) +
-  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~subgroup)+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) 
+    labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+    facet_wrap(~ subgroup) +
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) 
 
-MDES <-direct.label(MDES, list(
-  dl.trans(y = y +0.39, x = x -0.1), 
-  "far.from.others.borders",
-  cex = .8, 
-  dl.move("Age_14-15", x= 2016.5, y = 11)))
-
-
+MDES <- direct.label(
+  MDES, 
+  list(dl.trans(y = y +0.39, x = x -0.1), 
+       "far.from.others.borders",
+       cex = .8, 
+       dl.move("Age_14-15", x= 2016.5, y = 11))
+  )
 ```
 </details>
 
-```{r}
+```{r, echo=FALSE}
 MDES
 ```
 
-We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket, however there appears to be a more dramatic change in the middle age group from 2011-2012. We can see a very steep increase in the data for the females after 2011, again this is much more steep than the increase seen for males over time.
+We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket. 
+However there appears to be a more dramatic change in the middle age group from 2011-2012. 
+We can see a very steep increase in the data for the females after 2011, again this is much more steep than the increase seen for males over time.
 
-Now let's look at racial/ethnic groups.
+Now let's look at different racial/ethnic groups.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-Race_MDES <-  percents %>%
-  filter(data_type == "Severe_Major_Depressive_Episode")%>%
-  filter(subgroup == "Race/Ethnicity") %>%
-    mutate(Demographic = fct_reorder(Demographic, 
-                                     Percent, 
-                                     tail,
-                                     n = 1, 
-                                     .desc = TRUE)) %>%
-    ggplot(aes(x = Year,
-               y = Percent,
-           group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,  
-            ymin = -Inf, ymax = Inf,  
-            fill = "light gray")+
-  geom_line(aes(color = Demographic), size =1)+
-  facet_wrap(~subgroup)+
-  scale_x_continuous(breaks = seq(2006, 2018, by=1),
-                     labels = seq(2006, 2018, by=1),
-                     limits = c(2006, 2018)) +
-  labs(title = "Major Depressive Episode with Severe Impairment in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics: Percentages, 2006-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) +
-  scale_color_viridis_d()
+Race_MDES <-
+  percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode", 
+         subgroup == "Race/Ethnicity") %>%
+  mutate(Demographic = 
+           fct_reorder(Demographic, Percent, 
+                       tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,  
+              ymin = -Inf, ymax = Inf,  
+              fill = "light gray")+
+    geom_line(aes(color = Demographic), size =1)+
+    facet_wrap(~ subgroup) +
+    scale_x_continuous(breaks = seq(2006, 2018, by=1),
+                       labels = seq(2006, 2018, by=1),
+                       limits = c(2006, 2018)) +
+    labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics: Percentages, 2006-2018") +
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) +
+    scale_color_viridis_d()
+```
+</details>
 
-
+```{r, echo=FALSE}
 Race_MDES
-
 ```
 
-Census Bureau definitions:  
-1) **AIAN** stands for American Indian and Alaska Native  
-2) **NHOPI** stands for Native Hawaiian or Other Pacific Islander 
+We see similar trends as we saw for the previous racial/ethnic group plot. 
+The rate is highest for those who are two are more races and lowest for those who are Black or African American. 
+The data for the AIAN group is sparse, so it is unclear if their levels would be lowest on the last year.
 
-We see similar trends as we saw for the previous racial/ethnic group plot. The rate is highest for those who are two are more races and lowest for those who are Black or African American. The data for the AIAN group is sparse, so it is unclear if their levels would be lowest on the last year.
+### MDE Treatment
 
-### Receipt of treatment for depression for youths who had a major depressive episode
-
-Now we will take a look at those who received treatment. First let's look overall.
+Now we will take a look at those who received treatment. 
+First, let's look overall using the `Demographic == "TOTAL"` group.
 
 ```{r}
-Treat_total <-percents %>%
-  filter(data_type == "treatment")%>%
-  filter(Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-             group = Demographic)) +
-  geom_rect(xmin = 2011, xmax = Inf,  
-            ymin = -Inf, ymax = Inf,   
-            fill = "light gray")+
-  geom_line(aes(color = Demographic), size = 1.5) +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "The Rate of Youths Aged 12 to 17 Reporting Having a \n Major Depressive Episode in the Past Year is Increasing")+
-  theme_classic()+
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "none") 
+Treat_total <-
+  percents %>%
+  filter(data_type == "treatment", 
+         Demographic == "TOTAL") %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,  
+              ymin = -Inf, ymax = Inf,   
+              fill = "light gray") +
+    geom_line(aes(color = Demographic), size = 1.5) +
+    scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                       labels = seq(2004, 2018, by=1),
+                       limits = c(2004, 2018)) +
+    labs(title = "The Rate of Youths Aged 12 to 17 Receiving Treatment after\nReporting Having a \n Major Depressive Episode is Increasing")+
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 90),
+          legend.position = "none") 
 
 Treat_total
-
 ```
 
 Overall roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. 
 
-This rate is increasing overtime like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
+This rate is increasing over time like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
+
+Next, we consider differences between males and females and different age groups. 
 
 ```{r}
-treat<-percents %>%
-  filter(data_type == "treatment")%>%
-  filter(subgroup != "Race/Ethnicity")%>%
-  filter(subgroup != "Total")%>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-             group = Demographic, 
-             color = Demographic)) +
-  geom_line( size =1) +
-  facet_wrap(~subgroup)+
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) + 
-  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode in Past Year",
-       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) 
+treat <- 
+  percents %>%
+  filter(data_type == "treatment", 
+         subgroup != "Race/Ethnicity", 
+         subgroup != "Total") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+    geom_line(size = 1) +
+    facet_wrap(~subgroup)+
+    scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                       labels = seq(2004, 2018, by=1),
+                       limits = c(2004, 2018)) + 
+    labs(title = "Receipt of Treatment for Depression among\nPersons Aged 12 to 17 with Major Depressive Episode",
+         subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) 
 
-treat<-direct.label(treat, list(
-  dl.trans(y = y -1.5, x = x -0.4),
-  "far.from.others.borders", 
-  cex = .8, 
-  dl.move("Age_16-17", x = 2010, y = 42),
-  dl.move("Age_14-15", x = 2015, y = 38)))
-
+treat <- direct.label(
+  treat, 
+  list(dl.trans(y = y -1.5, x = x -0.4),
+       "far.from.others.borders", 
+       cex = .8, 
+       dl.move("Age_16-17", x = 2010, y = 42),
+       dl.move("Age_14-15", x = 2015, y = 38)))
 treat
 ```
 
@@ -2061,7 +1842,7 @@ There seems to be an upward trend, but it isn't nearly as much as the trend we s
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Try to come up with the code for this plot on your own before you reveal it.
+Create a similar plot on your own for the different race / ethnic groups. 
 
 ####
 
@@ -2069,183 +1850,486 @@ Try to come up with the code for this plot on your own before you reveal it.
 
 ```{r}
 Race_treat <-percents %>%
-  filter(data_type == "treatment")%>%
+  filter(data_type == "treatment") %>%
   filter(subgroup == "Race/Ethnicity") %>%
-  mutate(Demographic = fct_reorder(Demographic, 
-                                   Percent, 
-                                   tail,
-                                   n = 1, 
-                                   .desc = TRUE)) %>%
-  ggplot(aes(x = Year,
-             y = Percent, 
-         group = Demographic, 
-         color = Demographic)) +
-  geom_line(size =1) +
-  scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
-  labs(title = "Receipt of Treatment for Depression in Past Year among\nPersons Aged 12 to 17 with Major Depressive Episode",
-       subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) +
+  mutate(Demographic = 
+           fct_reorder(Demographic, Percent, 
+                       tail, n = 1, .desc = TRUE)) %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+    geom_line(size =1) +
+    scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                       labels = seq(2009, 2018, by=1),
+                       limits = c(2009, 2018)) +
+    labs(title = "Receipt of Treatment for Depression among\nPersons Aged 12 to 17 with Major Depressive Episode",
+         subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) +
     scale_color_viridis_d()
 ```
 </details>
 
-```{r}
+```{r, echo=FALSE}
 Race_treat
 ```
-
 
 It looks as though youths who report as being white received the most care from mental health services.
 
 
 ### Mental Health Services
 
-We will also take a look at where youths are receiving treatment by using values from table11.1b which has the percentage values for counts presented in table11.1a.
-
+We will also take a look at where youths are receiving treatment by using values from `table11.1b` which has the percentage values for counts presented in `table11.1a`.
 
 We can use the `str_detect()` function of the `stringr` package to filter for the values of the `short_label` variable that has the word `total` in it. 
 
 ```{r}
-plotMHS <-table11.1b %>%
+plotMHS <- 
+  table11.1b %>%
   filter(stringr::str_detect(short_label, "total") ) %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         group = MHS_setting, 
-         color = short_label)) +
-  geom_line(size = 1) +
-  facet_wrap(~type)+
-  ggplot2::scale_x_continuous(breaks = seq(2009, 2018, by=1),
-                     labels = seq(2009, 2018, by=1),
-                     limits = c(2009, 2018)) +
-  ggplot2::labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-         axis.text.x = element_text(angle = 90)) 
+  ggplot(aes(x = Year, y = Percent, 
+             group = MHS_setting, color = short_label)) +
+    geom_line(size = 1) +
+    facet_wrap(~ type) +
+    scale_x_continuous(breaks = seq(2009, 2018, by=1),
+                                labels = seq(2009, 2018, by=1),
+                                limits = c(2009, 2018)) +
+    labs(title = "Settings Where Mental Health Services Were Received\namong Persons Aged 12 to 17",
+         subtitle = "Percentages, 2002-2018") +
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) 
 
-plotMHS <-direct.label(plotMHS, list(
-  dl.trans(y = y +0.35, x = x -0.1),
-  "far.from.others.borders", 
-  cex = .8, 
-  dl.move("Outpatient total", x = 2015, y =11)))
-
+plotMHS <- direct.label(
+  plotMHS, 
+  list(dl.trans(y = y +0.35, x = x -0.1),
+       "far.from.others.borders", 
+       cex = .8, 
+       dl.move("Outpatient total", x = 2015, y =11))
+  )
 plotMHS
 ```
 
-We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. However, the rates appear to be very similar and the relative differences appear to be consistent across time.
+We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. 
+However, the rates appear to be very similar and the relative differences appear to be consistent across time.
 
 Let's take a look at subcategories of mental health services.
-So now we will filter for values within the `short_label` variable that do not contain the word "total" by using a `!` in front of the `str_dectect` statement.
+To do this, we will filter for values within the `short_label` variable that do not contain the word "total" by using a `!` in front of the `str_dectect` statement.
 
 ```{r}
-plotMHSS <-table11.1b %>%
+plotMHSS <- 
+  table11.1b %>%
   filter(!str_detect(short_label, "total")) %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         group = MHS_setting, 
-         color = short_label)) +
-  geom_line(size = 1) +
-  facet_wrap(~ type)+
-  scale_x_continuous(breaks = seq(2002, 2019, by=1),
-                     labels = seq(2002, 2019, by=1),
-                     limits = c(2002, 2019)) +
-  labs(title = "Settings Where Mental Health Services Were Received in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "Percentages, 2002-2018")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 14, face = "bold"),
-         axis.text.x = element_text(angle = 90)) 
+  ggplot(aes(x = Year, y = Percent, 
+         group = MHS_setting, color = short_label)) +
+    geom_line(size = 1) +
+    facet_wrap(~ type) +
+    scale_x_continuous(breaks = seq(2002, 2019, by=1),
+                       labels = seq(2002, 2019, by=1),
+                       limits = c(2002, 2019)) +
+    labs(title = "Settings Where Mental Health Services Were Received\namong Persons Aged 12 to 17",
+         subtitle = "Percentages, 2002-2018")+
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 90)) 
 
-plotMHSS <-direct.label(plotMHSS, list(
-  dl.trans(y = y +0.3),
-  "far.from.others.borders", 
-  dl.move("School Therapist", 2010, 10), 
-  dl.move("Fostercare", 2010, 1), 
-  dl.move("Therapist", x=2009, y = 10.5)))
+plotMHSS <- direct.label(
+  plotMHSS, 
+  list(dl.trans(y = y +0.3),
+       "far.from.others.borders", 
+       dl.move("School Therapist", 2010, 10), 
+       dl.move("Fostercare", 2010, 1), 
+       dl.move("Therapist", x=2009, y = 10.5))
+  )
 plotMHSS
 ```
 It looks like most youths are receiving care from either a therapist or a school therapist.
 
-OK, so now we know how the rates of different subgroups compare for having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment. We also know where youths are typically getting treatment. But how do the rates of having a major depressive episode in the past year, having a major depressive episode with severe impairment, and receiving treatment compare within each group?
+OK, so now we know how the rates of different subgroups compare for having a MDE in the past year, having a MDE with severe impairment, and receiving treatment after a MDE. 
+We also know where youths are typically getting treatment. 
+But, how do the rates of having a MDE in the past year, having a MDE with severe impairment, and receiving treatment compare within each subgroup (e.g. just females)?
+
+This is what we tackle in the next section. 
 
 ### Overall outcomes by group
 
+In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. 
+
 ```{r}
-sex_outcomes <-percents %>%
+sex_outcomes <- 
+  percents %>%
   filter(Demographic %in% c("Male", "Female", "TOTAL")) %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         color = Demographic)) +
-  geom_line(aes(linetype = data_type), size = 1) +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~Demographic, strip.position = "top")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 8, face = "bold"),
-       axis.text.x = element_text(angle = 90),
-      legend.title = element_blank(),
-   legend.position = "bottom") +
-  guides(color = FALSE)
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+    geom_line(aes(linetype = data_type), size = 1) +
+    scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                       labels = seq(2004, 2018, by=1),
+                       limits = c(2004, 2018)) +
+    labs(title = "Major Depressive Episode among Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+    facet_wrap(~ Demographic, strip.position = "top") +
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 8, face = "bold"),
+          axis.text.x = element_text(angle = 90),
+          legend.title = element_blank(),
+          legend.position = "bottom") +
+    guides(color = FALSE)
 
 sex_outcomes 
 ```
 
-We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. Females have a higher rate of both types of episode and of treatment. Although females have more than double the rate of reported episodes, they receive a relatively similar rate of treatment as males for depression. This suggests that females are either more likely than males to self-report depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
+We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. 
+Females have a higher rate of both types of episode and of treatment. 
+Although females have more than double the rate of reported episodes, they receive a relatively similar rate of treatment as males for depression. 
+This suggests that females are either more likely than males to self-report depression symptoms in surveys, or females may not be receiving as much care despite the larger need. 
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Create a similar plot on your own for different age groups. 
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-age_outcomes <-percents %>%
+age_outcomes <-
+  percents %>%
   filter(subgroup == "Age") %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         color = Demographic)) +
-  geom_line(aes(linetype= data_type), size = 1) +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~Demographic, strip.position = "top")+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 8, face = "bold"),
-       axis.text.x = element_text(angle = 90),
-      legend.title = element_blank(),
-   legend.position = "bottom")+
-  guides(color = FALSE)
-
-age_outcomes 
-
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+    geom_line(aes(linetype= data_type), size = 1) +
+    scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                       labels = seq(2004, 2018, by=1),
+                       limits = c(2004, 2018)) +
+    labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+    facet_wrap(~ Demographic, strip.position = "top")+
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 8, face = "bold"),
+          axis.text.x = element_text(angle = 90),
+          legend.title = element_blank(),
+          legend.position = "bottom")+
+    guides(color = FALSE)
 ```
+
+</details> 
+
+```{r, echo=FALSE}
+age_outcomes
+```
+
 All age groups show a similar ratio of severe major depressive episodes for those that experienced an episode. 
-```{r, fig.height=10}
-race_outcomes <-percents %>%
-  filter(subgroup == "Race/Ethnicity") %>%
-  filter(Demographic != "NHOPI") %>%
-  ggplot(aes(x = Year, 
-             y = Percent, 
-         color = Demographic)) +
-  geom_line(aes(linetype= data_type), size=1) +
-  scale_x_continuous(breaks = seq(2004, 2018, by=1),
-                     labels = seq(2004, 2018, by=1),
-                     limits = c(2004, 2018)) +
-  labs(title = "Major Depressive Episode in Past Year\namong Persons Aged 12 to 17",
-       subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-  facet_wrap(~Demographic, strip.position = "top", nrow = 4)+
-  theme_linedraw()+
-  theme(strip.text = element_text(size = 8, face = "bold"),
-       axis.text.x = element_text(angle = 90),
-      legend.title = element_blank(),
-   legend.position = "bottom")+
-  guides(color = FALSE)
-race_outcomes
 
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Create a similar plot on your own for the different race / ethnic groups. 
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
+```{r}
+race_outcomes <-
+  percents %>%
+  filter(subgroup == "Race/Ethnicity", 
+         Demographic != "NHOPI") %>%
+  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+    geom_line(aes(linetype = data_type), size=1) +
+    scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                       labels = seq(2004, 2018, by=1),
+                       limits = c(2004, 2018)) +
+    labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+    facet_wrap(~ Demographic, strip.position = "top", nrow = 4) +
+    theme_linedraw() +
+    theme(strip.text = element_text(size = 8, face = "bold"),
+          axis.text.x = element_text(angle = 90),
+          legend.title = element_blank(),
+          legend.position = "bottom")+
+    guides(color = FALSE)
+```
+</details>
+
+```{r, echo=FALSE, fig.height=10}
+race_outcomes
 ```
 
-All racial and ethnic groups also show a similar rate of severe episodes relative to general episode rate. The rate of receiving treatment is fairly similar relative to the percentage of youths that reported having symptoms for each group.
+All racial and ethnic groups also show a similar rate of severe episodes relative to general episode rate. 
+The rate of receiving treatment is fairly similar relative to the percentage of youths that reported having symptoms for each group.
+
+
+## **Data Analysis**
+*** 
+
+```{r, echo = FALSE}
+load(file = here::here("data", "wrangled_data.rda"))
+```
+Recall what our main questions were:
+
+#### {.main_question_block}
+<b><u> Our main questions: </u></b>
+
+1. How have depression rates in American youth changed since 2004, according to the NSDUH data?  How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2. Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
+
+####
+
+We are specifically interested in how the frequency of recent major depressive episodes among youths differ compared to those in 2004. 
+We are also interested how different subgroups differ. 
+We will start with examining how male and females differ across time.
+
+Since we have counts for the two sexes: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
+
+This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
+
+The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. 
+Thus, we want to test if sex and year are independent. In other words, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with sex?_  
+
+
+
+According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
+
+> Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
+
+
+Thus, to conduct this statistical test, we first need to create a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contingency table (only two levels for two variables).
+
+Before we create a contingency table for our data and use the chi-squared test, let's practice this with a different example. 
+
+
+***
+
+Consider a hypothetical scenario where we sample 100 individuals and report a contingency table representing the number of hypothetical individuals that we observed who are left and right handed, stratified by males and females.
+
+AVOCOADO: should we include text about how gender is not binary here? 
+
+```{r}
+observed <- tibble(Sex = c("Male", "Female", "Total"), 
+                   Righthanded = c(41,47,88), 
+                   Lefthanded = c(9,3, 12), 
+                   Total = c(50,50,100))
+observed
+```
+
+We can see that there are two variables: `Sex` and `Handedness` and each have two levels (`Male` and `Female` for `Sex` and right and left for handedness). 
+The table also includes totals of each of the 4 possible groups as well as the overall total.
+
+Next, we create a table of what we **expect** assuming `Sex` and `Handedness` are independent. 
+
+- The total number of individuals who are right-handed is 88 out of 100 which is equal to 88%.
+- The total number of individuals who are left-handed is 12 out of 100 which is equal to 12%.
+
+Thus, if each both `Male` and `Females` had the same amount of right-handedness and left-handedness, we would expect 88% of the males to be right-handed and 12% to be left-handed; and
+we would expect the exact same proportions of 88% right-handed and 12% left-handed for the females.
+
+Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected frequencies:
+
+```{r}
+expected <- tibble(Sex = c("Male", "Female", "Total"), 
+                   Righthanded = c(44,44,88), 
+                   Lefthanded = c(6,6, 12), 
+                   Total = c(50,50,100))
+expected
+```
+
+The ${\chi}^2$ test statistics is calculated using the `observed` (O) and `expected` (E) frequencies we just calculated above using the following formula:
+
+$${\chi}^2=\sum_{j=1}^{m} \frac{(O_j - E_j)^2}{E_j}$$
+
+where $O_j = j^{th}$ observed count and $E_j = j^{th}$ expected count for
+the jth cell of a contingency table with $m$ cells.
+
+The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
+
+Where $r$ = # of rows and $c$ = the # of columns.
+
+So to calculate the ${\chi}^2$ test statistics for handedness and sex manually, we can do the following for each of the four values in the table (ignoring the `Totals`) like this:
+
+$${\chi}^2 =  \frac{(41-44)^2}{44} + \frac{(9-6)^2}{6}+ \frac{(47-44)^2}{44}+ \frac{(3-6)^2}{6}$$
+
+where we calculate the fraction of the square difference of the observed minus the expected, divided by expected for 
+
+1. right-handed males
+2. left-handed males
+3. right-handed females
+4. left-handed females
+
+After summing these individual terms together, this is equal to
+
+${\chi}^2$ = `r ((41-44)^2)/44 +((9-6)^2)/6 + ((47-44)^2)/44 + (3-6)^2/6`
+
+Where the degrees of freedom  = $df = (92-1)(2-1) = 1$
+
+
+What does this mean? We need to consult a chi-square distribution to determine what the $p$-value is and if this is significant.
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
+```
+
+##### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
+
+This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. Note on this website the notation for $df$ is ${\nu}$.
+
+Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
+
+Thus, we do not have enough evidence to reject the null hypothesis.
+Therefore, using the data we have, we do not have evidence in our data to suggest that sex and handedness are not independent.
+
+See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
+
+***
+
+Now let's create a contingency table with our own data and see how we can implement this test in R.
+
+It is critical that we use the counts data, and not the percentage data for our analysis, as the ${\chi}^2$ test **requires** counts. 
+
+We will filter the count data for the `Major_Depressive_Episode` data, as well as for the `Male` and `Female` data from `2004` and `2018`.
+
+The following code subsets the data we need and makes the necessary manipulations so that the units of observation are appropriate. 
+If we take a look at the title of the table we can see that the numbers in the table represent individuals by the thousands.
+
+```{r, echo=FALSE}
+knitr::include_graphics(here::here("img", "dem_table.png"))
+```
+
+```{r}
+chi_square_11.2a <- 
+  counts %>%
+  filter(data_type == "Major_Depressive_Episode") %>%
+  filter(Year %in% c(2004, 2018)) %>%
+  filter(Demographic %in% c("Male","Female")) %>%
+  mutate(Number = Number * 1000)
+```
+
+The resulting object contains all the values we need for out contingency table. 
+
+```{r}
+chi_square_11.2a
+```
+
+A contingency table can now be produced from this data (which currently is in long format) by transforming the data to wide format and re-purposing some values as row names. 
+To reformat the data to wide format, we can use the `pivot_wider()` function of the `tidyr` package.
+
+For this function there are several important arguments:  
+
+1. `names_from` - this is the variable where the names of new columns will come from
+2. `values_from` - this is the variable where the values for the new columns will come from
+3. `names_prefix` - if we want to add a prefix to the new columns we can do so using this argument
+
+In our case, we want to spread out the year data into two columns thus the names will come from the `Year` variable and the values will come from the `Number` variable. 
+We want to add the word `Year` to the new columns. 
+We also want the remove the `subgroup` and `data_type` variables and only keep the `Demographic`, `Year`, and `Number` variables. 
+To do so we can use the `select()` function.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Using what you just learned about `pivot_wider()` and `select()` and without scrolling up, try to come up with the code to do the wrangling for this data.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
+```{r}
+chi_square_11.2a %<>%
+  select(Demographic, Year, Number) %>%
+  tidyr::pivot_wider(names_from = Year,
+                     names_prefix = "Year", 
+                     values_from = Number)
+chi_square_11.2a
+```
+
+</details>
+
+At this point we have three columns, but the first column we only need the `Male` and `Female` labels and want to treat it as row names. 
+To convert a column to the names of rows, you can use the `column_to_rownames()` function of the `tibble` package to make the `Demographic` variable levels for the row names. 
+Otherwise, we would need to select the numeric columns to perform the stats test.
+
+```{r}
+chi_square_11.2a %<>%
+  tibble::column_to_rownames("Demographic")
+
+chi_square_11.2a
+```
+
+**Note**: a contingency table would usually also have totals for all groups as well, but this is not necessary for the `stats::chisq.test()` function.
+
+The chi-squared test for independence can be conducted using the `stats::chisq.test()` function. 
+
+```{r}
+stats::chisq.test(chi_square_11.2a)
+```
+
+We see that the $p$-value is very small, which suggests there is an association between `Sex` and the number of major depressive episodes across time (2004 compared to 2018). 
+
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Using what you learned about the Chi-squared test, describe the results in reference to the null hypothesis.
+
+####
+
+How about for severe major depressive episodes?
+
+```{r}
+chi_square_11.3a <- counts %>%
+  filter(data_type == "Severe_Major_Depressive_Episode", 
+         Year %in% c(2009, 2018), 
+         Demographic %in% c("Male","Female")) %>%
+  mutate(Number = Number * 1000) %>%
+  select(-data_type, -subgroup) %>%
+  pivot_wider(names_from = Year,
+              names_prefix = "Year", 
+              values_from = Number) %>%
+  column_to_rownames("Demographic")
+
+chi_square_11.3a
+```
+
+```{r}
+chisq.test(chi_square_11.3a)
+```
+
+There also appears to be an influence of sex on the rate of severe major depressive episodes across the years.
+
+
+How about treatment?
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try performing the same wrangling as we did for the percentage of each demographic that reported having a major depressive episode for the data about treatment.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
+```{r}
+chi_square_11.4a <- counts %>%
+  filter(data_type == "treatment", 
+         Year %in% c(2009, 2018), 
+         Demographic %in% c("Male","Female")) %>%
+  mutate(Number = Number * 1000) %>%
+  select(-data_type, -subgroup) %>%
+  pivot_wider(names_from = Year,
+              names_prefix = "Year", 
+              values_from = Number) %>%
+  column_to_rownames("Demographic")
+
+chi_square_11.4a
+```
+</details>
+
+
+```{r}
+chisq.test(chi_square_11.4a)
+```
+
+There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
+
+
+
 
 ## **Summary**
 *** 
@@ -2254,18 +2338,13 @@ All racial and ethnic groups also show a similar rate of severe episodes relativ
 
 Let's make a plot that summarizes our major findings.
 
-We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text. The `x = 0` argument places the title on the far left edge of the plot area. The `hjust` argument moves the label in the horizontal direction. Thus if we use a value of -0.01 it will move the title just a bit away from the left edge of the plot area.
-
-#### {.question_block}
-<b><u> Question Opportunity </u></b>
-
-What happens if we modify the hjust value?
-
-####
-
+We will use the `ggdraw()` function in the `cowplot` package.
+This allows you to add labels and other plot aspects on top of existing plots. 
+Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text. 
 
 ```{r}
-title_plots <- ggdraw() + 
+title_plots <- 
+  ggdraw() + 
   draw_label(
     "Self-Reported Depression Among American Youths",
     fontface = 'bold',
@@ -2274,11 +2353,25 @@ title_plots <- ggdraw() +
     hjust = -0.01
   )
 ```
+The `x = 0` argument places the title on the far left edge of the plot area. 
+Thus, if we use a value of -0.01 it will move the title just a bit away from the left edge of the plot area.
 
-We can also make a subtitle in the same way.
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+What happens if we modify the `hjust` value?
+
+####
+
+<details> <summary> Click here to reveal the answer. </summary>
+
+The `hjust` argument moves the label in the horizontal direction. 
+
+</details> 
+
+We can also make a subtitle in the same way. Here, we create a subtitle called `forward`, which we will use later on. 
 
 ```{r}
-
 forward <- ggdraw() + 
   draw_label(
     "The percentage of youths experiencing major depressive episodes and receiving treatment\n for depression has increased especially since 2011",
@@ -2289,42 +2382,50 @@ forward <- ggdraw() +
   )
 ```
 
-Now we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
+Next, we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
 
+Using our `MDE_total` plot: 
 ```{r}
-
-MDE_total_for_mp <-MDE_total +
-  theme(plot.title = element_text(size = 14, 
-                                 color = "black"),
-     plot.subtitle = element_blank(),
-      axis.title.x = element_blank(),
-         axis.text = element_text(color = "black")) +
+MDE_total_for_mp <-
+  MDE_total +
+  theme(plot.title = element_text(size = 14, color = "black"),
+        plot.subtitle = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text = element_text(color = "black")) +
   labs(title = "The percent of youths who reported having a\nmajor depressive episode") 
+```
 
-treat_for_mp <- Treat_total +
+Using our `Treat_total` plot:
+```{r}
+treat_for_mp <- 
+  Treat_total +
   theme(plot.title = element_text(size = 14, 
                                  color = "black"),
      plot.subtitle = element_blank(),
       axis.title.x = element_blank(),
          axis.text = element_text(color = "black")) +
   labs(title = "The percent of youths who reported receiving\ntreatment for depression", subtitle = "", x = "")
+```
 
-
-MDE_age_sex_for_mp <- MDE_age_sex +
-  theme(plot.title= element_text(size = 14, 
-                                color = "black"),
+Using our `MDE_age_sex` plot:
+```{r}
+MDE_age_sex_for_mp <- 
+  MDE_age_sex +
+  theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
         axis.title.x = element_blank()) +
   labs(title = "Females and older youths have highest rates and show\nthe steepest increase") 
-
 ```
 
-For this last plot we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that doesn't shrink the size of our plot to accommodate the legend. We can use the `get_legend()` function of the `cowplot` package to do this. However, beforehand, we also want to change the way the legend is displayed. We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 rows like so `guides(guide_legend(nrow = 2))`.
+For this last plot, we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that does not shrink the size of our plot to accommodate the legend. 
+We can use the `get_legend()` function of the `cowplot` package to do this. 
+However, beforehand, we also want to change the way the legend is displayed. 
+We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 rows like so `guides(guide_legend(nrow = 2))`.
 
 ```{r}
-MDE_race_for_mp_leg <- MDE_race +
-  theme(plot.title= element_text(size = 14, 
-                                color = "black"),
+MDE_race_for_mp_leg <- 
+  MDE_race +
+  theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
         axis.title.x = element_blank(),
         legend.position = "bottom", 
@@ -2333,12 +2434,10 @@ MDE_race_for_mp_leg <- MDE_race +
   labs(title = "All racial/ethnic groups show similar\nincreases since 2011") +
   guides(guide_legend(nrow = 2))
 
-legend <-get_legend(MDE_race_for_mp_leg)
-
+legend <- get_legend(MDE_race_for_mp_leg)
 ```
 
-Now we will remove the legend for this plot.
-
+Now, we will remove the legend for this plot.
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -2350,33 +2449,38 @@ Do you recall how to do this? Without scrolling up, see if you can figure out ho
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-MDE_race_for_mp <-MDE_race_for_mp_leg +
+MDE_race_for_mp <- 
+  MDE_race_for_mp_leg +
   theme(legend.position = "none")
-
 ```
 </details>
-
 
 OK, now we are ready to start putting our plots together using the `plot_grid()` function of the `cowplot` package. 
 
 It is helpful to first make rows by combining the plots that we want to be displayed next to each other and then combining these with the title and subtitle, called `forward`. 
 
-We can use the `rel_widths` argument to modify how wide each plot is displayed.
+We can use the `rel_widths` (relative column width) argument to modify how wide each plot is displayed.
+For example, in a two-column grid, `rel_widths = c(2, 1)` would make the first column twice as wide as the second column.
 
 ```{r}
 row_1 <- plot_grid(MDE_total_for_mp,
                    treat_for_mp,
                    nrow = 1)
+
 row_2 <- plot_grid(MDE_age_sex_for_mp,
                    MDE_race_for_mp,
-                   nrow = 1, rel_widths = c(1.2, 0.8))
-
+                   nrow = 1, 
+                   rel_widths = c(1.2, 0.8))
 ```
 
 
-Now we can combine everything together using `plot_grid()` yet again. Now that we have rows, we can combine everything as a single column and easily modify the relative heights using the `rel_heights()` function so that our title, subtitle and legend are all relative short relative to the plots. We will make the first row half the height of the second row. 
+Now we can combine everything together using `plot_grid()` yet again. 
+Now that we have rows, we can combine everything as a single column and easily modify the relative heights using the `rel_heights()` function so that our title, subtitle and legend are all relative short relative to the plots. 
+We will make the first row half the height of the second row. 
 
-Finally, we will use the `png()` function of the `grDevices` package which is automatically loaded in RStudio sessions to save the plot. We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`. We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
+Finally, we will use the `png()` function of the `grDevices` package which is automatically loaded in RStudio sessions to save the plot. 
+We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`.
+We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
 ```{r, eval = TRUE}
 png(filename = here::here("img", "mainplot.png"), 
@@ -2388,7 +2492,6 @@ plot_grid(title_plots,
           legend,
           ncol = 1, 
           rel_heights = c(0.1,0.1,.5, 1, 0.2))
-
 dev.off()
 ```
 
@@ -2400,17 +2503,30 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 
 avocado: I want to add something about self-reporting bias to the  objectives
 
+AVOCADO: Maybe we take out Race/Ethnicity in the final plot? Two reasons: (1) there isn't a difference between the groups, (2) it's by far the most complicated plot to interpret and makes the plot a lot harder understand in a first passing. 
+Could we also **bold** the subtitles in the top two plots. When I first read the case study, it was hard to catch the difference between the left and right plot (i.e. MDE events vs treatment for MDE)
+
 ### Synopsis
 
-In this case study we evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths receiving treatment for depression. We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
+In this case study we evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths receiving treatment for depression. 
+We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
 
-By analyzing and plotting our data, it is clear that depression rates appear to be increasing, particularly since 2011. However, it is possible that respondents had similar rates in previous years, but now feel less stigma about responding about depression symptoms when filling out the survey. The survey has always been anonymous, but [reporting bias](https://en.wikipedia.org/wiki/Self-report_study#:~:text=Self%2Dreport%20studies%20are%20inherently,answers%20will%20be%20more%20positive.){target="_blank"} can sometimes cause individuals to exaggerate or minimize their symptoms because of what they think researchers want their response to be or out of shame or embarrassment, among other reasons. However, the data suggests that youths may be experiencing more symptoms of depression and that the rate of increase is quite high. Now nearly a quarter of all individuals that were female and of age 12-17 reported experiencing symptoms of depression. This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. Furthermore,if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
+By analyzing and plotting our data, it is clear that depression rates appear to be increasing, particularly since 2011. 
+However, it is possible that respondents had similar rates in previous years, but now feel less stigma about responding about depression symptoms when filling out the survey. 
+The survey has always been anonymous, but [reporting bias](https://en.wikipedia.org/wiki/Self-report_study#:~:text=Self%2Dreport%20studies%20are%20inherently,answers%20will%20be%20more%20positive.){target="_blank"} can sometimes cause individuals to exaggerate or minimize their symptoms because of what they think researchers want their response to be or out of shame or embarrassment, among other reasons. 
+However, the data suggests that youths may be experiencing more symptoms of depression and that the rate of increase is quite high. 
+
+Nearly a quarter of all individuals that were female and of age 12-17 reported experiencing symptoms of depression. 
+This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. 
+Furthermore, if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. 
+One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. 
+Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
 
 
 ## **Homework**
 *** 
 
-Ask students to scrape tables 11.5A and 11.5B from the website which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform chi-square tests to evaluate how groups compare over time.
+Ask students to scrape Tables 11.5A and 11.5B from the website, which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform Chi-square tests to evaluate how groups compare over time.
 
 
 ## **Additional Information**
