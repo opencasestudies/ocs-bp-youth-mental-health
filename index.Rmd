@@ -41,8 +41,6 @@ library(magick) # to create gif
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
-AVOCADO: I really like the plot! Should clarify what the bottom two plots are referring to? i.e. % of major depressive episode (vs treatment which is only in the top left plot)? Also, the color legend only is relevant for the bottom right plot. Should we move those closer? 
-
 ####
 
 ## {.disclaimer_block}
@@ -100,9 +98,7 @@ knitr::include_graphics(here::here("img", "depression-symptoms-and-treatment-768
 ***
 <details> <summary> Click here to see the diagnostic requirements for a major depressive episode (MSE) according to the [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}.</summary>    
 
-AVOCADO: Was there suppose to be an "A." below? I see a "B." and "C"
-
-Five or more of the following symptoms have been present and documented during the same two-week period and represent a change from previous functioning; at least one of the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.  
+A. Five or more of the following symptoms have been present and documented during the same two-week period and represent a change from previous functioning; at least one of the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.  
 
 **Note**: Do not include symptoms that are clearly attributable to another medical condition.  
 
@@ -137,6 +133,8 @@ D. The occurrence of the major depressive episode is not better explained by sch
 E. There has never been a manic episode or a hypomanic episode.  
 
 Note: This exclusion does not apply if all of the manic-like or hypomanic-like episodes are substance-induced or are attributable to the physiological effects of another medical condition.  
+
+#### [[source]](https://www.icsi.org/guideline/depression/diagnose-and-characterize-major-depression-persistent-depressive-disorder-with-clinical-interview/){target="_blank"}
 
 </details>  
 
@@ -177,7 +175,7 @@ significantly faster for youths (from 2.86 to 5.71 visits).
 
 **Summary**: While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
 
-In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode rate to explore how this have changed over time and how different groups compare. 
+In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode (MDE) rate to explore how this have changed over time and how different groups compare. 
 This data was also used in the first referenced article.  
 
 
@@ -194,12 +192,14 @@ This data was also used in the first referenced article.
 
 ## **Learning Objectives** 
 *** 
+The skills, methods, and concepts that students will be familiar with by the end of this case study are:
 
 <u>**Statistical Learning Objectives:**</u> 
 
-1. Define and create a contingency table.
-2. Implementation of a chi-squared test for independence.
-3. Interpretation of a chi-squared test for independence.
+1. Discuss the impact and of self-reporting bias on survey responses.
+2. Define and create a contingency table.
+3. Implementation of a chi-squared test for independence.
+4. Interpretation of a chi-squared test for independence.
 
 <u>**Data science Learning Objectives:**</u>
 
@@ -209,11 +209,12 @@ This data was also used in the first referenced article.
 4. Work with character strings (`stringr`).
 5. Reshape data into different formats (`tidyr`).
 6. Data visualizations (`ggplot2`) with labels (`directlabels`) and facets for different groups.
+7. Combine multiple plots (`cowplot`).
+8. Optional: Create an animated gif (`magick`).
 
 
-In this case study, we will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+In this case study, we will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R more legible and intuitive.
 
-AVOCADO: should we update the "R especially efficient" text?
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -260,9 +261,8 @@ The first time we use a function, we will use the `::` to indicate which package
 *** 
 
 To motivate the examination of the mental health of American youths, we begin by exploring the rate of suicide in the United States (US). 
-According to the CDC the rate of suicide has increased for most age groups in the US over the past decade and a half.
+According to the CDC the rate of suicide has increased for both genders.
 
-AVOCADO: unsure if you meant to show a different plot (i.e. one stratified by age groups) or if you meant to write different text in the sentence above (i.e. stratified by gender)? 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.png")
@@ -271,7 +271,7 @@ include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.
 ##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-While suicide does appear to be increasing among youths it also appears to be increasing among middle aged adults for both females: 
+While suicide does appear to be increasing among youths it also appears to be increasing among most age groups in the US over the past decade and a half for both females: 
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
@@ -291,9 +291,7 @@ include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig3.
 
 According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
 
-> Since 2008, suicide has ranked as the 10th leading cause of death for all ages in the United States. In 2016, suicide became the **second leading cause of death** among those aged **10–34** and the fourth leading cause among those aged 35–54.
-
-AVOCADO: Do we need the plot below? It's not super clear to me how the text above relates as suicide is so far down the list? Also it doesn't have age in the plot? 
+> Since 2008, suicide has ranked as the 10th leading cause of death for **all ages** in the United States. 
 
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality.png"))
@@ -301,20 +299,20 @@ knitr::include_graphics(here::here("img","mortality.png"))
 
 ##### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}   
 
-  
+Furthermore, according to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
+
+>In 2016, suicide became the **second leading cause of death** among [youths].
+
 
 **So although suicide is on the rise for most age groups, suicide is one of the top *two* contributors to death for youths.**   
 
 Thus, this warrants further examination of the mental health of American youths.  
-
-AVOCADO: oh i see, i think this is the plot you were referring to in the text above. Yeah, I would get ride of the `img/mortality.png` plot and just use this plot. However, the age groups don't quite match up. The pie chart doesn't have a category 35-54? 
 
 ```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","mortality_age.png"))
 ```
 
 ##### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf){target="_blank"}
-
 
 
 Historically, suicide rates were much higher before 1950, however, we are seeing an increase in the last 20 years.
@@ -326,8 +324,8 @@ knitr::include_graphics(here::here("img","suicide.png"))
 ##### [[source]](https://time.com/5609124/us-suicide-rate-increase/){target="_blank"}
 
 
-
 Besides the US, [other countries](https://academic.oup.com/ije/article/48/5/1650/5366210){target="_blank"} are also experiencing increased rates of depression in youths. 
+
 See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MSD-MER-2017.2-eng.pdf;jsessionid=E44360055DD83EAC472AA40C2853DBFA?sequence=1){target="_blank"} from the World Health Organization (WHO) about rates of depression in other countries.
 
 See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} for an interesting discussion about what may be causing increased depression rates. 
@@ -356,6 +354,12 @@ There are some important considerations regarding this data analysis to keep in 
 2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
 
 3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
+
+
+4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBT (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
+
+
+Note: While [gender and sex](https://www.who.int/genomics/gender/en/index1.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
 
 ## **What are the data?**
 *** 
@@ -485,8 +489,12 @@ The two web scraping steps for these tables can be broken down even further:
 
 Below is a animated overview of the process.
 
-```{r, echo = FALSE}
-step1 <- image_read(here::here("img", "webpage_screenshot.png"))
+<details><summary> Click here if you want to see how this animation was made!</summary>
+
+First the images need to be imported into R using the `image_read` function of the `magick` package.
+
+```{r}
+step1 <- magick::image_read(here::here("img", "webpage_screenshot.png"))
 step2 <- image_read(here::here("img", "table_screenshot_inspect.png"))
 step3 <- image_read(here::here("img", "table_screenshot_inspect_table.png"))
 step4 <- image_read(here::here("img", "table_screenshot_inspect_table_xpath.png"))
@@ -494,40 +502,82 @@ step5 <- image_read(here::here("img", "table_screenshot_xpath_copy_r.png"))
 step5_zoom <- image_read(here::here("img", "table_screenshot_xpath_copy_r_zoom.png"))
 ```
 
-```{r, eval=FALSE, echo=FALSE}
+The last image is smaller than the others, to get a sense of the size we can use the `image_info()` function of the `magick` package.
+
+```{r}
+step5
+step5_zoom
+image_info(step5)
 image_info(step5_zoom)
+```
 
-step5_zoom <- image_border(step5_zoom, "white", "284x334")
+First let's re-size the second image to make it a bit larger using the `image_resize()` function of the `magick` package. We will re-size the width to be the same as the previous image width and keep the aspect ratio for the height by using "1440x". If we wanted to just do the same for height we would use "x900".
 
+```{r}
+step5_zoom <- image_resize(step5_zoom,  "1440x")
+step5_zoom
+```
+
+We can add a white boarder around the last image to make the size more similar height-wise using the `image_border()` function of the `magick` package. There are many image modification functions in the `magick` package! See [here](https://cran.r-project.org/web/packages/magick/vignettes/intro.html){target="_blank"} to learn more.
+
+```{r}
+step5_zoom <- image_border(step5_zoom, "white", "2x334")
+step5_zoom
+```
+
+Looks good!
+
+Now we will make the sequence of images for our animation. We also want to indicate how long we want to spend on each relative to the others. We want to linger on the last image so we include it two times.
+
+```{r}
 img <- c(step1,
          step2,
-         step2,
-         step3,
          step3,
          step4,
-         step4,
-         step5,
          step5,
          step5_zoom,
-         step5_zoom,
-         step5_zoom,
-         step1)
+         step5_zoom)
+```
 
-educational_gif <- image_resize(img, '1440x900!') %>%
-  image_background('white') %>%
-  image_morph(frames = 10) %>%
-  image_animate(delay = 20,
+
+Now, we are ready to create our gif! But first we want to modify our images a bit more.
+
+First we want to make all images within `img` the exact same size using the `image_resize()` function. To do this for all images we can use the `!` at the end, which ignoring aspect ratios.
+
+```{r}
+image_info(img)
+img <-image_resize(img, '1440x900!')
+image_info(img)
+```
+
+We also want to morph or blend each image into the next so that there appears to be a smooth transition. We can also specify how many frames to include in the morph, to speed up or slow down the blend from one image to another. We will specify that 4 frames should be used in the morph. 
+
+To make the final animation we use the `image_animate()` function
+Importantly, we want to delay changing from one image to another about 70* 1/100 seconds to give people a chance to see what is happening. So we can use the `delay` argument. The optimize argument of this function requires that all images are the same size (luckily we did this!) and it causes R to only store the differences between frames.
+
+```{r}
+educational_gif <- 
+  image_morph(img, frames = 4) %>%
+  image_animate(delay = 70,
                 optimize = TRUE)
+```
 
+Now to save our gif we can use the `image_write()` function of the `magick` package and the `here()` function of the `here` package to easily save it in a directory called `img` within the directory that contains our .Rproj file. We will name the file educational.gif.
+
+```{r, eval = FALSE}
 image_write(educational_gif,
       here::here("img", "educational.gif"))
 ```
 
-```{r, echo=FALSE}
+
+</details>
+
+
+
+```{r, echo = FALSE}
 knitr::include_graphics(here::here("img","educational.gif"))
 ```
 
-AVOCADO: Should we mentioned how all the functions `image_read()` work from magick? it's really cool! Seems like a data science learning objective? 
 
 ***
 
@@ -1090,13 +1140,22 @@ table11.1a %<>%
                     rep("Juvenile_Justice", 2),
                     rep("Child_Welfare", 2), 
                     "combination")) %>%
-  mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
+  mutate(short_label = c("Specialty total", "Outpatient total",
+                         "Therapist", "Clinic", "Day program", 
+                         "In-home Therapist", "Inpatient total",
+                         "Hospital", "Residential Center",
+                         "Nonspecialty total", "School total", 
+                         "School Therapist", "School Program", 
+                         "General Medicine", "Family Dr", 
+                         "Justice System", "Justice System",
+                         "Welfare", "Fostercare", 
+                         "Specialty Combination")) %>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare") %>%
     tidyr::pivot_longer(cols = contains("20"), 
-                  names_to = "Year",
-                 values_to = "Number") %>%
+                    names_to = "Year",
+                   values_to = "Number") %>%
    mutate(Year = as.numeric(Year))
 ```
 
@@ -1110,27 +1169,68 @@ function(TABLE, new_col, pivot_col){
   }
 ```
 
-AVOCADO: these sentences are a bit dense. Could we break them up a bit with code in between? 
+We want to make our function flexible so that it can take any value for the name of the first column. To select the first column we will use this following code, where the base `names()` function gets the column names of the `TABLE` input , which is indicated by the `.` and then to get just the first name the `[1]` is used.
 
-We will also add code to remove all rows that have only NA values, this means we don't need to know what rows ahead of time.
+```{r, eval = FALSE}
+function(TABLE, new_col, pivot_col){
+  dplyr::as_tibble(TABLE) %>%
+  #additional steps
+  names(.)[1]
+  #additional steps
+}
+```
 
-To do this we will use the `filter()` and `select()` functions of the `dplyr` package. 
+And to rename the with the `new_col` input to the function we can do this:
 
-We will calculate a sum of the count of `NA` values across the rows for the numeric columns (the columns for each year) using the base `rowSums()` function.
+```{r, eval = FALSE}
+function(TABLE, new_col, pivot_col){
+  dplyr::as_tibble(TABLE) %>%
+  #additional steps
+  rename({{new_col}} := names(.)[1])
+  #additional steps
+}
+```
 
-To do this we first select the columns that are numeric using: `select(., is.numeric)`, where the `.` refers to the table after all the previous wrangling steps in our function.
-
-Then, we get a true or false statement about which columns have `NA` values with the base `is.na()` function (this requires numeric values).
-
-Then, we calculate the sum using the base `rowSums()` function.
-Altogether this looks like this: `rowSums(is.na(select(., is.numeric)))`.
-
-Finally, we compare this to the number of columns that are numeric by using: `length(select(., is.numeric)))`, with the idea that if the number of `NA` values is less than the number of columns that could have `NA` values, then we know it is not an empty row.
-              
-Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
+The double curly brackets `{{}}` allow us to use the input to the function called `new_col` within the function.
 
 See [here](https://adv-r.hadley.nz/quasiquotation.html#tidy-dots){target="_blank"} for information about the `:=` colon-equals operator. 
 This operator is more flexible than the normal `=`. It allows expressions on both sides, thus it allows us to use an expression (the values for `new_col`) as the input value to the expressions that follow the `:=` operator.
+
+We will also add code to remove all rows that have only `NA` values in a more flexible way, so that we don't need to know what rows ahead of time.
+
+To do this we will use the `filter()` and `select()` functions of the `dplyr` package. 
+
+We will calculate a sum of the count of `NA` values across the rows for the columns for each year using the base `rowSums()` function like so:
+
+```{r, eval = FALSE}
+rowSums(is.na(.))
+```
+
+However to do this we first need to select only the columns that are numeric using: `select(., is.numeric)`, where the `.` refers to the table after all the previous wrangling steps in our function. Importantly of course, this all needs to happen after we convert the values for each year to numeric.
+
+Anyway, altogether this looks like this: 
+
+```{r, eval = FALSE}
+rowSums(is.na(select(., is.numeric)))`.
+```
+
+Finally, we compare this to the number of columns that are numeric by using: `length(select(., is.numeric)))`, with the idea that if the number of `NA` values is less than the number of columns that could have `NA` values, then we know it is not an empty row.
+
+Overall, this would look something like this after we perform a step to convert the columns to be numeric like we did before:
+
+```{r, eval = FALSE}
+function(TABLE, new_col, pivot_col){
+  # previous similar steps to modify and make table values numeric
+    filter(rowSums(is.na(select(., is.numeric))) < 
+             length(select(., is.numeric))) 
+  }
+  
+```
+
+Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
+
+
+OK, so putting everything together from what we did previously for `table11.1a` and these new flexible steps we can create this function:
 
 ```{r}
 data_prep_settings <- function(TABLE, new_col, pivot_col){
@@ -1152,16 +1252,30 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                        stringr::str_remove_all, "a|,")) %>%
   mutate(across(-{{new_col}}, as.numeric)) %>%
   mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
-  mutate(subtype = c("Specialty_total", rep("Outpatient", 5), 
-                     rep("Inpatient", 3), "Nonspecialty_total", 
-                     rep("Education", 3), rep("General_medicine", 2),
-                    rep("Juvenile_Justice", 2), rep("Child_Welfare", 2), 
+  mutate(subtype = c("Specialty_total",
+                    rep("Outpatient", 5),
+                    rep("Inpatient", 3), 
+                    "Nonspecialty_total", 
+                    rep("Education", 3), 
+                    rep("General_medicine", 2),
+                    rep("Juvenile_Justice", 2), 
+                    rep("Child_Welfare",2),
                     "combination")) %>%
-  mutate(short_label = c("Specialty total", "Outpatient total", "Therapist", "Clinic", "Day program", "In-home Therapist", "Inpatient total", "Hospital", "Residential Center", "Nonspecialty total", "School total", "School Therapist", "School Program", "General Medicine", "Family Dr", "Justice System", "Justice System", "Welfare", "Fostercare", "Specialty Combination")) %>%
-  filter(rowSums(is.na(select(., is.numeric))) < length(select(., is.numeric))) %>%
+  mutate(short_label = c("Specialty total", "Outpatient total",  
+                         "Therapist", "Clinic", "Day program", 
+                         "In-home Therapist", "Inpatient total",
+                         "Hospital", "Residential Center",
+                         "Nonspecialty total", "School total", 
+                         "School Therapist", "School Program", 
+                         "General Medicine", "Family Dr", 
+                         "Justice System", "Justice System", 
+                         "Welfare", "Fostercare", 
+                         "Specialty Combination")) %>%
+  filter(rowSums(is.na(select(., is.numeric))) < 
+           length(select(., is.numeric))) %>%
   pivot_longer(cols = contains("20"), 
-               names_to = "Year", 
-               values_to = pivot_col)%>%
+           names_to = "Year", 
+          values_to = pivot_col)%>%
   mutate(Year = as.numeric(Year))
 }
 ```
@@ -1420,25 +1534,38 @@ Let's add a different background color for the years since 2011.
 We can do so by adding a `geom_rect()` layer before we plot the line.
 We just need to specify the location of the rectangle on our plot.
 
-We also use the `theme_classic()` theme. 
+We also use the `theme_classic()` theme and we will add a facet using the `facet_wrap()` function to add strip of text to the top of the plot to tell more about what is contained within the plot. This function is typically used to create subplots which we will demonstrate next.
+
+We want to change the value `TOTAL` of the `Demographic varaible` to `"Percent of respondants with MDE"` so that the text in the strip above the plot shows this instead. We can do so by using the `recode()` function of the `dplyr` package. 
+
+We will also change the color of the line using the `scale_color_manual()` function of the `ggplot2` package.
 
 ```{r}
+
 MDE_total <-
   percents %>%
   filter(data_type == "Major_Depressive_Episode", 
          Demographic == "TOTAL") %>%
-  ggplot(aes(x = Year, y = Percent, color = Demographic)) +
+  mutate(Demographic = recode(Demographic, 
+             "TOTAL" = "Percent of respondents with MDE"))%>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+  facet_wrap(~Demographic)+
   geom_rect(xmin = 2011, xmax = Inf,  
             ymin = -Inf, ymax = Inf,  
-            fill = "light gray")+
+            fill = "light gray") +
   geom_line(aes(color = Demographic), size = 1.5) +
   scale_x_continuous(breaks = seq(2004, 2018, by=1),
                      labels = seq(2004, 2018, by=1),
                      limits = c(2004, 2018)) +
-  labs(title = "The Rate of Youths Aged 12 to 17 Reporting Having a \n Major Depressive Episode is Increasing")+
+  labs(title = "The Rate of Youths Aged 12 to 17 Reporting Having a \n Major Depressive Episode (MDE) is Increasing")+
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90),
-        legend.position = "none") 
+        legend.position = "none",
+       strip.background = element_rect(fill ="black"),
+             strip.text = element_text(face = "bold", 
+                                       size = 14, 
+                                      color = "white")) +
+  scale_color_manual(values = c("red"))
 
 MDE_total
 ```
@@ -1458,6 +1585,20 @@ MDE_total +
 ```
 
 ####
+
+We can create a theme for our future similar ggplots like so:
+
+```{r}
+overview_theme <-function() {
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "none",
+       strip.background = element_rect(fill ="black"),
+             strip.text = element_text(face = "bold", 
+                                       size = 14, 
+                                      color = "white"))
+  }
+```
 
 
 Now let's look at group differences.  
@@ -1495,7 +1636,7 @@ We use the `"far.from.others.borders"` method so that our labels do not overlap 
 We also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). 
 The `dl.move()` function of the `directlabels` package is used to move one of the labels to a particular location. 
 
-avocado: the dl.move functions are set up for the rendering the rmarkdown - so if you are viewing the case study from RStudio the labels will overlap.
+Note: the dl.move functions are set up for the rendering the rmarkdown - so if you are viewing the case study from RStudio the labels will overlap.
 
 
 ```{r}
@@ -1622,12 +1763,10 @@ MDE_race <-
 MDE_race
 ```
 
-Using the definition from the Census Bureau: 
+Using the definitions from the [Census Bureau](https://www.census.gov/programs-surveys/cps/data/data-tools/cps-table-creator-help/race-definitions.html#:~:text=NHOPI%20Alone%20%E2%80%93%20NHOPI%20alone%20refers,not%20report%20any%20other%20race.){target="_blank"}: 
 
 1. **AIAN** stands for American Indian and Alaska Native  
 2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
-
-AVOCADO: should we add a source link here to the census bureau? 
 
 Unfortunately, there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points (2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
 
@@ -1686,14 +1825,46 @@ Now let's take a look at how the rate of youths reporting having a major depress
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Try to come up with the code for this plot on your own before you reveal it.
+Try to come up with the code for the following two plots on your own before you reveal it. This time we will use the `overview_theme()` function that we created.
 
 ####
 
 <details> <summary> Click here to reveal the code. </summary>
+```{r}
+MDES_total <-
+  percents %>%
+  filter(data_type == "Severe_Major_Depressive_Episode", 
+         Demographic == "TOTAL") %>%
+  mutate(Demographic = recode(Demographic, 
+             "TOTAL" = "Percent of respondents with Severe MDE")) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+    geom_rect(xmin = 2011, xmax = Inf,  
+              ymin = -Inf, ymax = Inf,  
+              fill = "light gray") +
+    geom_line(aes(color = Demographic), size =1)+
+    scale_x_continuous(breaks = seq(2006, 2018, by=1),
+                     labels = seq(2006, 2018, by=1),
+                     limits = c(2006, 2018)) +
+    labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
+         subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
+    facet_wrap(~ Demographic) +
+    overview_theme()+
+    scale_color_manual(values = c("red"))
+```
+
+</details>
+
 
 ```{r}
-MDES <-
+MDES_total
+```
+
+Next let's look at age groups and sex differences:
+
+
+<details> <summary> Click here to reveal the code. </summary>
+```{r}
+MDES_age_sex <-
   percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode", 
          subgroup != "Race/Ethnicity", 
@@ -1713,18 +1884,19 @@ MDES <-
     theme(strip.text = element_text(size = 14, face = "bold"),
           axis.text.x = element_text(angle = 90)) 
 
-MDES <- direct.label(
-  MDES, 
+MDES_age_sex  <- direct.label(
+  MDES_age_sex, 
   list(dl.trans(y = y +0.39, x = x -0.1), 
        "far.from.others.borders",
        cex = .8, 
        dl.move("Age_14-15", x= 2016.5, y = 11))
   )
 ```
+
 </details>
 
 ```{r, echo=FALSE}
-MDES
+MDES_age_sex
 ```
 
 We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket. 
@@ -1778,7 +1950,8 @@ The data for the AIAN group is sparse, so it is unclear if their levels would be
 
 ### MDE Treatment
 
-Now we will take a look at those who received treatment. 
+Now we will take a look at those who reported having a MDE and received treatment for depression. 
+
 First, let's look overall using the `Demographic == "TOTAL"` group.
 
 ```{r}
@@ -1786,23 +1959,25 @@ Treat_total <-
   percents %>%
   filter(data_type == "treatment", 
          Demographic == "TOTAL") %>%
+  mutate(Demographic = recode(Demographic, 
+             "TOTAL" = "Percent of MDE respondents with treatment")) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
     geom_rect(xmin = 2011, xmax = Inf,  
               ymin = -Inf, ymax = Inf,   
               fill = "light gray") +
     geom_line(aes(color = Demographic), size = 1.5) +
+    facet_wrap(~Demographic)+
     scale_x_continuous(breaks = seq(2004, 2018, by=1),
                        labels = seq(2004, 2018, by=1),
                        limits = c(2004, 2018)) +
-    labs(title = "The Rate of Youths Aged 12 to 17 Receiving Treatment after\nReporting Having a \n Major Depressive Episode is Increasing")+
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 90),
-          legend.position = "none") 
+    labs(title = "The Rate of Youths Aged 12 to 17 Receiving Treatment after\nReporting Having a Major Depressive Episode is Increasing")+
+    overview_theme()+
+    scale_color_manual(values = c("red"))
 
 Treat_total
 ```
 
-Overall roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. 
+Overall, roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. This rate could definitely be improved.
 
 This rate is increasing over time like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
 
@@ -1857,6 +2032,7 @@ Race_treat <-percents %>%
                        tail, n = 1, .desc = TRUE)) %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(size =1) +
+    facet_wrap(~ subgroup) +
     scale_x_continuous(breaks = seq(2009, 2018, by=1),
                        labels = seq(2009, 2018, by=1),
                        limits = c(2009, 2018)) +
@@ -2098,9 +2274,8 @@ Before we create a contingency table for our data and use the chi-squared test, 
 
 ***
 
-Consider a hypothetical scenario where we sample 100 individuals and report a contingency table representing the number of hypothetical individuals that we observed who are left and right handed, stratified by males and females.
+Consider a hypothetical scenario where we sample 100 individuals and report a contingency table representing the number of hypothetical individuals that we observed who are left and right handed, stratified by males and females (assuming all individuals had binary gender).
 
-AVOCOADO: should we include text about how gender is not binary here? 
 
 ```{r}
 observed <- tibble(Sex = c("Male", "Female", "Total"), 
@@ -2374,9 +2549,8 @@ We can also make a subtitle in the same way. Here, we create a subtitle called `
 ```{r}
 forward <- ggdraw() + 
   draw_label(
-    "The percentage of youths experiencing major depressive episodes and receiving treatment\n for depression has increased especially since 2011",
-    fontface = 'bold',
-    size = 14,
+    "The percentage of youths (age 12-17) experiencing major depressive episodes (MDE) has\nincreased since 2011. Of these youths, the percentage receiving treatment for depression has also\n increased but remains limited to less than 42%.",
+    size = 16,
     x = 0,
     hjust = -0.01
   )
@@ -2386,26 +2560,25 @@ Next, we will modify some of our existing plots using the `theme()` function as 
 
 Using our `MDE_total` plot: 
 ```{r}
+
 MDE_total_for_mp <-
   MDE_total +
-  theme(plot.title = element_text(size = 14, color = "black"),
-        plot.subtitle = element_blank(),
-        axis.title.x = element_blank(),
-        axis.text = element_text(color = "black")) +
-  labs(title = "The percent of youths who reported having a\nmajor depressive episode") 
+  theme(plot.title = element_blank(),
+     plot.subtitle = element_blank(),
+         axis.text = element_text(color = "black"))
 ```
 
 Using our `Treat_total` plot:
 ```{r}
+
 treat_for_mp <- 
   Treat_total +
-  theme(plot.title = element_text(size = 14, 
-                                 color = "black"),
+  theme(plot.title = element_blank(),
      plot.subtitle = element_blank(),
-      axis.title.x = element_blank(),
-         axis.text = element_text(color = "black")) +
-  labs(title = "The percent of youths who reported receiving\ntreatment for depression", subtitle = "", x = "")
+         axis.text = element_text(color = "black"))
+
 ```
+
 
 Using our `MDE_age_sex` plot:
 ```{r}
@@ -2413,28 +2586,31 @@ MDE_age_sex_for_mp <-
   MDE_age_sex +
   theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
-        axis.title.x = element_blank()) +
-  labs(title = "Females and older youths have highest rates and show\nthe steepest increase") 
+        axis.text = element_text(color = "black")) +
+  labs(title = "Older youths and females report MDE at the highest rates\nand show the steepest increase") 
 ```
 
 For this last plot, we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that does not shrink the size of our plot to accommodate the legend. 
-We can use the `get_legend()` function of the `cowplot` package to do this. 
+We can use the `get_legend()` function of the `cowplot` package to do this.
+We can also specify how it should be justified using `theme(legend.justification =)` this takes a number of options including "center", "left", and "right.
+
 However, beforehand, we also want to change the way the legend is displayed. 
-We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 rows like so `guides(guide_legend(nrow = 2))`.
+We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 columns like so `guides(color = guide_legend(ncol = 2))`. We need to specify that we are modifying the legend for color.
 
 ```{r}
 MDE_race_for_mp_leg <- 
   MDE_race +
   theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
-        axis.title.x = element_blank(),
-        legend.position = "bottom", 
+        axis.text = element_text(color = "black"),
+        legend.position = "right", 
         legend.title = element_blank(),
         legend.text = element_text(size = 14)) +
-  labs(title = "All racial/ethnic groups show similar\nincreases since 2011") +
-  guides(guide_legend(nrow = 2))
+  labs(title = "All racial/ethnic groups show similar\nincreases since 2011")+
+ guides(color = guide_legend(ncol =2))
 
-legend <- get_legend(MDE_race_for_mp_leg)
+legend<- get_legend(MDE_race_for_mp_leg +
+          theme(legend.justification ="right"))
 ```
 
 Now, we will remove the legend for this plot.
@@ -2470,7 +2646,7 @@ row_1 <- plot_grid(MDE_total_for_mp,
 row_2 <- plot_grid(MDE_age_sex_for_mp,
                    MDE_race_for_mp,
                    nrow = 1, 
-                   rel_widths = c(1.2, 0.8))
+                   rel_widths = c(1, 0.6))
 ```
 
 
@@ -2483,7 +2659,9 @@ We will use the `here()` function of the `here` package, to specify that we want
 We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
 ```{r, eval = TRUE}
-png(filename = here::here("img", "mainplot.png"), 
+
+
+png(filename = here::here("img", "mainplot_orig.png"), 
          res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 
           forward,
@@ -2491,20 +2669,135 @@ plot_grid(title_plots,
           row_2,
           legend,
           ncol = 1, 
-          rel_heights = c(0.1,0.1,.5, 1, 0.2))
+          rel_heights = c(0.1,0.2,.8, 1, 0.3))
 dev.off()
 ```
 
 The `dev.off()` function is necessary to close the graphics device. This is good practice to allow you to create another plot again later.
 
 ```{r,echo = FALSE}
-knitr::include_graphics(here::here("img", "mainplot.png"))
+knitr::include_graphics(here::here("img", "mainplot_orig.png"))
 ```
 
-avocado: I want to add something about self-reporting bias to the  objectives
 
-AVOCADO: Maybe we take out Race/Ethnicity in the final plot? Two reasons: (1) there isn't a difference between the groups, (2) it's by far the most complicated plot to interpret and makes the plot a lot harder understand in a first passing. 
-Could we also **bold** the subtitles in the top two plots. When I first read the case study, it was hard to catch the difference between the left and right plot (i.e. MDE events vs treatment for MDE)
+OK, this looks pretty good! But it is a bit busy, so we are now going to remove the Race/ethnicity plot so as  to simplify our plot.
+
+This time we need to recreate our `MDE_age_sex` plot again because we want to separate our plots so they look more similar to the total MDE and treatment plots. So we will actually make two separate plots. 
+
+We also want to recode the text for the strip above the plot and change the plot so that there are no grid lines like the first row of plots.
+
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for these plots on your own before you reveal it. We can use our `overview_theme()` for these plots to make all the plots look similar.
+
+####
+
+<details> <summary> Click here to reveal the code. </summary>
+
+```{r}
+MDE_sex <-percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+          subgroup == "Sex") %>%
+  mutate(subgroup = recode(subgroup, "Sex" = 
+         "Percent of each sex reporting MDE")) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray") +
+  geom_line(aes(color = Demographic), size = 1.5) +
+  facet_wrap(~subgroup)+
+  scale_y_continuous(limits = c(0,23))+
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+ overview_theme() +
+ scale_color_manual(values = c("#FF61C9",
+                                "#00A5FF"))
+
+
+MDE_sex<- direct.label(
+  MDE_sex, 
+  list(dl.trans(y = y +0.38, x = x -0.2), 
+       "far.from.others.borders", 
+       cex = 1,
+       fontface=c("bold"))
+  )
+       
+
+
+MDE_age <-percents %>%
+  filter(data_type == "Major_Depressive_Episode", 
+          subgroup == "Age") %>%
+  mutate(subgroup = recode(subgroup, "Age" = 
+        "Percent of each age group reporting MDE")) %>%
+  ggplot(aes(x = Year, y = Percent, group = Demographic)) +
+  geom_rect(xmin = 2011, xmax = Inf,  
+            ymin = -Inf, ymax = Inf,  
+            fill = "light gray") +
+  geom_line(aes(color = Demographic), size = 1.5) +
+  facet_wrap(~subgroup)+
+  scale_y_continuous(limits = c(0,23))+
+  scale_x_continuous(breaks = seq(2004, 2018, by=1),
+                     labels = seq(2004, 2018, by=1),
+                     limits = c(2004, 2018)) +
+  overview_theme() +
+  scale_color_manual(values = c("#ED8141",
+                                "#39B600",
+                                "darkorchid2"))##9590FF#00BFC4
+
+MDE_age<- direct.label(
+  MDE_age, 
+  list(dl.trans(y = y + 0.38, x = x -0.2), 
+       "far.from.others.borders", 
+       cex = 1, 
+       fontface=c("bold"),
+       dl.move("Age_12-13", x = 2015, y = 9))
+  )
+```
+
+</details>
+
+We will also make another subtitle for the sex and race plots. This time we will add bold text to our text using the base `expression()` function and the base `paste()` function which allows you to combine character strings together. We can specify that we don't want any spaces or character for our separator.
+
+```{r}
+label <-expression(paste(
+    bold("Older "),
+    "youths and ",
+    bold("females "),
+    "report MDE at the highest rate and also show the steepest increase."), sep="")
+
+forward2 <- ggdraw() + 
+  draw_label(label,
+    size = 16,
+    x = 0,
+    hjust = -0.01
+  )
+```
+
+
+```{r}
+
+row_2 <- plot_grid(MDE_age, MDE_sex,
+                   nrow = 1)
+
+png(filename = here::here("img", "mainplot.png"), 
+         res = 300, width = 10, height = 10, units = "in")
+plot_grid(title_plots, 
+          forward,
+          row_1,
+          forward2,
+          row_2,
+          ncol = 1, 
+          rel_heights = c(0.1, 0.2, 1, 0.1, 1))
+dev.off()
+```
+
+
+```{r,echo = FALSE}
+knitr::include_graphics(here::here("img", "mainplot.png"))
+```
 
 ### Synopsis
 
@@ -2520,6 +2813,7 @@ Nearly a quarter of all individuals that were female and of age 12-17 reported e
 This warrants further investigation to see if this is a product of more reporting or if indeed American females are truly more depressed. 
 Furthermore, if they are indeed more depressed, investigation about why young females are more depressed is also of critical importance. 
 One important limitation is that the data does not include subgroup intersections, such as rates of major depressive episodes among females of various ethnic backgrounds. 
+
 Considering the very steep increase in females, this warrants further investigation about which females are particularly vulnerable and why. 
 
 

@@ -101,9 +101,10 @@ the end of this case study are:
 
 <u>**Statistical Learning Objectives:**</u>
 
-1.  Define and create a contingency table.
-2.  Implementation of a chi-squared test for independence.
-3.  Interpretation of a chi-squared test for independence.
+1.  Discuss the impact and of self-reporting bias on survey responses.
+2.  Define and create a contingency table.
+3.  Implementation of a chi-squared test for independence.
+4.  Interpretation of a chi-squared test for independence.
 
 <u>**Data science Learning Objectives:**</u>
 
@@ -114,7 +115,8 @@ the end of this case study are:
 5.  Reshape data into different formats (`tidyr`).
 6.  Create data visualizations (`ggplot2`) with labels (`directlabels`)
     and facets for different groups.
-7.  Combine multiple plots (`cowplot`)
+7.  Combine multiple plots (`cowplot`).
+8.  Optional: Create an animated gif (`magick`).
 
 #### Data import
 
