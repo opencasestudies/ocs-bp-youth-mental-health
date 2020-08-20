@@ -96,6 +96,7 @@ knitr::include_graphics(here::here("img", "depression-symptoms-and-treatment-768
 ##### [[source]](https://newmilfordcounselingcenter.com/depression-2/){target="_blank"}  
 
 ***
+
 <details> <summary> Click here to see the diagnostic requirements for a major depressive episode (MSE) according to the [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}.</summary>    
 
 A. Five or more of the following symptoms have been present and documented during the same two-week period and represent a change from previous functioning; at least one of the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.  
@@ -137,6 +138,7 @@ Note: This exclusion does not apply if all of the manic-like or hypomanic-like e
 #### [[source]](https://www.icsi.org/guideline/depression/diagnose-and-characterize-major-depression-persistent-depressive-disorder-with-clinical-interview/){target="_blank"}
 
 </details>  
+
 
 ***   
 
@@ -550,7 +552,7 @@ img <-image_resize(img, '1440x900!')
 image_info(img)
 ```
 
-We also want to morph or blend each image into the next so that there appears to be a smooth transition. We can also specify how many frames to include in the morph, to speed up or slow down the blend from one image to another. We will specify that 4 frames should be used in the morph. 
+We also want to morph or blend each image into the next so that there appears to be a smooth transition. We can also specify how many frames to include in the morph, to speed up or slow down the blend from one image to another. We will specify that 4 frames should be used in the morph by using the `image_morph()` function. 
 
 To make the final animation we use the `image_animate()` function
 Importantly, we want to delay changing from one image to another about 70* 1/100 seconds to give people a chance to see what is happening. So we can use the `delay` argument. The optimize argument of this function requires that all images are the same size (luckily we did this!) and it causes R to only store the differences between frames.
@@ -669,10 +671,14 @@ One could also directly use the URL but this is less convenient for piping.
 ***
 <details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` operator</summary>  
 
-By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. 
-This allows us to perform multiple sequential steps on one data input.   
 
-</details>  
+By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. 
+This allows us to perform multiple sequential steps on one data input. 
+
+
+</details> 
+
+
 ***
   
 Then, the `read_html()` function allows us to save the html document for the webpage inside R. 
@@ -903,6 +909,8 @@ If you want your numeric values to be interpreted that way, they need to be conv
 The options typically used are integer (which has no decimal place) and double precision (which has a decimal place). 
 
 </details>
+
+
 ***
   
 The `stringr` package has functions that allow us to replace (using the `str_replace()` function) or remove (using the `str_remove()` function) characters. 
@@ -1068,7 +1076,8 @@ There are 3 main arguments in this function:
 2. `names_to` - which specifies the name of the new column that will be created that will contain the column names of the columns you are collapsing  
 3. `values_to` - which specifies the name of the new column that will be created that will contain the values from the columns you are collapsing 
 
-To specify that we want to collapse **all columns except** the `MHS_setting` column, we can again use the minus sign. 
+To specify that we want to collapse all the columns that have year values, we can chose those that contain the string `"20"` using the `contains()` function of `dplyr`. 
+
 Finally, we will make the `Year` variable numeric as well.
 
 ```{r}
@@ -1700,6 +1709,7 @@ However, we summarize a few articles that did investigate increased depression r
 ***
 
 <details> <summary> Click here for a summary on a few articles investigating increased depression rates. </summary>
+
 
 This cross-cultural [review article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} published in 2012 suggests that aspects related to life-style due to modernity may be causing increased depression rates: 
 
@@ -2536,13 +2546,15 @@ Thus, if we use a value of -0.01 it will move the title just a bit away from the
 
 What happens if we modify the `hjust` value?
 
-####
+
 
 <details> <summary> Click here to reveal the answer. </summary>
 
 The `hjust` argument moves the label in the horizontal direction. 
 
 </details> 
+
+####
 
 We can also make a subtitle in the same way. Here, we create a subtitle called `forward`, which we will use later on. 
 
