@@ -858,6 +858,8 @@ pull(legend, `2004`)
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. 
 We can use the `na_if()` function to recode these values to `NA`.
 
+
+
 ```{r}
 table11.1a %<>%
   dplyr::na_if("nc") %>%
