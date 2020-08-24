@@ -16,6 +16,7 @@ output:
     toc: yes
 
 ---
+
 <style>
 #TOC {
   background: url("https://opencasestudies.github.io/img/logo.jpg");
