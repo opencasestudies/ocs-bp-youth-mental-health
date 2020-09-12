@@ -176,7 +176,7 @@ adults (from 23.23 to 28.48 visits) (interaction: P < .001).
 significantly faster for youths (from 2.86 to 5.71 visits).
 
 
-**Summary**: While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
+**Summary**: While depression appears to be on the rise for youths, youths also appear to be seeking more mental health care.
 
 In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode (MDE) rate to explore how this have changed over time and how different groups compare. 
 This data was also used in the first referenced article.  
@@ -369,7 +369,7 @@ Note: While [gender and sex](https://www.who.int/genomics/gender/en/index1.html)
 
 We will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} which is directed by the [Substance Abuse and Mental Health Services Administration (SAMHSA)](https://www.samhsa.gov/){target="_blank"}, an agency in the [U.S. Department of Health and Human Services (DHHS)](https://www.hhs.gov/){target="_blank"}. 
 
-This survey started in 1971 and is conducted annually in all 50 states and the District of Columbia. Approximately 70,000 people (ages 12 and up) are interviewed each year about health related issues. Only civilian, non-institutionalized individuals are included. Households are randomly selected and than a professional interviewer visits the addresses and asks one or two of the residents to interview. The interviewer brings a laptop with them that the participants use to fill out the survey which typically takes an hour to complete. If a participant chooses to participate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particularly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
+This survey started in 1971 and is conducted annually in all 50 states and the District of Columbia. Approximately 70,000 people (ages 12 and up) are interviewed each year about health-related issues. Only civilian, non-institutionalized individuals are included. Households are randomly selected and than a professional interviewer visits the addresses and asks one or two of the residents to interview. The interviewer brings a laptop with them that the participants use to fill out the survey, which typically takes an hour to complete. If a participant chooses to participate they receive $30 in cash. All collected information is confidential and is used for disease surveillance and to guide public policy particularly focused on drug and alcohol use as well as mental health. See [here](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"} for more details about the survey.
 
 The data are made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
@@ -383,7 +383,7 @@ On the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/N
 include_graphics(here::here("img", "website_overview.png"))
 ```
 
-If one clicks on the TOC button on the far right upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
+If you click on the TOC button on the far right upper corner, you will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
 
 We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus, the following tables are of interest to us are:
 
@@ -480,15 +480,15 @@ The two web scraping steps for these tables can be broken down even further:
 
 1. Identify location of data that will be scraped
 
-+ right-click to inspect element (webpage)
-+ hover pointer over components of element (webpage) until the data has been found
-+ copy XPath of data sought
+    + right-click to inspect element (webpage)
+    + hover pointer over components of element (webpage) until the data has been found
+    + copy XPath of data sought
 
 2. Save webpage element to an object in R
 
-+ import html code for the webpage
-+ extract pieces of HTML documents (webpage) using XPath
-+ parse the extracted data into a data frame
+    + import html code for the webpage
+    + extract pieces of HTML documents (webpage) using XPath
+    + parse the extracted data into a data frame
 
 Below is a animated overview of the process.
 
@@ -893,7 +893,7 @@ According to the legend this indicates if "the difference between this estimate 
 
 While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
 
-Since lower case "a" values occur in the first column values, we want to makes sure we don't remove these.
+Since lower case "a" values occur in the first column values, we want to make sure we don't remove these.
 
 So how can we do this? We can use the `stringr` package to modify character strings. 
 Also, we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
@@ -901,7 +901,7 @@ Also, we can use the `dplyr` functions `mutate()`, `select()` and `across()` to 
 Currently all of our data are character strings as indicated by the `<chr>` under the column names. 
 
 ***
-<details> <summary> Click here for an explanation of what a character string is </summary>
+<details> <summary> Click here for an explanation of what a character string is. </summary>
 
 There are several classes of data in R programming. 
 Character is one of these classes. 
@@ -1171,7 +1171,7 @@ table11.1a %<>%
    mutate(Year = as.numeric(Year))
 ```
 
-Now we want to wrangle table11.1B which is formatted the most similarly. To do so we can simply run these steps on the using the `table11.1B` as the input. For the sake of education however, we will show you how you could make a function if we had several more similar tables to wrangle. This will also make it easier to write a function to wrangle the other demographic tables.
+Now we want to wrangle table11.1B which is formatted the most similarly. To do so we can simply run these steps on the using the `table11.1B` as the input. For the sake of education, however, we will show you how you could make a function if we had several more similar tables to wrangle. This will also make it easier to write a function to wrangle the other demographic tables.
 
 Last time we wrote a function in this case study, we only had one input in our function. This time we will have several inputs. We will have the table that we want to wrangle as `TABLE`, a new name for the first column called `new_col`, and an input called `pivot_col`, which will be the name of the column that will be created after pivoting that will take the values from each of the years.
 
@@ -1489,7 +1489,7 @@ We will start by taking a look at the rate of major depressive episodes (MDE) am
 For this we will use the `percents` dataset that we wrangled in the section above.
 
 OK, we will start out by using the `ggplot()` function to specify what data we would like to plot on each axis. 
-We will also indicate that would like to use the `Demographic` variable in our dataset to group our data and to color our data.
+We will also indicate that we would like to use the `Demographic` variable in our dataset to group our data and to color our data.
 This is our first layer of the plot, thus for subsequent layers we need to use a plus sign `+`. 
 
 Next, we will use the `geom_line()` function of the `ggplot2` package to specify that we would like to create a line plot. 
@@ -1513,7 +1513,7 @@ This plot is very difficult to read because there are so many groups.
 Now let's look at just the total across time. 
 We can do so by first filtering our data for `TOTAL` values. 
 
-It would also BE nice to include every year in the x-axis. 
+It would also be nice to include every year in the x-axis. 
 We can do so by using the `scale_x_continuous()` function which gives us greater control about how the x-axis is displayed.
 
 Finally, we will drop the legend since we will only have one group using `legend.position = "none"` and we can change the angle of the x-axis text using `axis.text.x = element_text(angle = 90)` within the `theme()` function.
