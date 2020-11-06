@@ -225,6 +225,10 @@ for more details on using `ggplot2`.
 <u>**Packages used in this case study:** </u>
 
 <table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Package</th>
@@ -242,11 +246,11 @@ for more details on using `ggplot2`.
 </tr>
 <tr class="odd">
 <td><a href="https://dplyr.tidyverse.org/" target="_blank">dplyr</a></td>
-<td>to scrape web pages</td>
+<td>to subset and filter the data for specific groups, to replace specific values with <code>NA</code>, rename variables, and perform functions on multiple variables</td>
 </tr>
 <tr class="even">
 <td><a href="https://magrittr.tidyverse.org/" target="_blank">magrittr</a></td>
-<td>to scrape web pages</td>
+<td>to use and reassign data objects using the %&lt;&gt;%pipe operator</td>
 </tr>
 <tr class="odd">
 <td><a href="https://stringr.tidyverse.org/" target="_blank">stringr</a></td>

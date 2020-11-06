@@ -178,7 +178,8 @@ significantly faster for youths (from 2.86 to 5.71 visits).
 
 **Summary**: While depression appear to be on the rise for youths, youths also appear to be seeking more mental health care.
 
-In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode (MDE) rate to explore how this have changed over time and how different groups compare. 
+In this case study, we will be using data from the [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"} related to treatment and major depressive episode (MDE) rate to explore how trends in mental health have changed over time and how different groups compare. 
+
 This data was also used in the first referenced article.  
 
 
@@ -247,8 +248,8 @@ library(cowplot)
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to scrape web pages  
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
@@ -775,10 +776,20 @@ Great! We have successfully scraped the data from the web into R!
 
 Next, we need to wrangle the data.
 
+```{r, echo = FALSE, eval = FALSE}
+# for instructors that wish to start at a later section, we will save the imported data.
+save(table11.1a, table11.1b, table11.2a, table11.2b, 
+     table11.3a, table11.3b, table11.4a, table11.4b, file = here::here("data", "raw_data.rda"))
+```
+
 
 ## **Data Wrangling**
 *** 
-
+  
+```{r, echo = FALSE}
+# for instructors that wish to start at this section, they can just load the imported data.
+load(file = here::here("data", "raw_data.rda"))
+```
 Now that we have imported the data, let's see if we can wrangle a table. 
 Since the data appear to be formatted in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. 
 This is because well-maintained data sources often format different datasets similarly. 
@@ -794,7 +805,14 @@ Recall from looking at the website that there is a legend for this table.
 knitr::include_graphics(here::here("img", "table11.1a.png"))
 ```
 
-We can take a look at the last row using the `tail` function of the `dplyr` package. We can specify that we only want to see the last row by using the `n = 1` argument.
+We can take a look at the last row using the `tail` function of the `dplyr` package. We can specify that we only want to see the last row by using the `n = 1` argument. To use the `dplyr` functions we need to first make this table into a tibble, which is the `tidyverse` version of a dataframe.
+
+Currently table11.1a is a typical dataframe, which we can see using the `class` function which describes the types of data objects in R.
+```{r}
+class(table11.1a)
+```
+
+We can use the `as_tibble()` function of the `dplyr` package. to convert `table11.1a` into a tibble.
 
 ```{r}
 table11.1a %>%
@@ -803,7 +821,7 @@ table11.1a %>%
 ```
 
 We can see that the legend is repeated for every column. 
-Let's take a look at the year 2004 column.
+Now, let's take a look at the year 2004 column.
 ```{r}
 table11.1a %>%
   dplyr::as_tibble() %>%  
@@ -857,8 +875,9 @@ pull(legend, `2004`)
 ```
 
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. 
-We can use the `na_if()` function to recode these values to `NA`.
 
+
+We can use the `na_if()` function to recode these values to `NA`.
 
 
 ```{r}
@@ -870,6 +889,8 @@ table11.1a %<>%
 
 head(table11.1a)
 ```
+
+
 Let's look at the column names in our table: 
 ```{r}
 colnames(table11.1a)
@@ -887,13 +908,13 @@ head(table11.1a)
 
 Nice!
 
-Now you may notice that the individual values have an `"a"` after the numeric value.
+Now you may notice that the individual values for the year columns have an `"a"` after the numeric value.
 
 According to the legend this indicates if "the difference between this estimate and the 2018 estimate is significant at the $\alpha$=.05 level."
 
 While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
 
-Since lower case "a" values occur in the first column values, we want to makes sure we don't remove these.
+Since lower case `"a"` values occur in the values of the `MHS_setting` column (like outp**a**tient), we want to makes sure that we don't just remove all `"a"` values from the table, just those in the subsequent columns. 
 
 So how can we do this? We can use the `stringr` package to modify character strings. 
 Also, we can use the `dplyr` functions `mutate()`, `select()` and `across()` to specify want columns we want to change.
@@ -901,9 +922,9 @@ Also, we can use the `dplyr` functions `mutate()`, `select()` and `across()` to 
 Currently all of our data are character strings as indicated by the `<chr>` under the column names. 
 
 ***
-<details> <summary> Click here for an explanation of what a character string is </summary>
+<details> <summary> Click here for an explanation about data classes in R and about character strings. </summary>
 
-There are several classes of data in R programming. 
+There are several [classes of data in R programming](https://en.wikipedia.org/wiki/R_(programming_language)), meaning that certain objects will be treated or interpreted differently. 
 Character is one of these classes. 
 A character string is an individual data value made up of characters. 
 This can be a paragraph, like the legend for the table, or it can be a single letter or number like the letter `"a"` or the number `"3"`. 
@@ -930,7 +951,7 @@ We can see that we can refer to any digit (such as 1, 2, 3 etc.) as `[:digit:]`.
 We can also see that we can refer to any punctuation mark as `[:punct:]`.
 Finally, we see that spaces and tabs can be referred to as `[:blank:]`.
 
-If we take a closer look at the first column of our table (using the `pull()` function of the `dplyr` package), we can see that besides the `"a"` values that we see adjacent to our numeric values in the body of the table, we also have some large white spaces, some numeric values, instances of `\r\n`, as well as some commas and other punctuation marks. 
+If we take a closer look at just the first column of our table (using the `pull()` function of the `dplyr` package), we  see that there are also some large white spaces, some numeric values, instances of `"\r\n"`, as well as some commas and other punctuation marks that we would like to remove form this column. 
 
 ```{r}
 table11.1a %>% 
@@ -938,10 +959,12 @@ table11.1a %>%
 ```
 
 
-We can use the `str_remove_all()` function, which is a variant of the `str_remove()` function of the `stringr` package. 
-This allows us to remove all occurrences of specified characters in each row rather than just the first occurrence (which is what `str_remove()` does) to remove the digit values, the `\r\n` characters and the punctuation marks from the column called `MHS_setting`.
+We can use the `str_remove_all()` function to remove these unwanted characters from this column specifically.
 
-Using the `mutate()` function, we specify that we want to change this particular column and replace it with a version of this column that has removed characters that match digits, `r\n` or punctuation marks.
+The `str_remove_all()` function is a variant of the `str_remove()` function of the `stringr` package. It allows us to remove all occurrences of specified characters in each row rather than just the first occurrence (which is what `str_remove()` does).
+
+
+Using the `mutate()` function, we specify that we want to change this particular column and replace it with a version of this column that does not cotain characters that are digits, the `r\n` string that we saw, or punctuation marks.
 
 We need to specify that the character strings that should be used can be found in the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
 
@@ -967,7 +990,7 @@ knitr::include_graphics(here::here("img", "quantifiers.png"))
 ```
 
 So, we will use the `str_replace_all()` function of the `stringr` package.
-In this case, we also need to specify a replacement with the `replacement = ` argument.
+In this case, we also need to specify a replacement with the `replacement = ` argument. We will use this to specify one space.
 
 ```{r} 
 table11.1a %<>%
@@ -979,8 +1002,10 @@ mutate(MHS_setting =
 head(table11.1a)
 ```
 
-Next, we will remove the "a" values and the commas from the body of the table using the `str_remove_all()` function yet again.
+Next, we will remove the `"a"` values and the commas from the body of the table using the `str_remove_all()` function yet again.
+
 However, this time to specify that we want all columns except the first column called `MHS_setting`, we can use the `across()` function of the `dplyr` package. 
+
 This allows us to specify what columns we want to mutate by using the `.cols = ` argument. 
 We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
 
@@ -2892,8 +2917,8 @@ Package   | Use
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to scrape web pages  
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to scrape web pages  
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables  
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>% pipe operator   
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert a column to row names  
