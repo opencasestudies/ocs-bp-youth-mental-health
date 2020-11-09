@@ -150,18 +150,20 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 
 <u>**Packages used in this case study:** </u>
 
-Package   | Use                                                                         
+Package | Use in this case study                                                                            
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables      
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator    
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables  
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>% pipe operator   
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert a column to row names  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
-[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot 
+[scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
+[ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
 
 #### {.emphasis_block}

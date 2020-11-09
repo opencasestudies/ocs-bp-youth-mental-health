@@ -241,12 +241,14 @@ library(tibble)
 library(ggplot2)
 library(directlabels)
 library(forcats)
+library(scales)
+library(ggthemes)
 library(cowplot)
 ```
 
 
 
- Package   | Use                                                                         
+ Package   | Use in this case study                                                                       
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
@@ -257,7 +259,9 @@ library(cowplot)
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
-[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
+[scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
+[ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
 
 
@@ -1403,11 +1407,11 @@ table11.3b %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
 head(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
-table11.4a %<>% mutate(data_type = "treatment")
+table11.4a %<>% mutate(data_type = "Treatment")
 head(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
-table11.4b %<>% mutate(data_type = "treatment")
+table11.4b %<>% mutate(data_type = "Treatment")
 head(table11.4b)
 ```
 
@@ -1550,7 +1554,7 @@ Finally, we will drop the legend since we will only have one group using `legend
 
 We will also make the line thicker using the `size =` argument for the `geom_line()` function.
 
-The `theme_linedraw()` function changes the aesthetics of the plot. See [here](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} for a list of options.
+The `theme_classic()` function changes the aesthetics of the plot. See [here](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} for a list of options.
 
 ```{r}
 MDE_total <- percents %>%
@@ -1562,7 +1566,7 @@ MDE_total <- percents %>%
                      labels = seq(2004, 2018, by = 1),
                      limits = c(2004, 2018)) +
   labs(title = "Percent of Persons Aged 12 to 17 Reporting Having a \n Major Depressive Episode in the Past Year ") +
-  theme_linedraw() +
+  theme_classic() +
   theme(axis.text.x = element_text(angle = 90),
         legend.position = "none") 
 
@@ -1575,7 +1579,9 @@ Let's add a different background color to highlight the years since 2011.
 We can do so by adding a `geom_rect()` layer before we plot the line.
 We just need to specify the location of the rectangle on our plot.
 
-We also use the `theme_classic()` theme and we will add a facet using the `facet_wrap()` function to add strip of text to the top of the plot to tell more about what is contained within the plot. This function is typically used to create subplots which we will demonstrate next.
+We will add a facet using the `facet_wrap()` function to add strip of text to the top of the plot to tell more about what is contained within the plot. This function is typically used to create subplots which we will demonstrate next.
+
+We will use the `strip.background` and `strip.text` of the `theme()` function to specify how the text at the top of the plot will look.
 
 We want to change the value `TOTAL` of the `Demographic varaible` to `"Percent of respondants with MDE"` so that the text in the strip above the plot shows this instead. We can do so by using the `recode()` function of the `dplyr` package. 
 
@@ -1629,10 +1635,9 @@ MDE_total +
 We can create a theme for our future similar ggplots like so:
 
 ```{r}
-overview_theme <- function() {
+ocs_theme <- function() {
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90),
-        legend.position = "none",
         strip.background = element_rect(fill = "black"),
         strip.text = element_text(face = "bold",
                                   size = 14,
@@ -1640,6 +1645,7 @@ overview_theme <- function() {
   }
 ```
 
+You will notice that we didn't use `legend.position = "none"` so that this theme is flexible for plots that we do want to plot a legend.
 
 Now let's look at group differences.  
 
@@ -1658,12 +1664,10 @@ MDE_age_gender <-percents %>%
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
-    labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
+    labs(title = "Major Depressive Episode among Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap(~ subgroup) +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 
 MDE_age_gender
 ```
@@ -1717,9 +1721,7 @@ MDE_age_gender <-
     labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap(~ subgroup) +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 
 MDE_age_gender <- direct.label(
   MDE_age_gender, 
@@ -1732,6 +1734,8 @@ MDE_age_gender <- direct.label(
 MDE_age_gender
 
 ```
+
+Nice!
 
 In the next section, we will formally test whether `Gender` is independent of the differences in rates of MDE across time. 
 
@@ -1799,9 +1803,7 @@ MDE_race <- percents %>%
     scale_color_viridis_d() +
     labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 
 MDE_race
 ```
@@ -1842,9 +1844,7 @@ MDE_race <- percents %>%
     scale_color_viridis_d() +
     labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-        axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 ```
 </details>
 
@@ -1861,12 +1861,12 @@ It is possible that this group may be less likely to report experiencing symptom
 
 ### MDE with Severe Impairment
 
-Now let's take a look at how the rate of youths reporting having a major depressive episode (MDE) **with severe impairment** has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
+Now let's take a look at how the overall rate of youths reporting having a major depressive episode (MDE) **with severe impairment** has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Try to come up with the code for the following two plots on your own before you reveal it. This time we will use the `overview_theme()` function that we created.
+Try to come up with the code for the following two plots on your own before you reveal it. This time we will remove the legend using the `theme()` function.
 
 ####
 
@@ -1888,7 +1888,8 @@ MDES_total <- percents %>%
     labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap( ~ Demographic) +
-    overview_theme()+
+    ocs_theme() +
+    theme(legend.position = "none") +
     scale_color_manual(values = c("red"))
 ```
 
@@ -1920,9 +1921,7 @@ MDES_age_gender <-
     labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap( ~ subgroup) +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 
 MDES_age_gender  <- direct.label(
   MDES_age_gender, 
@@ -1972,9 +1971,7 @@ Race_MDES <- percents %>%
                        limits = c(2006, 2018)) +
     labs(title = "Major Depressive Episode with Severe Impairment\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics: Percentages, 2006-2018") +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) +
+    ocs_theme() +
     scale_color_viridis_d()
 ```
 </details>
@@ -1991,11 +1988,11 @@ The data for the AIAN group is sparse, so it is unclear if their levels would be
 
 Now we will take a look at those who reported having a MDE and received treatment for depression. 
 
-First, let's look overall using the `Demographic == "TOTAL"` group.
+First, let's look overall using the `Demographic == "TOTAL"` group. We will remove the legend for this plot.
 
 ```{r}
 Treat_total <- percents %>%
-  filter(data_type == "treatment", 
+  filter(data_type == "Treatment", 
          Demographic == "TOTAL") %>%
   mutate(Demographic = recode(Demographic, 
              "TOTAL" = "Percent of MDE respondents with treatment")) %>%
@@ -2009,7 +2006,8 @@ Treat_total <- percents %>%
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
     labs(title = "The Rate of Youths Aged 12 to 17 Receiving Treatment after\nReporting Having a Major Depressive Episode is Increasing") +
-    overview_theme() +
+    ocs_theme() +
+    theme(legend.position = "none")
     scale_color_manual(values = c("red"))
 
 Treat_total
@@ -2023,7 +2021,7 @@ Next, we consider differences between males and females and different age groups
 
 ```{r}
 treat <- percents %>%
-  filter(data_type == "treatment", 
+  filter(data_type == "Treatment", 
          subgroup != "Race/Ethnicity", 
          subgroup != "Total") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
@@ -2033,10 +2031,8 @@ treat <- percents %>%
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) + 
     labs(title = "Receipt of Treatment for Depression among\nPersons Aged 12 to 17 with Major Depressive Episode",
-         subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+         subtitle = "By Demographic Characteristics: Percentages, 2004-2018") +
+    ocs_theme()
 
 treat <- direct.label(
   treat, 
@@ -2063,7 +2059,7 @@ Create a similar plot on your own for the different race / ethnic groups.
 
 ```{r}
 Race_treat <- percents %>%
-  filter(data_type == "treatment") %>%
+  filter(data_type == "Treatment") %>%
   filter(subgroup == "Race/Ethnicity") %>%
   mutate(Demographic = 
            fct_reorder(Demographic, Percent, 
@@ -2075,10 +2071,8 @@ Race_treat <- percents %>%
                        labels = seq(2009, 2018, by = 1),
                        limits = c(2009, 2018)) +
     labs(title = "Receipt of Treatment for Depression among\nPersons Aged 12 to 17 with Major Depressive Episode",
-         subtitle = "By Demographic Characteristics: Percentages, 2004-2018")+
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) +
+         subtitle = "By Demographic Characteristics: Percentages, 2004-2018") +
+    ocs_theme() +
     scale_color_viridis_d()
 ```
 </details>
@@ -2108,9 +2102,7 @@ plotMHS <- table11.1b %>%
                                 limits = c(2009, 2018)) +
     labs(title = "Settings Where Mental Health Services Were Received\namong Persons Aged 12 to 17",
          subtitle = "Percentages, 2002-2018") +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+    ocs_theme()
 
 plotMHS <- direct.label(
   plotMHS, 
@@ -2140,10 +2132,8 @@ plotMHSS <- table11.1b %>%
                        labels = seq(2002, 2019, by = 1),
                        limits = c(2002, 2019)) +
     labs(title = "Settings Where Mental Health Services Were Received\namong Persons Aged 12 to 17",
-         subtitle = "Percentages, 2002-2018")+
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 14, face = "bold"),
-          axis.text.x = element_text(angle = 90)) 
+         subtitle = "Percentages, 2002-2018") +
+    ocs_theme() 
 
 plotMHSS <- direct.label(
   plotMHSS, 
@@ -2166,7 +2156,22 @@ This is what we tackle in the next section.
 
 ### Overall outcomes by group
 
-In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. 
+In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. We will use different types of lines to indicate the different outcome values by using the `scale_linetype_manual()` function. We can use the `ggthemes` package and the `scales` package in order to see all the current options for different linetypes.
+
+```{r}
+
+ggthemes::show_linetypes(scales::linetype_pal()(12), labels = TRUE)
+```
+
+We can now use the labels for the different types of lines in the `scale_linetype_manual()` function to specify specific linetypes.
+
+Let's also get the colors that we previously used so that we can color the `Male` and `Female` groups in a consistent way across our various plots. This time we can use the `show_col()` function and the `hue_pal()` functions of the `scales` package to see what the [hexadecimal code (called hex)](https://en.wikipedia.org/wiki/Web_colors) for these colors.
+
+```{r}
+scales::show_col(scales::hue_pal()(6))
+```
+
+We will also use the `guides()` function of the `ggplot2` package to remove the legend specifically for the color, not for the linetype by using `guides(color = FALSE).
 
 ```{r}
 gender_outcomes <- 
@@ -2174,17 +2179,17 @@ gender_outcomes <-
   filter(Demographic %in% c("Male", "Female", "TOTAL")) %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype = data_type), size = 1) +
+    scale_linetype_manual(values = c("solid", "2262", "13")) +
+    scale_color_manual(values = c("#F564E3", "#619CFF", "black")) +
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
-    labs(title = "Major Depressive Episode among Persons Aged 12 to 17",
+    labs(title = "Major Depressive Episodes and Treatment Among Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap( ~ Demographic, strip.position = "top") +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 8, face = "bold"),
-          axis.text.x = element_text(angle = 90),
-          legend.title = element_blank(),
-          legend.position = "bottom") +
+  ocs_theme() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
     guides(color = FALSE)
 
 gender_outcomes 
@@ -2209,17 +2214,17 @@ age_outcomes <-percents %>%
   filter(subgroup == "Age") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype= data_type), size = 1) +
+    scale_linetype_manual(values = c("solid", "2262", "13")) +
+    scale_color_manual(values = c("#F8766D", "#B79F00", "#00BA38")) +
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
     labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap( ~ Demographic, strip.position = "top")+
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 8, face = "bold"),
-          axis.text.x = element_text(angle = 90),
-          legend.title = element_blank(),
-          legend.position = "bottom") +
+  ocs_theme() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
     guides(color = FALSE)
 ```
 
@@ -2246,17 +2251,16 @@ race_outcomes <- percents %>%
          Demographic != "NHOPI") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype = data_type), size=1) +
+    scale_linetype_manual(values = c("solid", "2262", "13")) +
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
     labs(title = "Major Depressive Episode\namong Persons Aged 12 to 17",
          subtitle = "By Demographic Characteristics, Percentages, 2004-2018") +
     facet_wrap( ~ Demographic, strip.position = "top", nrow = 4) +
-    theme_linedraw() +
-    theme(strip.text = element_text(size = 8, face = "bold"),
-          axis.text.x = element_text(angle = 90),
-          legend.title = element_blank(),
-          legend.position = "bottom") +
+  ocs_theme() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
     guides(color = FALSE)
 ```
 </details>
@@ -2520,7 +2524,7 @@ Try performing the same wrangling as we did for the percentage of each demograph
 
 ```{r}
 chi_square_11.4a <- counts %>%
-  filter(data_type == "treatment", 
+  filter(data_type == "Treatment", 
          Year %in% c(2009, 2018), 
          Demographic %in% c("Male","Female")) %>%
   mutate(Number = Number * 1000) %>%
@@ -2632,7 +2636,7 @@ MDE_age_gender_for_mp <-
 
 For this last plot, we also want to get the legend and save it as a separate object so that we can add it to our plot grid in a way that does not shrink the size of our plot to accommodate the legend. 
 We can use the `get_legend()` function of the `cowplot` package to do this.
-We can also specify how it should be justified using `theme(legend.justification =)` this takes a number of options including "center", "left", and "right.
+We can also specify how it should be justified using `theme(legend.justification =)` this takes a number of options including `"center"`, `"left"`, and `"right"`.
 
 However, beforehand, we also want to change the way the legend is displayed. 
 We can use the `guides()` function of the `ggplot2` package to modify the legend to specify that we want the legend to be displayed in 2 columns like so `guides(color = guide_legend(ncol = 2))`. We need to specify that we are modifying the legend for color.
@@ -2646,10 +2650,10 @@ MDE_race_for_mp_leg <- MDE_race +
         legend.title = element_blank(),
         legend.text = element_text(size = 14)) +
   labs(title = "All racial/ethnic groups show similar\nincreases since 2011") +
-  guides(color = guide_legend(ncol =2))
+  guides(color = guide_legend(ncol = 2))
 
 legend <- get_legend(MDE_race_for_mp_leg +
-          theme(legend.justification ="right"))
+          theme(legend.justification = "right"))
 ```
 
 Now, we will remove the legend for this plot.
@@ -2727,7 +2731,7 @@ We also want to recode the text for the strip above the plot and change the plot
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-Try to come up with the code for these plots on your own before you reveal it. We can use our `overview_theme()` for these plots to make all the plots look similar.
+Try to come up with the code for these plots on your own before you reveal it. We can use our `ocs_theme()` for these plots to make all the plots look similar.
 
 ####
 
@@ -2750,7 +2754,7 @@ MDE_gender <-percents %>%
   scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                      labels = seq(2004, 2018, by = 1),
                      limits = c(2004, 2018)) +
- overview_theme() +
+ ocs_theme() +
  scale_color_manual(values = c("#FF61C9",
                                 "#00A5FF"))
 
@@ -2780,7 +2784,7 @@ MDE_age <- percents %>%
   scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                      labels = seq(2004, 2018, by = 1),
                      limits = c(2004, 2018)) +
-  overview_theme() +
+  ocs_theme() +
   scale_color_manual(values = c("#ED8141",
                                 "#39B600",
                                 "darkorchid2"))##9590FF#00BFC4
@@ -2911,7 +2915,7 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 
 <u>**Packages used in this case study:** </u>
 
-Package   | Use                                                                         
+Package | Use in this case study                                                                            
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
@@ -2922,7 +2926,9 @@ Package   | Use
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert a column to row names  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
-[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot 
+[scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
+[ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
 
 #### {.emphasis_block}

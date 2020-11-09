@@ -232,7 +232,7 @@ for more details on using `ggplot2`.
 <thead>
 <tr class="header">
 <th>Package</th>
-<th>Use</th>
+<th>Use in this case study</th>
 </tr>
 </thead>
 <tbody>
@@ -250,7 +250,7 @@ for more details on using `ggplot2`.
 </tr>
 <tr class="even">
 <td><a href="https://magrittr.tidyverse.org/" target="_blank">magrittr</a></td>
-<td>to use and reassign data objects using the %&lt;&gt;%pipe operator</td>
+<td>to use and reassign data objects using the %&lt;&gt;% pipe operator</td>
 </tr>
 <tr class="odd">
 <td><a href="https://stringr.tidyverse.org/" target="_blank">stringr</a></td>
@@ -275,6 +275,14 @@ for more details on using `ggplot2`.
 <tr class="even">
 <td><a href="https://forcats.tidyverse.org/" target="_blank">forcats</a></td>
 <td>to reorder factor for plot</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/scales/scales.pdf">scales</a></td>
+<td>to get the current linetype options</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf">ggthemes</a></td>
+<td>to create a plot to see what the different linetypes look like</td>
 </tr>
 <tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
