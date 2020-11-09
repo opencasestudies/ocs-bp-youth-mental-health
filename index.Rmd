@@ -166,10 +166,12 @@ The main findings of the first [article](https://content.apa.org/record/2019-125
 While the main findings of the second [article](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"} are:
 
 > Compared with adult mental health care, the mental health
-care of young people has increased more rapidly.
+care of young people has increased more rapidly...
+
+This means that the number of youths receiving mental health care has increased faster than the number of adults receiving mental health care.
 
 > Between 1995-1998 and 2007-2010, visits resulting in mental disorder diagnoses
-per 100 population increased significantly faster for youths (from 7.78 to 15.30 visits) than for
+... increased significantly faster for youths (from 7.78 to 15.30 visits) than for
 adults (from 23.23 to 28.48 visits) (interaction: P < .001). 
 
 > Psychiatrist visits also increased
@@ -270,28 +272,21 @@ According to the CDC the rate of suicide has increased for both genders.
 
 ```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig1.png")
+
 ```
 
 ##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
 
 
-While suicide does appear to be increasing among youths it also appears to be increasing among most age groups in the US over the past decade and a half for both females: 
+While suicide does appear to be increasing among youths it also appears to be increasing among most age groups in the US over the past decade and a half for both females and males: 
 
-```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
+```{r image_grobs, echo = FALSE, fig.show = "hold", out.width = "50%", fig.align = "default"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig2.png")
-```
-
-##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
-
-
-and males:
-
-```{r, out.width = "80%", echo = FALSE, fig.align ="center"}
 include_graphics("https://www.cdc.gov/nchs/images/databriefs/301-350/db309_fig3.png")
+
 ```
 
 ##### [[source]](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}
-
 
 According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){target="_blank"}:
 
@@ -360,7 +355,7 @@ There are some important considerations regarding this data analysis to keep in 
 3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 
-4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBT (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
+4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBTQIA+ (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
 
 
 Note: While [gender and sex](https://www.who.int/genomics/gender/en/index1.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
@@ -385,7 +380,7 @@ include_graphics(here::here("img", "website_overview.png"))
 ```
 
 
-If one clicks on the TOC button on the far left upper corner they will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
+If you click on the TOC button on the far left upper corner, you will be directed to another [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabsTOC2018.htm#toc){target="_blank"}, where a large [pdf document](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"} containing of all of the results can be downloaded.
 
 
 We are interested in investigating how depression rates have changed and how youths are interacting with mental health services. Thus, the following tables are of interest to us are:
@@ -703,7 +698,7 @@ webpage_element <- webpage %>%
 webpage_element 
 ```
 
-Finally, the `html_table()` function of the `rvest` package parses the html object into a data frame.
+Finally, the `html_table()` function of the `rvest` package parses the html object into a data frame. We can use the `glimpse()` function of the `dplyr` package to take a look at the data. This function shows data frames sideways with the columns listed on the far left. 
 
 ```{r}
 table11.1a <- webpage_element %>%
@@ -741,7 +736,7 @@ Alternatively, we can create an R function to accomplish this succinctly.
 Functions allow us to perform the same process on multiple data inputs. 
 See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
 
-In general, the process of writing functions involves first specifying an input that is used within the function to create an output. In this case, the data input is `XPATH`, which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
+In general, the process of writing functions involves first specifying an input that is used within the function to create an output. In this case, `XPATH` will be used as an "input argument" to the function, which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
 
 We will call this function `scraper`.
 
@@ -913,7 +908,7 @@ According to the legend this indicates if "the difference between this estimate 
 While this is useful information, it makes it difficult to work with our numeric values, so we want to remove them.
 
 
-Since lower case `"a"` values occur in the values of the `MHS_setting` column (like outp**a**tient), we want to makes sure that we don't just remove all `"a"` values from the table, just those in the subsequent columns. 
+Since lower case `"a"` values occur in the values of the `MHS_setting` column (like outp**a**tient), we want to make sure that we don't just remove all `"a"` values from the table, just those in the subsequent columns. 
 
 
 So how can we do this? We can use the `stringr` package to modify character strings. 
@@ -1110,13 +1105,17 @@ To specify that we want to collapse all the columns that have year values, we ca
 
 Finally, we will make the `Year` variable numeric as well.
 
+We will first use the base `dim()` function to see the dimensions of our table before and after using `pivot_longer()`.
+
 ```{r}
+dim(table11.1a)
 table11.1a %<>%
   tidyr::pivot_longer(cols = contains("20"), 
                       names_to = "Year",
                       values_to = "Number") %>%
   mutate(Year = as.numeric(Year))
 
+dim(table11.1a)
 head(table11.1a)
 ```
 
@@ -1374,7 +1373,7 @@ data_dem_settings <- function(TABLE){
                                    pattern = "1", 
                                    replacement = "Age_1")) %>%
   mutate(subgroup = c("Total", rep("Age", 4), 
-                    rep("Sex", 3), rep("Race/Ethnicity", 9))) %>%
+                    rep("Gender", 3), rep("Race/Ethnicity", 9))) %>%
   mutate(dplyr::across(.cols = contains("20"),
                        stringr::str_remove_all, "a|,")) %>%
   mutate(across(contains("20"), as.numeric)) %>%
@@ -1441,6 +1440,9 @@ percents %<>%
                names_to = "Year", 
                values_to = "Percent") %>%
   mutate(Year = as.numeric(Year))
+
+glimpse(counts)
+glimpse(percents)
 ```
 
 We finished wrangling the data and we are ready to proceed with our analysis. 
@@ -1473,8 +1475,9 @@ We are going to use the `ggplot2` package to create our plots.
 ***
 <details><summary> Click here for an introduction about this package if you are  new to using `ggplot2` </summary>
 
-The [ggplot2 package](http://ggplot2.tidyverse.org) is generally intuitive for beginners because it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) or the `gg` in `ggplot2`. 
-The idea is that you can construct many sentences by learning just a few nouns, adjectives, and verbs. There are specific “words” that we will need to learn and once we do, you will be able to create (or “write”) hundreds of different plots.
+The [ggplot2 package](http://ggplot2.tidyverse.org) is a great place to start for beginners because it is based on a  [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) , which is what the `gg` stands for in `ggplot2`. 
+
+The idea is that there are specific functions and arguments (or “words”) that we will need to learn that can be used in many different combinations to create (or “write”) hundreds of different plots.
 
 The critical part to making graphics using `ggplot2` is the data needs to be in a _tidy_ format. 
 Given that we have just spent time putting our data in _tidy_ format, we are primed to take advantage of all that `ggplot2` has to offer! 
@@ -1568,7 +1571,7 @@ MDE_total
 
 We can see that there is a steep increase after around 2011! 
 
-Let's add a different background color for the years since 2011.
+Let's add a different background color to highlight the years since 2011.
 We can do so by adding a `geom_rect()` layer before we plot the line.
 We just need to specify the location of the rectangle on our plot.
 
@@ -1640,12 +1643,13 @@ overview_theme <- function() {
 
 Now let's look at group differences.  
 
-To make sure our plot is not too overwhelming, let's limit to only age and sex subgroups. 
+To make sure our plot is not too overwhelming, let's limit to only age and gender subgroups. 
 Thus, we will filter out the data about totals and different racial/ethnic groups for now. 
 We will also use the `facet_wrap()` function to make subplots based on the demographic categories, which we put in a variable called `subgroups` earlier when we wrangled the data.
 
 ```{r}
-MDE_age_sex <- percents %>%
+
+MDE_age_gender <-percents %>%
   filter(data_type == "Major_Depressive_Episode", 
          subgroup != "Race/Ethnicity", 
          Demographic != "TOTAL") %>%
@@ -1661,7 +1665,7 @@ MDE_age_sex <- percents %>%
     theme(strip.text = element_text(size = 14, face = "bold"),
           axis.text.x = element_text(angle = 90)) 
 
-MDE_age_sex
+MDE_age_gender
 ```
 
 Nice! Now it is much easier to tell how each group has changed over time.
@@ -1678,7 +1682,7 @@ Note: the `dl.move` functions are set up for the rendering the R Markdown - so i
 
 ```{r}
 directlabels::direct.label(
-  MDE_age_sex, 
+  MDE_age_gender, 
   list(dl.trans(y = y + 0.38, x = x -0.1), 
        "far.from.others.borders",
        cex = .8, 
@@ -1691,13 +1695,13 @@ This looks very clear now!
 We can see that the majority of individuals that reported experiencing a major depressive episode in the past year were in an older age bracket (16-17 compared to 12-13). 
 We can also see that the trend has been increasing for all three age brackets since roughly 2011.
 
-We can also see an increase for both sexes since about 2011, but there is a steeper increase for females. 
-Furthermore, females have a much higher rate than males across all years.
+We can also see an increase for both genders since about 2011, but there is a steeper increase for females. 
+Furthermore, females have a much higher percentage than males across all years.
 
 Let's make the same plot with a different shaded background for the years of the increase like we did for the total plot.
 
 ```{r}
-MDE_age_sex <-
+MDE_age_gender <-
   percents %>%
   filter(data_type == "Major_Depressive_Episode", 
          subgroup != "Race/Ethnicity", 
@@ -1717,22 +1721,24 @@ MDE_age_sex <-
     theme(strip.text = element_text(size = 14, face = "bold"),
           axis.text.x = element_text(angle = 90)) 
 
-MDE_age_sex <- direct.label(
-  MDE_age_sex, 
+MDE_age_gender <- direct.label(
+  MDE_age_gender, 
   list(dl.trans(y = y +0.38, x = x -0.2), 
        "far.from.others.borders", 
        cex = .8,
        dl.move("Age_14-15", x = 2008, y =10))
   )
 
-MDE_age_sex
+MDE_age_gender
+
 ```
 
-In the next section, we will formally test whether `Sex` is independent of the differences in rates of MDE across time. 
+In the next section, we will formally test whether `Gender` is independent of the differences in rates of MDE across time. 
 
-whether there is a statistically significant difference between the expected frequencies and the observed frequencies in one or more categories of a contingency table.
+To do this, we will test whether there is a statistically significant difference between the expected frequencies and the observed frequencies in one or more categories of a contingency table.
 
 While, it is very intriguing that there is an increase around 2011, we do not go into details here as to why that might be happening. 
+
 However, we summarize a few articles that did investigate increased depression rates. 
 
 ***
@@ -1893,12 +1899,13 @@ MDES_total <- percents %>%
 MDES_total
 ```
 
-Next let's look at age groups and sex differences:
+Next let's look at age groups and gender differences:
 
 
 <details> <summary> Click here to reveal the code. </summary>
 ```{r}
-MDES_age_sex <- percents %>%
+MDES_age_gender <-
+  percents %>%
   filter(data_type == "Severe_Major_Depressive_Episode", 
          subgroup != "Race/Ethnicity", 
          Demographic != "TOTAL") %>%
@@ -1917,8 +1924,8 @@ MDES_age_sex <- percents %>%
     theme(strip.text = element_text(size = 14, face = "bold"),
           axis.text.x = element_text(angle = 90)) 
 
-MDES_age_sex  <- direct.label(
-  MDES_age_sex, 
+MDES_age_gender  <- direct.label(
+  MDES_age_gender, 
   list(dl.trans(y = y +0.39, x = x -0.1), 
        "far.from.others.borders",
        cex = .8, 
@@ -1929,7 +1936,7 @@ MDES_age_sex  <- direct.label(
 </details>
 
 ```{r, echo=FALSE}
-MDES_age_sex
+MDES_age_gender
 ```
 
 We can see that the majority of individuals that reported experiencing a major depressive episode with severe impairment were in an older age bracket. 
@@ -2162,7 +2169,8 @@ This is what we tackle in the next section.
 In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. 
 
 ```{r}
-sex_outcomes <- percents %>%
+gender_outcomes <- 
+  percents %>%
   filter(Demographic %in% c("Male", "Female", "TOTAL")) %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype = data_type), size = 1) +
@@ -2179,7 +2187,7 @@ sex_outcomes <- percents %>%
           legend.position = "bottom") +
     guides(color = FALSE)
 
-sex_outcomes 
+gender_outcomes 
 ```
 
 We can see that a large portion of individuals experiencing a major depressive episode have an episode with severe impairment for each group. 
@@ -2281,12 +2289,12 @@ We are specifically interested in how the frequency of recent major depressive e
 We are also interested how different subgroups differ. 
 We will start with examining how male and females differ across time.
 
-Since we have counts for the two sexes: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
+Since we have counts for the two gender: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
 
-This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and sex were independent.
+This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and gender were independent.
 
 The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. 
-Thus, we want to test if sex and year are independent. In other words, we want to know if sex influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with sex?_  
+Thus, we want to test if gender and year are independent. In other words, we want to know if gender influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with gender?_  
 
 
 
@@ -2306,17 +2314,18 @@ Consider a hypothetical scenario where we sample 100 individuals and report a co
 
 
 ```{r}
-observed <- tibble(Sex = c("Male", "Female", "Total"), 
-                   Righthanded = c(41, 47, 88), 
-                   Lefthanded = c(9, 3, 12), 
-                   Total = c(50, 50, 100))
+observed <- tibble(Gender = c("Male", "Female", "Total"), 
+                   Righthanded = c(41,47,88), 
+                   Lefthanded = c(9,3, 12), 
+                   Total = c(50,50,100))
+
 observed
 ```
 
-We can see that there are two variables: `Sex` and `Handedness` and each have two levels (`Male` and `Female` for `Sex` and right and left for handedness). 
+We can see that there are two variables: `Gender` and `Handedness` and each have two levels (`Male` and `Female` for `Gender` and `Righthanded` and `Lefthanded` for `Handedness`). 
 The table also includes totals of each of the 4 possible groups as well as the overall total.
 
-Next, we create a table of what we **expect** assuming `Sex` and `Handedness` are independent. 
+Next, we create a table of what we **expect** assuming `Gender` and `Handedness` are independent. 
 
 - The total number of individuals who are right-handed is 88 out of 100 which is equal to 88%.
 - The total number of individuals who are left-handed is 12 out of 100 which is equal to 12%.
@@ -2327,10 +2336,12 @@ we would expect the exact same proportions of 88% right-handed and 12% left-hand
 Since we have 50 males and 50 females and 12% of 50 is 6 and 88% of 50 is 44, we would thus have the following table of expected frequencies:
 
 ```{r}
-expected <- tibble(Sex = c("Male", "Female", "Total"), 
-                   Righthanded = c(44, 44, 88), 
-                   Lefthanded = c(6, 6, 12), 
-                   Total = c(50, 50, 100))
+
+expected <- tibble(Gender = c("Male", "Female", "Total"), 
+                   Righthanded = c(44,44,88), 
+                   Lefthanded = c(6,6, 12), 
+                   Total = c(50,50,100))
+
 expected
 ```
 
@@ -2345,7 +2356,7 @@ The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
 
 Where $r$ = # of rows and $c$ = the # of columns.
 
-So to calculate the ${\chi}^2$ test statistics for handedness and sex manually, we can do the following for each of the four values in the table (ignoring the `Totals`) like this:
+So to calculate the ${\chi}^2$ test statistics for handedness and gender manually, we can do the following for each of the four values in the table (ignoring the `Totals`) like this:
 
 $${\chi}^2 =  \frac{(41-44)^2}{44} + \frac{(9-6)^2}{6}+ \frac{(47-44)^2}{44}+ \frac{(3-6)^2}{6}$$
 
@@ -2376,7 +2387,7 @@ This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){targ
 Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
 
 Thus, we do not have enough evidence to reject the null hypothesis.
-Therefore, using the data we have, we do not have evidence in our data to suggest that sex and handedness are not independent.
+Therefore, using the data we have, we do not have evidence in our data to suggest that gender and handedness are not independent.
 
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
 
@@ -2462,7 +2473,7 @@ The chi-squared test for independence can be conducted using the `stats::chisq.t
 stats::chisq.test(chi_square_11.2a)
 ```
 
-We see that the $p$-value is very small, which suggests there is an association between `Sex` and the number of major depressive episodes across time (2004 compared to 2018). 
+We see that the $p$-value is very small, which suggests there is an association between `Gender` and the number of major depressive episodes across time (2004 compared to 2018). 
 
 
 #### {.question_block}
@@ -2493,7 +2504,7 @@ chi_square_11.3a
 chisq.test(chi_square_11.3a)
 ```
 
-There also appears to be an influence of sex on the rate of severe major depressive episodes across the years.
+There also appears to be an influence of gender on the rate of severe major depressive episodes across the years.
 
 
 How about treatment?
@@ -2528,7 +2539,7 @@ chi_square_11.4a
 chisq.test(chi_square_11.4a)
 ```
 
-There also appears to be an influence of sex on the rate at which youths received treatment across the two years.
+There also appears to be an influence of gender on the rate at which youths received treatment across the two years.
 
 
 
@@ -2608,9 +2619,11 @@ treat_for_mp <-
 ```
 
 
-Using our `MDE_age_sex` plot:
+Using our `MDE_age_gender` plot:
 ```{r}
-MDE_age_sex_for_mp <- MDE_age_sex +
+
+MDE_age_gender_for_mp <- 
+  MDE_age_gender +
   theme(plot.title= element_text(size = 14, color = "black"),
         plot.subtitle = element_blank(),
         axis.text = element_text(color = "black")) +
@@ -2668,7 +2681,7 @@ row_1 <- plot_grid(MDE_total_for_mp,
                    treat_for_mp,
                    nrow = 1)
 
-row_2 <- plot_grid(MDE_age_sex_for_mp,
+row_2 <- plot_grid(MDE_age_gender_for_mp,
                    MDE_race_for_mp,
                    nrow = 1, 
                    rel_widths = c(1, 0.6))
@@ -2683,7 +2696,7 @@ Finally, we will use the `png()` function of the `grDevices` package which is au
 We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`.
 We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
-```{r, eval = TRUE}
+```{r, eval = TRUE, message = FALSE}
 
 png(filename = here::here("img", "mainplot_orig.png"), 
          res = 300, width = 10, height = 10, units = "in")
@@ -2706,7 +2719,7 @@ knitr::include_graphics(here::here("img", "mainplot_orig.png"))
 
 OK, this looks pretty good! But it is a bit busy, so we are now going to remove the Race/ethnicity plot so as  to simplify our plot.
 
-This time we need to recreate our `MDE_age_sex` plot again because we want to separate our plots so they look more similar to the total MDE and treatment plots. So we will actually make two separate plots. 
+This time we need to recreate our `MDE_age_gender` plot again because we want to separate our plots so they look more similar to the total MDE and treatment plots. So we will actually make two separate plots. 
 
 We also want to recode the text for the strip above the plot and change the plot so that there are no grid lines like the first row of plots.
 
@@ -2721,11 +2734,12 @@ Try to come up with the code for these plots on your own before you reveal it. W
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-MDE_sex <- percents %>%
+
+MDE_gender <-percents %>%
   filter(data_type == "Major_Depressive_Episode", 
-          subgroup == "Sex") %>%
-  mutate(subgroup = recode(subgroup, "Sex" = 
-         "Percent of each sex reporting MDE")) %>%
+          subgroup == "Gender") %>%
+  mutate(subgroup = recode(subgroup, "Gender" = 
+         "Percent of each gender reporting MDE")) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
   geom_rect(xmin = 2011, xmax = Inf,  
             ymin = -Inf, ymax = Inf,  
@@ -2741,8 +2755,9 @@ MDE_sex <- percents %>%
                                 "#00A5FF"))
 
 
-MDE_sex <- direct.label(
-  MDE_sex, 
+
+MDE_gender<- direct.label(
+  MDE_gender, 
   list(dl.trans(y = y +0.38, x = x -0.2), 
        "far.from.others.borders", 
        cex = 1,
@@ -2782,7 +2797,7 @@ MDE_age <- direct.label(
 
 </details>
 
-We will also make another subtitle for the sex and race plots. This time we will add bold text to our text using the base `expression()` function and the base `paste()` function which allows you to combine character strings together. We can specify that we don't want any spaces or character for our separator.
+We will also make another subtitle for the gender and race plots. This time we will add bold text to our text using the base `expression()` function and the base `paste()` function which allows you to combine character strings together. We can specify that we don't want any spaces or character for our separator.
 
 ```{r}
 label <- expression(paste(
@@ -2800,9 +2815,9 @@ forward2 <- ggdraw() +
 ```
 
 
-```{r}
+```{r, message = FALSE}
 
-row_2 <- plot_grid(MDE_age, MDE_sex,
+row_2 <- plot_grid(MDE_age, MDE_gender,
                    nrow = 1)
 
 png(filename = here::here("img", "mainplot.png"), 
