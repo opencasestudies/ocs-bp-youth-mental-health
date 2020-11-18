@@ -58,6 +58,21 @@ To cite this case study please use:
 
 Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
 
+##
+
+#### {.emphasis_block}
+
+**Please be advised that the material in this case study describes and discusses rates of suicide, as well as rates and symptoms of depression.**
+
+According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
+
+If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
+
+The **Crisis Text Line** is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to **741741** and a trained crisis counselor will respond to you with support and information over text message. Visit [www.crisistextline.org](www.crisistextline.org){target="_blank"}.
+
+Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression.
+
+####
 
 ## **Motivation**
 *** 
@@ -241,7 +256,6 @@ library(tibble)
 library(ggplot2)
 library(directlabels)
 library(scales)
-library(colorspace)
 library(forcats)
 library(ggthemes)
 library(cowplot)
@@ -261,7 +275,6 @@ library(cowplot)
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
-[colorspace](https://cran.r-project.org/web/packages/colorspace/colorspace.pdf)  | to get darker color shades for a plot  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
@@ -336,18 +349,6 @@ See [this report](https://apps.who.int/iris/bitstream/handle/10665/254610/WHO-MS
 See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3330161/){target="_blank"} for an interesting discussion about what may be causing increased depression rates. 
 
 
-According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
-
-
-#### {.emphasis_block}
-
-If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
-
-The **Crisis Text Line** is another free, confidential resource available 24 hours a day, seven days a week. Text “HOME” to **741741** and a trained crisis counselor will respond to you with support and information over text message. Visit [www.crisistextline.org](www.crisistextline.org){target="_blank"}.
-
-####
-
-Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression.
 
 ## **Limitations**
 *** 
@@ -360,9 +361,7 @@ There are some important considerations regarding this data analysis to keep in 
 
 3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
-
 4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBTQIA+ (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
-
 
 Note: While [gender and sex](https://www.who.int/genomics/gender/en/index1.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
 
@@ -466,6 +465,7 @@ We accomplish STEP 2 in the `R` programming environment.
 
 ####
 
+### The `rvest` package
 
 In this case study, we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. 
 These data are available in a large PDF with all the results by year. 
@@ -1451,6 +1451,60 @@ glimpse(counts)
 glimpse(percents)
 ```
 
+Notice also that some of the groups are abbreviated as AIAN and NHOPI.
+
+```{r}
+percents %>% 
+  distinct(Demographic)%>%
+  pull(Demographic)
+```
+
+Using the definitions from the [Census Bureau](https://www.census.gov/programs-surveys/cps/data/data-tools/cps-table-creator-help/race-definitions.html#:~:text=NHOPI%20Alone%20%E2%80%93%20NHOPI%20alone%20refers,not%20report%20any%20other%20race.){target="_blank"}: 
+
+1. **AIAN** stands for American Indian and Alaska Native  
+2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
+
+Let's update our data to reflect these definitions. 
+
+However, we would like to note that there is [controversy](https://en.wikipedia.org/wiki/Native_American_name_controversy) about the best term if any to identify the various groups of people that may have self-reported as one of these categories amomg the options provided in the survey where the data came from.  It is a limitation of the data that more specific racial and ethnic information is not available. We will stick with the abbreviation definitions provided in the tables simply to remain consistent with the original data.
+
+
+To do this we will use the `str_replace()` function.
+
+```{r}
+percents %<>% mutate(Demographic = str_replace(string = Demographic, 
+                                             pattern = "AIAN",
+                                         replacement = "American Indian and Alaska Native"))
+
+percents %<>% mutate(Demographic =  str_replace(string = Demographic, 
+                                             pattern = "NHOPI",
+                                         replacement = "Native Hawaiian or Other Pacific Islander"))
+
+counts %<>% mutate(Demographic = str_replace(string = Demographic, 
+                                             pattern = "AIAN",
+                                         replacement = "American Indian and Alaska Native"))
+
+counts %<>% mutate(Demographic =  str_replace(string = Demographic, 
+                                             pattern = "NHOPI",
+                                         replacement = "Native Hawaiian or Other Pacific Islander"))
+
+```
+
+Let's check that this worked.
+
+```{r}
+percents %>% 
+  distinct(Demographic)%>%
+  pull(Demographic)
+
+counts %>% 
+  distinct(Demographic)%>%
+  pull(Demographic)
+```
+
+Looks good!
+
+
 We finished wrangling the data and we are ready to proceed with our analysis. 
 
 ```{r, eval = FALSE, echo = FALSE}
@@ -1546,6 +1600,7 @@ percents %>%
 ```
 
 This plot is very difficult to read because there are so many groups. 
+
 Now let's look at just the total across time. 
 We can do so by first filtering our data for `TOTAL` values. 
 
@@ -1804,9 +1859,11 @@ MDE_age_gender <- direct.label(
                                 Male_col))
 ```
 
-<details>
+</details>
 
 ***
+
+
 
 ```{r}
 MDE_age_gender
@@ -1885,17 +1942,13 @@ MDE_race <- percents %>%
 MDE_race
 ```
 
-Using the definitions from the [Census Bureau](https://www.census.gov/programs-surveys/cps/data/data-tools/cps-table-creator-help/race-definitions.html#:~:text=NHOPI%20Alone%20%E2%80%93%20NHOPI%20alone%20refers,not%20report%20any%20other%20race.){target="_blank"}: 
 
-1. **AIAN** stands for American Indian and Alaska Native  
-2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
-
-Unfortunately, there is only one value for `NHOPI` group, thus since this is a line plot, we do not have enough points (2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
+Unfortunately, there is only one value for the `Native Hawaiian or Other Pacific Islander` group, thus since this is a line plot, we do not have enough points (2 at minimum) to create a line, so lets remove this group from the plot to remove the group from the legend.
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-How might we remove the `NHOPI` group from the legend?
+How might we remove the `Native Hawaiian or Other Pacific Islander` group from the legend?
 
 ####
 
@@ -1906,7 +1959,7 @@ How might we remove the `NHOPI` group from the legend?
 MDE_race <- percents %>%
   filter(data_type == "Major_Depressive_Episode", 
          subgroup == "Race/Ethnicity", 
-         Demographic != "NHOPI") %>%
+         Demographic != "Native Hawaiian or Other Pacific Islander") %>%
   mutate(Demographic = fct_reorder(Demographic, Percent,
                                    tail, n = 1, .desc = TRUE)) %>%
   ggplot(aes(x = Year, y = Percent, group = Demographic)) +
@@ -2065,7 +2118,7 @@ Race_MDES
 
 We see similar trends as we saw for the previous racial/ethnic group plot. 
 The rate is highest for those who are two are more races and lowest for those who are Black or African American. 
-The data for the AIAN group is sparse, so it is unclear if their levels would be lowest on the last year.
+The data for the `American Indian and Alaska Native` group is sparse, so it is unclear if their levels would be lowest on the last year.
 
 ### MDE Treatment
 
@@ -2366,7 +2419,7 @@ Create a similar plot on your own for the different race / ethnic groups.
 ```{r}
 race_outcomes <- percents %>%
   filter(subgroup == "Race/Ethnicity", 
-         Demographic != "NHOPI") %>%
+         Demographic != "Native Hawaiian or Other Pacific Islander") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype = data_type), size=1) +
     scale_linetype_manual(values = c("solid", "2262", "13")) +
@@ -3055,7 +3108,6 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
-[colorspace](https://cran.r-project.org/web/packages/colorspace/colorspace.pdf)  | to get darker color shades for a plot  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  

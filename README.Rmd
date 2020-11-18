@@ -162,7 +162,6 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
-[colorspace](https://cran.r-project.org/web/packages/colorspace/colorspace.pdf)  | to get darker color shades for a plot  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
