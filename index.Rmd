@@ -240,8 +240,9 @@ library(tidyr)
 library(tibble)
 library(ggplot2)
 library(directlabels)
-library(forcats)
 library(scales)
+library(colorspace)
+library(forcats)
 library(ggthemes)
 library(cowplot)
 ```
@@ -259,8 +260,9 @@ library(cowplot)
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
-[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
+[colorspace](https://cran.r-project.org/web/packages/colorspace/colorspace.pdf)  | to get darker color shades for a plot  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
 
@@ -1611,7 +1613,7 @@ MDE_total <- percents %>%
           strip.text = element_text(face = "bold", 
                                     size = 14, 
                                     color = "white")) +
-    scale_color_manual(values = c("red"))
+    scale_color_manual(values = c("blue"))
 
 MDE_total
 ```
@@ -1683,16 +1685,70 @@ The `dl.move()` function of the `directlabels` package is used to move one of th
 
 Note: the `dl.move` functions are set up for the rendering the R Markdown - so if you are viewing the case study from RStudio the labels will overlap.
 
+We can modify the size of the labels with the `cex` argument and the style of the font with the `fontface` argument. 
 
 ```{r}
-directlabels::direct.label(
+MDE_age_gender <- directlabels::direct.label(
   MDE_age_gender, 
   list(dl.trans(y = y + 0.38, x = x -0.1), 
        "far.from.others.borders",
        cex = .8, 
+       fontface=c("bold"), 
        dl.move("Age_14-15", x = 2008, y = 10))
   )
+
+MDE_age_gender 
 ```
+
+Finally, let's color the different age groups in order of age by intensity of color shade.
+
+Let's also get the colors that we previously used so that we can color the `Male` and `Female` groups in a consistent way across our various future plots. This time we can use the `show_col()` function and the `hue_pal()` functions of the `scales` package to see what the [hexadecimal code (called hex)](https://en.wikipedia.org/wiki/Web_colors) for these colors.
+
+It would be nice to switch the colors for males and females so that they might fit what people would expect to avoid confusion and aid in interpretation.
+
+```{r}
+scales::show_col(scales::hue_pal()(6))
+```
+
+Let's make the age groups different shades of green. 
+
+We can get additional shades using the same function but specifying more colors to decide if we want a different color.
+
+```{r}
+
+scales::show_col(scales::hue_pal()(30))
+
+```
+We can save a few different shades of colors fading from gold to green for the different age groups.
+
+```{r}
+age_col_light <- c("#B79F00")
+age_col<- c("#6BB100")
+age_col_dark<- c("#00BD5F")
+```
+
+We can also save the male and female colors as more easily recognizable objects to use later.
+
+```{r}
+Female_col <-c("#F564E3")
+Male_col <- c("#619CFF")
+```
+
+
+Now we can change the colors using the `scale_color_manual()` function and listing the colors in order as they appear in the data.
+
+```{r}
+MDE_age_gender <- MDE_age_gender  +
+  scale_color_manual(values = c(age_col_light, 
+                                age_col, 
+                                age_col_dark, 
+                                Female_col, 
+                                Male_col))
+
+MDE_age_gender
+
+```
+
 
 This looks very clear now!
 
@@ -1703,6 +1759,16 @@ We can also see an increase for both genders since about 2011, but there is a st
 Furthermore, females have a much higher percentage than males across all years.
 
 Let's make the same plot with a different shaded background for the years of the increase like we did for the total plot.
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
 MDE_age_gender <-
@@ -1728,11 +1794,22 @@ MDE_age_gender <- direct.label(
   list(dl.trans(y = y +0.38, x = x -0.2), 
        "far.from.others.borders", 
        cex = .8,
+       fontface = "bold",
        dl.move("Age_14-15", x = 2008, y =10))
-  )
+  ) + 
+  scale_color_manual(values = c(age_col_light, 
+                                age_col, 
+                                age_col_dark, 
+                                Female_col, 
+                                Male_col))
+```
 
+<details>
+
+***
+
+```{r}
 MDE_age_gender
-
 ```
 
 Nice!
@@ -1890,7 +1967,7 @@ MDES_total <- percents %>%
     facet_wrap( ~ Demographic) +
     ocs_theme() +
     theme(legend.position = "none") +
-    scale_color_manual(values = c("red"))
+    scale_color_manual(values = c("blue"))
 ```
 
 </details>
@@ -1928,8 +2005,14 @@ MDES_age_gender  <- direct.label(
   list(dl.trans(y = y +0.39, x = x -0.1), 
        "far.from.others.borders",
        cex = .8, 
+       fontface = "bold",
        dl.move("Age_14-15", x= 2016.5, y = 11))
-  )
+  ) +
+  scale_color_manual(values = c(age_col_light, 
+                                age_col, 
+                                age_col_dark, 
+                                Female_col, 
+                                Male_col))
 ```
 
 </details>
@@ -1990,6 +2073,17 @@ Now we will take a look at those who reported having a MDE and received treatmen
 
 First, let's look overall using the `Demographic == "TOTAL"` group. We will remove the legend for this plot.
 
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
+
 ```{r}
 Treat_total <- percents %>%
   filter(data_type == "Treatment", 
@@ -2007,9 +2101,14 @@ Treat_total <- percents %>%
                        limits = c(2004, 2018)) +
     labs(title = "The Rate of Youths Aged 12 to 17 Receiving Treatment after\nReporting Having a Major Depressive Episode is Increasing") +
     ocs_theme() +
-    theme(legend.position = "none")
-    scale_color_manual(values = c("red"))
+    theme(legend.position = "none") +
+    scale_color_manual(values = c("blue"))
+```
 
+</details>
+***
+
+```{r}
 Treat_total
 ```
 
@@ -2018,6 +2117,16 @@ Overall, roughly 40 percent of youths who self-reported experiencing a major dep
 This rate is increasing over time like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
 
 Next, we consider differences between males and females and different age groups. 
+
+#### {.question_block}
+<b><u> Question Opportunity </u></b>
+
+Try to come up with the code for this plot on your own before you reveal it.
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
 treat <- percents %>%
@@ -2039,9 +2148,22 @@ treat <- direct.label(
   list(dl.trans(y = y -1.5, x = x -0.4),
        "far.from.others.borders", 
        cex = .8, 
+       fontface = "bold",
        dl.move("Age_16-17", x = 2010, y = 42),
-       dl.move("Age_14-15", x = 2015, y = 38)))
+       dl.move("Age_14-15", x = 2015, y = 38))
+  ) +
+  scale_color_manual(values = c(age_col_light, 
+                                age_col, 
+                                age_col_dark, 
+                                Female_col, 
+                                Male_col))
+```
 
+</details>
+
+***
+
+```{r}
 treat
 ```
 
@@ -2165,11 +2287,6 @@ ggthemes::show_linetypes(scales::linetype_pal()(12), labels = TRUE)
 
 We can now use the labels for the different types of lines in the `scale_linetype_manual()` function to specify specific linetypes.
 
-Let's also get the colors that we previously used so that we can color the `Male` and `Female` groups in a consistent way across our various plots. This time we can use the `show_col()` function and the `hue_pal()` functions of the `scales` package to see what the [hexadecimal code (called hex)](https://en.wikipedia.org/wiki/Web_colors) for these colors.
-
-```{r}
-scales::show_col(scales::hue_pal()(6))
-```
 
 We will also use the `guides()` function of the `ggplot2` package to remove the legend specifically for the color, not for the linetype by using `guides(color = FALSE).
 
@@ -2180,7 +2297,7 @@ gender_outcomes <-
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype = data_type), size = 1) +
     scale_linetype_manual(values = c("solid", "2262", "13")) +
-    scale_color_manual(values = c("#F564E3", "#619CFF", "black")) +
+    scale_color_manual(values = c(Female_col, Male_col, "black")) +
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
@@ -2209,13 +2326,14 @@ Create a similar plot on your own for different age groups.
 
 <details> <summary> Click here to reveal the code. </summary>
 
+
 ```{r}
 age_outcomes <-percents %>%
   filter(subgroup == "Age") %>%
   ggplot(aes(x = Year, y = Percent, color = Demographic)) +
     geom_line(aes(linetype= data_type), size = 1) +
     scale_linetype_manual(values = c("solid", "2262", "13")) +
-    scale_color_manual(values = c("#F8766D", "#B79F00", "#00BA38")) +
+    scale_color_manual(values = c(age_col_light, age_col, age_col_dark)) +
     scale_x_continuous(breaks = seq(2004, 2018, by = 1),
                        labels = seq(2004, 2018, by = 1),
                        limits = c(2004, 2018)) +
@@ -2293,13 +2411,14 @@ We are specifically interested in how the frequency of recent major depressive e
 We are also interested how different subgroups differ. 
 We will start with examining how male and females differ across time.
 
+### Chi-Squared Test
+
 Since we have counts for the two gender: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
 
 This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and gender were independent.
 
-The null hypothesis is that the variables are independent or that the  difference in the proportions is equal to zero. 
+The null hypothesis is that the variables are independent or that the difference in the proportions is equal to zero. 
 Thus, we want to test if gender and year are independent. In other words, we want to know if gender influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with gender?_  
-
 
 
 According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
@@ -2311,8 +2430,9 @@ Thus, to conduct this statistical test, we first need to create a [contingency t
 
 Before we create a contingency table for our data and use the chi-squared test, let's practice this with a different example. 
 
+<details> <summary> Click here for an example and more explanation of the Pearson's chi-squared test. </summary>
 
-***
+
 
 Consider a hypothetical scenario where we sample 100 individuals and report a contingency table representing the number of hypothetical individuals that we observed who are left and right handed, stratified by males and females (assuming all individuals had binary gender).
 
@@ -2384,7 +2504,7 @@ What does this mean? We need to consult a chi-square distribution to determine w
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
 ```
 
-##### [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
+[[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
 This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
 
@@ -2395,7 +2515,12 @@ Therefore, using the data we have, we do not have evidence in our data to sugges
 
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
 
-***
+
+
+</details> 
+
+
+### Gender and MDE Analysis
 
 Now let's create a contingency table with our own data and see how we can implement this test in R.
 
@@ -2489,6 +2614,8 @@ Using what you learned about the Chi-squared test, describe the results in refer
 
 How about for severe major depressive episodes?
 
+### Gender and Severe MDE Analysis
+
 ```{r}
 chi_square_11.3a <- counts %>%
   filter(data_type == "Severe_Major_Depressive_Episode", 
@@ -2510,8 +2637,9 @@ chisq.test(chi_square_11.3a)
 
 There also appears to be an influence of gender on the rate of severe major depressive episodes across the years.
 
-
 How about treatment?
+
+### Gender and Treatment Analysis
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -2716,12 +2844,12 @@ dev.off()
 
 The `dev.off()` function is necessary to close the graphics device. This is good practice to allow you to create another plot again later.
 
-```{r,echo = FALSE}
+```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "mainplot_orig.png"))
 ```
 
 
-OK, this looks pretty good! But it is a bit busy, so we are now going to remove the Race/ethnicity plot so as  to simplify our plot.
+OK, this looks pretty good! But it is a bit busy, so we are now going to remove the Race/ethnicity plot so as to simplify our plot.
 
 This time we need to recreate our `MDE_age_gender` plot again because we want to separate our plots so they look more similar to the total MDE and treatment plots. So we will actually make two separate plots. 
 
@@ -2755,8 +2883,8 @@ MDE_gender <-percents %>%
                      labels = seq(2004, 2018, by = 1),
                      limits = c(2004, 2018)) +
  ocs_theme() +
- scale_color_manual(values = c("#FF61C9",
-                                "#00A5FF"))
+ scale_color_manual(values = c(Female_col,
+                               Male_col))
 
 
 
@@ -2785,9 +2913,9 @@ MDE_age <- percents %>%
                      labels = seq(2004, 2018, by = 1),
                      limits = c(2004, 2018)) +
   ocs_theme() +
-  scale_color_manual(values = c("#ED8141",
-                                "#39B600",
-                                "darkorchid2"))##9590FF#00BFC4
+  scale_color_manual(values = c(age_col_light,
+                                age_col,
+                                age_col_dark))
 
 MDE_age <- direct.label(
   MDE_age, 
@@ -2915,22 +3043,22 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 
 <u>**Packages used in this case study:** </u>
 
-Package | Use in this case study                                                                            
+ Package   | Use in this case study                                                                       
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables  
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>% pipe operator   
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
-[tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert a column to row names  
+[tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
-[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot 
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
+[colorspace](https://cran.r-project.org/web/packages/colorspace/colorspace.pdf)  | to get darker color shades for a plot  
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
-
 #### {.emphasis_block}
 If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
 

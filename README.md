@@ -250,7 +250,7 @@ for more details on using `ggplot2`.
 </tr>
 <tr class="even">
 <td><a href="https://magrittr.tidyverse.org/" target="_blank">magrittr</a></td>
-<td>to use and reassign data objects using the %&lt;&gt;% pipe operator</td>
+<td>to use and reassign data objects using the %&lt;&gt;%pipe operator</td>
 </tr>
 <tr class="odd">
 <td><a href="https://stringr.tidyverse.org/" target="_blank">stringr</a></td>
@@ -262,7 +262,7 @@ for more details on using `ggplot2`.
 </tr>
 <tr class="odd">
 <td><a href="https://tibble.tidyverse.org/" target="_blank">tibble</a></td>
-<td>to create tibbles and convert a column to row names</td>
+<td>to create tibbles and convert values of a column to row names</td>
 </tr>
 <tr class="even">
 <td><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></td>
@@ -273,18 +273,22 @@ for more details on using `ggplot2`.
 <td>to add labels directly to lines in plots</td>
 </tr>
 <tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/scales/scales.pdf">scales</a></td>
+<td>to get the current linetype options</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/colorspace/colorspace.pdf">colorspace</a></td>
+<td>to get darker color shades for a plot</td>
+</tr>
+<tr class="even">
 <td><a href="https://forcats.tidyverse.org/" target="_blank">forcats</a></td>
 <td>to reorder factor for plot</td>
 </tr>
 <tr class="odd">
-<td><a href="https://cran.r-project.org/web/packages/scales/scales.pdf">scales</a></td>
-<td>to get the current linetype options</td>
-</tr>
-<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf">ggthemes</a></td>
 <td>to create a plot to see what the different linetypes look like</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
 <td>to combine plots together</td>
 </tr>
