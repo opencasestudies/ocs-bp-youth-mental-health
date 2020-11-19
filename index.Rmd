@@ -442,7 +442,8 @@ Alternatively, we could use `R` for to scrape the data from the web!
 Formally, [web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} is the process of extracting data from a webpage. Let's learn how to do this for our case study. 
 
 
-### Basic steps of web scraping
+### **Basic steps of web scraping**
+***
 
 There are two main steps to web scraping:  
 
@@ -465,20 +466,25 @@ We accomplish STEP 2 in the `R` programming environment.
 
 ####
 
-### The `rvest` package
+### **The `rvest` package**
+***
 
 In this case study, we will scrape data from the tables on the [NSDUH survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} website. 
-These data are available in a large PDF with all the results by year. 
-However, it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract the data from the pdf with `pdftools`. 
-Again, if we instead decided to copy paste the data from the website to another file that we would also need to import, this would not be as efficient or reproducible and might result in errors. 
+
+Note that these data are available in a large PDF with all the results by year if you wish to use the data from this particular source.)
+
+One option to import the data would be to import the PDF. However it is not easy to find this PDF and it would be difficult and time consuming to find our tables of interest and to extract our data of interest from the pdf. However, if one wanted to do this, say if the tables were not available online, they could use the `pdftools` package. See this other [case study](https://www.opencasestudies.org/ocs-bp-diet/) and this other [case study](https://www.opencasestudies.org/ocs-bp-youth-disconnection/) for two methods to work with PDFs. 
+
+Another option could be to copy and paste the data from the website to another file that we would also need to import. But this would not be as efficient or reproducible and might result in errors. 
 
 Alternatively, we will use the `rvest` package to [scrape](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"} the data directly from the tables on the website. 
+
 Assuming the data next year would be displayed in a similar manner, this could allow us simply modify our code based on the url for the data next year to run the same analysis on the data easily. 
 
-The `rvest`  package can be thought of as the `pdftools` package for web scraping. 
-Upon pulling the data, additional wrangling will likely be required; but like the `pdftools` package, `rvest` streamlines the extraction process.  
+However, it is important to keep in mind that one downside of scraping the data directly from the web, is that the website could change - this can be a good thing if the website adds additional data and keeps the same formatting. this would allow us to get additional data very easily. However, if the website changes formatting than this would require that we update our code. 
 
-### Scraping tables into R
+### **Scraping tables into R**
+***
 
 The two web scraping steps for these tables can be broken down even further: 
 
@@ -734,7 +740,8 @@ table11.1a <- table11.1a[[1]]
 
 Now, we need to repeat the above process for the other tables we are interested in. 
 
-### Writing a function to scrape multiple tables
+### **Writing a function to scrape multiple tables**
+***
 
 One option is to copy and paste code we wrote above. 
 However, this is not very efficient and is error prone.
@@ -775,8 +782,9 @@ Great! We have successfully scraped the data from the web into R!
 
 Next, we need to wrangle the data.
 
-```{r, echo = FALSE, eval = FALSE}
-# for instructors that wish to start at a later section, we will save the imported data.
+We will save the data now in case the website gets removed in the future. To do this we will use the base `save()` function.
+
+```{r, eval = FALSE}
 save(table11.1a, table11.1b, table11.2a, table11.2b, 
      table11.3a, table11.3b, table11.4a, table11.4b, file = here::here("data", "raw_data.rda"))
 ```
@@ -796,6 +804,7 @@ We can take advantage of this similarity to speed up the wrangling process.
 
 
 ### **Table11.1a**
+***
 
 First, we want to remove the last row of our data frame, which happens to be the legend of our table. 
 Recall from looking at the website that there is a legend for this table.
@@ -1327,6 +1336,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 Now we can apply the function to `table11.1b`.
 
 ### **Table11.1b**
+***
 
 ```{r}
 table11.1b <- 
@@ -1343,6 +1353,7 @@ What about the subsequent tables?
 
 
 ### **Demographic Tables**
+***
 
 All of the rest of the tables have demographic information and have this general structure:
 
@@ -1353,7 +1364,7 @@ knitr::include_graphics(here::here("img", "dem_table.png"))
 In these tables, we have age groups in our first column so we don't want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
 
 We also want to add the word `Age` and an underscore in front of the age group listed in the tables.
-We can use the `str_replace()` function of the `stringr` package, because now we want to only replace the first instance of `1` with `Age_1`.
+We can use the `str_replace()` function of the `stringr` package, because now we want to only replace the first instance of `1` with `Age: 1`.
 
 We will replace the first column name with `Demographic` for all of the tables.
 
@@ -1377,7 +1388,7 @@ data_dem_settings <- function(TABLE){
                                         replacement = " ")) %>%
   mutate(Demographic = str_replace(string = Demographic, 
                                    pattern = "1", 
-                                   replacement = "Age_1")) %>%
+                                   replacement = "Age: 1")) %>%
   mutate(subgroup = c("Total", rep("Age", 4), 
                     rep("Gender", 3), rep("Race/Ethnicity", 9))) %>%
   mutate(dplyr::across(.cols = contains("20"),
@@ -1573,7 +1584,8 @@ These will define what we are interested in illustrating using the data.
 
 ***
 
-### MDE across time
+### **MDE Across Time**
+***
 
 We will start by taking a look at the rate of major depressive episodes (MDE) among youths across time in various demographic groups.
 For this we will use the `percents` dataset that we wrangled in the section above.
@@ -1749,7 +1761,7 @@ MDE_age_gender <- directlabels::direct.label(
        "far.from.others.borders",
        cex = .8, 
        fontface=c("bold"), 
-       dl.move("Age_14-15", x = 2008, y = 10))
+       dl.move("Age: 14-15", x = 2008, y = 10))
   )
 
 MDE_age_gender 
@@ -1850,7 +1862,7 @@ MDE_age_gender <- direct.label(
        "far.from.others.borders", 
        cex = .8,
        fontface = "bold",
-       dl.move("Age_14-15", x = 2008, y =10))
+       dl.move("Age: 14-15", x = 2008, y =10))
   ) + 
   scale_color_manual(values = c(age_col_light, 
                                 age_col, 
@@ -1989,7 +2001,8 @@ However, we can see that most of the racial/ethnic groups are fairly similar and
 Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
 It is possible that this group may be less likely to report experiencing symptoms of depression.
 
-### MDE with Severe Impairment
+### **MDE with Severe Impairment**
+***
 
 Now let's take a look at how the overall rate of youths reporting having a major depressive episode (MDE) **with severe impairment** has changed over time. See the [**What are the data?**] section about how severe impairment was defined. 
 
@@ -2059,7 +2072,7 @@ MDES_age_gender  <- direct.label(
        "far.from.others.borders",
        cex = .8, 
        fontface = "bold",
-       dl.move("Age_14-15", x= 2016.5, y = 11))
+       dl.move("Age: 14-15", x= 2016.5, y = 11))
   ) +
   scale_color_manual(values = c(age_col_light, 
                                 age_col, 
@@ -2120,7 +2133,8 @@ We see similar trends as we saw for the previous racial/ethnic group plot.
 The rate is highest for those who are two are more races and lowest for those who are Black or African American. 
 The data for the `American Indian and Alaska Native` group is sparse, so it is unclear if their levels would be lowest on the last year.
 
-### MDE Treatment
+### **MDE Treatment**
+***
 
 Now we will take a look at those who reported having a MDE and received treatment for depression. 
 
@@ -2202,8 +2216,8 @@ treat <- direct.label(
        "far.from.others.borders", 
        cex = .8, 
        fontface = "bold",
-       dl.move("Age_16-17", x = 2010, y = 42),
-       dl.move("Age_14-15", x = 2015, y = 38))
+       dl.move("Age: 16-17", x = 2010, y = 42),
+       dl.move("Age: 14-15", x = 2015, y = 38))
   ) +
   scale_color_manual(values = c(age_col_light, 
                                 age_col, 
@@ -2259,7 +2273,8 @@ Race_treat
 It looks as though youths who report as being white received the most care from mental health services.
 
 
-### Mental Health Services
+### **Mental Health Services**
+***
 
 We will also take a look at where youths are receiving treatment by using values from `table11.1b` which has the percentage values for counts presented in `table11.1a`.
 
@@ -2329,7 +2344,8 @@ But, how do the rates of having a MDE in the past year, having a MDE with severe
 
 This is what we tackle in the next section. 
 
-### Overall outcomes by group
+### **Overall Outcomes by Group**
+***
 
 In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. We will use different types of lines to indicate the different outcome values by using the `scale_linetype_manual()` function. We can use the `ggthemes` package and the `scales` package in order to see all the current options for different linetypes.
 
@@ -2464,14 +2480,16 @@ We are specifically interested in how the frequency of recent major depressive e
 We are also interested how different subgroups differ. 
 We will start with examining how male and females differ across time.
 
-### Chi-Squared Test
+### **Chi-Squared Test**
+***
 
 Since we have counts for the two gender: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
 
 This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and gender were independent.
 
-The null hypothesis is that the variables are independent or that the difference in the proportions is equal to zero. 
-Thus, we want to test if gender and year are independent. In other words, we want to know if gender influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with gender?_  
+The null hypothesis is that the variables are indeed independent or that the difference in the proportions is equal to zero. 
+
+In other words, we want to know if gender influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with gender?_  
 
 
 According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
@@ -2554,7 +2572,7 @@ Where the degrees of freedom  = $df = (92-1)(2-1) = 1$
 What does this mean? We need to consult a chi-square distribution to determine what the $p$-value is and if this is significant.
 
 ```{r, echo = FALSE}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/8/8e/Chi-square_distributionCDF-English.png")
+knitr::include_graphics(here::here("img", "Chi-square_distributionCDF-English.png"))
 ```
 
 [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
@@ -2564,7 +2582,8 @@ This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){targ
 Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
 
 Thus, we do not have enough evidence to reject the null hypothesis.
-Therefore, using the data we have, we do not have evidence in our data to suggest that gender and handedness are not independent.
+
+Therefore, our data suggests that gender and handedness are independent or stated another way, that gender does not influence handedness.
 
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
 
@@ -2573,7 +2592,8 @@ See here for a more thorough explanation of the [chi-square test](https://www.li
 </details> 
 
 
-### Gender and MDE Analysis
+### **Gender and MDE Analysis**
+***
 
 Now let's create a contingency table with our own data and see how we can implement this test in R.
 
@@ -2667,7 +2687,8 @@ Using what you learned about the Chi-squared test, describe the results in refer
 
 How about for severe major depressive episodes?
 
-### Gender and Severe MDE Analysis
+### **Gender and Severe MDE Analysis**
+***
 
 ```{r}
 chi_square_11.3a <- counts %>%
@@ -2692,7 +2713,8 @@ There also appears to be an influence of gender on the rate of severe major depr
 
 How about treatment?
 
-### Gender and Treatment Analysis
+### **Gender and Treatment Analysis**
+***
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -2732,7 +2754,8 @@ There also appears to be an influence of gender on the rate at which youths rece
 ## **Summary**
 *** 
 
-### Summary Plot
+### **Summary Plot**
+***
 
 Let's make a plot that summarizes our major findings.
 
@@ -2976,7 +2999,7 @@ MDE_age <- direct.label(
        "far.from.others.borders", 
        cex = 1, 
        fontface=c("bold"),
-       dl.move("Age_12-13", x = 2015, y = 9))
+       dl.move("Age: 12-13", x = 2015, y = 9))
   )
 ```
 
@@ -3022,7 +3045,8 @@ dev.off()
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
-### Synopsis
+### **Synopsis**
+***
 
 In this case study we evaluated self-reported measures of depression symptoms among youths age 12-17 in the United States, as well as the rate of youths receiving treatment for depression. 
 We learned how to scrape data directly from the web using the `rvest` package and we learned how to perform and interpret a chi-square test using the `chisq.test()` function of the `stats` package.
@@ -3049,7 +3073,8 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 ## **Additional Information**
 ***
 
-### Helpful Links
+### **Helpful Links**
+***
 
 [RStudio](https://rstudio.com/products/rstudio/features/){target="_blank"}  
 [Cheatsheet on RStuido IDE](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf){target="_blank"}  
@@ -3121,7 +3146,8 @@ The **Crisis Text Line** is another free, confidential resource available 24 hou
 Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression
 
 
-### Acknowledgements
+### **Acknowledgements**
+***
 
 We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson){target="_blank"} for assisting in framing the major direction of the case study.
 
