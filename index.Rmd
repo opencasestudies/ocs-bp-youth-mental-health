@@ -215,24 +215,23 @@ This data was also used in the first referenced article.
 *** 
 The skills, methods, and concepts that students will be familiar with by the end of this case study are:
 
+<u>**Data Science Learning Objectives:**</u>
+
+1. Scrape data directly from a website (`rvest`)  
+2. Subset and filter data (`dplyr`)  
+3. Write functions to wrangle data repetitively  
+4. Work with character strings (`stringr`)  
+5. Reshape data into different formats (`tidyr`)  
+6. Data visualizations (`ggplot2`) with labels (`directlabels`) and facets for different groups  
+7. Combine multiple plots (`cowplot`)  
+8. Optional: Create an animated gif (`magick`)  
+
 <u>**Statistical Learning Objectives:**</u> 
 
-1. Discuss the impact and of self-reporting bias on survey responses.
-2. Define and create a contingency table.
-3. Implementation of a chi-squared test for independence.
-4. Interpretation of a chi-squared test for independence.
-
-<u>**Data science Learning Objectives:**</u>
-
-1. Scrape data directly from a website (`rvest`).
-2. Subset and filter data (`dplyr`).
-3. Write functions to wrangle data repetitively.
-4. Work with character strings (`stringr`).
-5. Reshape data into different formats (`tidyr`).
-6. Data visualizations (`ggplot2`) with labels (`directlabels`) and facets for different groups.
-7. Combine multiple plots (`cowplot`).
-8. Optional: Create an animated gif (`magick`).
-
+1. Discuss the impact and of self-reporting bias on survey responses  
+2. Define and create a contingency table  
+3. Implementation of a chi-squared test for independence  
+4. Interpretation of a chi-squared test for independence  
 
 In this case study, we will especially focus on using packages and functions from the [`Tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as [`rvest`](https://github.com/tidyverse/rvest){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R more legible and intuitive.
 
@@ -261,7 +260,7 @@ library(ggthemes)
 library(cowplot)
 ```
 
-
+<u>**Packages used in this case study:** </u>
 
  Package   | Use in this case study                                                                       
 ---------- |-------------
@@ -797,7 +796,20 @@ save(table11.1a, table11.1b, table11.2a, table11.2b,
 # for instructors that wish to start at this section, they can just load the imported data.
 load(file = here::here("data", "raw_data.rda"))
 ```
+
+
 Now that we have imported the data, let's see if we can wrangle a table. 
+
+What do we mean by "wrangle"? We mean that we intend to get the data into what is called "tidy" format. 
+
+This means that the data:
+1) has each observation in single row
+2) has a single aspect about each observation as a single column
+3) is rectangular (meaning there are no empty cells)
+4) the values within the cells are in a format that is useful for making visualzations and for analysis
+
+Check out this [paper](https://vita.had.co.nz/papers/tidy-data.pdf) for more information about tidy data.
+
 Since the data appear to be formatted in a similar way in each of the tables, it is likely that whatever steps we take to wrangle this first table will also be necessary in the wrangling of subsequent tables. 
 This is because well-maintained data sources often format different datasets similarly. 
 We can take advantage of this similarity to speed up the wrangling process. 
@@ -806,8 +818,9 @@ We can take advantage of this similarity to speed up the wrangling process.
 ### **Table11.1a**
 ***
 
-First, we want to remove the last row of our data frame, which happens to be the legend of our table. 
-Recall from looking at the website that there is a legend for this table.
+Let's take a look at our table on the website to see what it needs to get it into "tidy" format.
+
+First, we can see that we want to remove the legend of our table. .
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
@@ -820,7 +833,7 @@ Currently table11.1a is a typical dataframe, which we can see using the `class` 
 class(table11.1a)
 ```
 
-We can use the `as_tibble()` function of the `dplyr` package. to convert `table11.1a` into a tibble.
+We can use the `as_tibble()` function of the `dplyr` package to convert `table11.1a` into a tibble.
 
 ```{r}
 table11.1a %>%
@@ -837,7 +850,7 @@ table11.1a %>%
   tail(n = 1)
 ```
 
-Let's save this so that we can refer back to it later:
+Let's save this to an object called `legend` so that we can refer back to it later:
 ```{r}
 legend <- table11.1a %>%
   as_tibble() %>%  
@@ -854,6 +867,7 @@ table11.1a %>%
   dplyr::as_tibble() %>%
   dplyr::slice(n()) 
 ```
+
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
 We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. 
@@ -867,9 +881,9 @@ table11.1a %<>%
   slice(1:(n()-1))
 ```
 
-Now let's take a look at data:
+Now let's take a look at the data:
 ```{r}
-head(table11.1a)
+slice_head(table11.1a, n = (length(pull(table11.1a, `2002`))))
 ```
 
 Great! We can see the the legend is no longer part of the data.
@@ -2179,7 +2193,7 @@ Treat_total <- percents %>%
 Treat_total
 ```
 
-Overall, roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. This rate could definitely be improved.
+Overall, roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. Thus the majority of youths reporting major depressive episode symptoms are not receiving treatment. 
 
 This rate is increasing over time like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
 
@@ -2483,19 +2497,18 @@ We will start with examining how male and females differ across time.
 ### **Chi-Squared Test**
 ***
 
-Since we have counts for the two gender: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
+Our first question is: _Is the rate of reported major depressive episodes across the two years associated with gender?_  
 
-This will allow us to compare if the frequencies of major depressive episodes differs from what we would expect by chance if the variables years and gender were independent.
+Since we have counts for the two genders: males and females, and for the two years of interest, 2004 and 2018, we can conduct a [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"} for **independence**, which is also written like this: ${\chi}^2$. 
 
-The null hypothesis is that the variables are indeed independent or that the difference in the proportions is equal to zero. 
-
-In other words, we want to know if gender influences the number of major depressive episodes in 2004 and 2018. Or stated yet another way: _are major depressive episode counts across the two years associated with gender?_  
+This will allow us to compare if the relative frequencies of major depressive episodes differs from what we would expect by chance if the variables years and gender were independent.
 
 
 According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldformat=true){target="_blank"}: 
 
 > Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
 
+The null hypothesis is that the variables are indeed independent, or that the difference in the proportion of observed to expected frequecies is equal to zero. 
 
 Thus, to conduct this statistical test, we first need to create a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contingency table (only two levels for two variables).
 
@@ -2518,6 +2531,7 @@ observed
 ```
 
 We can see that there are two variables: `Gender` and `Handedness` and each have two levels (`Male` and `Female` for `Gender` and `Righthanded` and `Lefthanded` for `Handedness`). 
+
 The table also includes totals of each of the 4 possible groups as well as the overall total.
 
 Next, we create a table of what we **expect** assuming `Gender` and `Handedness` are independent. 
@@ -2555,7 +2569,7 @@ So to calculate the ${\chi}^2$ test statistics for handedness and gender manuall
 
 $${\chi}^2 =  \frac{(41-44)^2}{44} + \frac{(9-6)^2}{6}+ \frac{(47-44)^2}{44}+ \frac{(3-6)^2}{6}$$
 
-where we calculate the fraction of the square difference of the observed minus the expected, divided by expected for: 
+Where we calculate the fraction of the square difference of the observed minus the expected, divided by expected for: 
 
 1. right-handed males
 2. left-handed males
@@ -2583,7 +2597,7 @@ Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.064
 
 Thus, we do not have enough evidence to reject the null hypothesis.
 
-Therefore, our data suggests that gender and handedness are independent or stated another way, that gender does not influence handedness.
+Therefore, our data do not provide evidence to suggest that gender and handedness are related.
 
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}.
 

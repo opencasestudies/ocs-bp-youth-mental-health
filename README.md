@@ -99,24 +99,24 @@ Thus, we demonstrate how to scrape the data directly from the website.
 The skills, methods, and concepts that students will be familiar with by
 the end of this case study are:
 
+<u>**Data Science Learning Objectives:**</u>
+
+1.  Scrape data directly from a website (`rvest`)  
+2.  Subset and filter data (`dplyr`)  
+3.  Write functions to wrangle data repetitively  
+4.  Work with character strings (`stringr`)  
+5.  Reshape data into different formats (`tidyr`)  
+6.  Create data visualizations (`ggplot2`) with labels (`directlabels`)
+    and facets for different groups  
+7.  Combine multiple plots (`cowplot`)  
+8.  Optional: Create an animated gif (`magick`)
+
 <u>**Statistical Learning Objectives:**</u>
 
-1.  Discuss the impact and of self-reporting bias on survey responses.
-2.  Define and create a contingency table.
-3.  Implementation of a chi-squared test for independence.
-4.  Interpretation of a chi-squared test for independence.
-
-<u>**Data science Learning Objectives:**</u>
-
-1.  Scrape data directly from a website (`rvest`).
-2.  Subset and filter data (`dplyr`).
-3.  Write functions to wrangle data repetitively.
-4.  Work with character strings (`stringr`).
-5.  Reshape data into different formats (`tidyr`).
-6.  Create data visualizations (`ggplot2`) with labels (`directlabels`)
-    and facets for different groups.
-7.  Combine multiple plots (`cowplot`).
-8.  Optional: Create an animated gif (`magick`).
+1.  Discuss the impact and of self-reporting bias on survey responses  
+2.  Define and create a contingency table  
+3.  Implementation of a chi-squared test for independence  
+4.  Interpretation of a chi-squared test for independence
 
 #### Data import
 
