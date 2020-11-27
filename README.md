@@ -30,8 +30,8 @@ United States License.
 
 To cite this case study:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub,
-Margaret and Hicks, Stephanie. (2020).
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret
+and Hicks, Stephanie. (2020).
 <a href="https://github.com/opencasestudies/ocs-youth-mental-health-case-study" class="uri">https://github.com/opencasestudies/ocs-youth-mental-health-case-study</a>.
 Mental Health of American Youth (Version v1.0.0).
 

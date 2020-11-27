@@ -19,7 +19,7 @@ output:
 
 <style>
 #TOC {
-  background: url("https://opencasestudies.github.io/img/logo.jpg");
+  background: url("https://opencasestudies.github.io/img/icon-bahi.png");
   background-size: contain;
   padding-top: 240px !important;
   background-repeat: no-repeat;
@@ -44,21 +44,23 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 
 ####
 
-## {.disclaimer_block}
+#### {.disclaimer_block}
 
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
+####
 
-## {.license_block}
+#### {.license_block}
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
+####
 
-## {.reference_block}
+#### {.reference_block}
 
 To cite this case study please use:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
 
-##
+####
 
 #### {.emphasis_block}
 
@@ -806,7 +808,7 @@ This means that the data:
 1) has each observation in single row
 2) has a single aspect about each observation as a single column
 3) is rectangular (meaning there are no empty cells)
-4) the values within the cells are in a format that is useful for making visualzations and for analysis
+4) the values within the cells are in a format that is useful for making visualizations and for analysis
 
 Check out this [paper](https://vita.had.co.nz/papers/tidy-data.pdf) for more information about tidy data.
 
@@ -990,7 +992,7 @@ We can use the `str_remove_all()` function to remove these unwanted characters f
 The `str_remove_all()` function is a variant of the `str_remove()` function of the `stringr` package. It allows us to remove all occurrences of specified characters in each row rather than just the first occurrence (which is what `str_remove()` does).
 
 
-Using the `mutate()` function, we specify that we want to change this particular column and replace it with a version of this column that does not cotain characters that are digits, the `r\n` string that we saw, or punctuation marks.
+Using the `mutate()` function, we specify that we want to change this particular column and replace it with a version of this column that does not contain characters that are digits, the `r\n` string that we saw, or punctuation marks.
 
 We need to specify that the character strings that should be used can be found in the `MHS_setting` column by using the `string =` argument and the patterns to find and remove are specified using the `pattern =` argument.
 
@@ -1179,25 +1181,35 @@ As a reminder here are all of the steps that we performed to wrangle `table11.1a
 
 ```{r, eval = FALSE}
 table11.1a %<>%
+# make the table into a tibble
   dplyr::as_tibble() %>%
+# remove the last row by only keeping the first through the second to last
   slice(1:(n() - 1)) %>%
+# make the "nc" values "NA" instead
   dplyr::na_if("nc") %>%
   dplyr::na_if("--") %>%
   dplyr::na_if("") %>%
   dplyr::na_if("*") %>% 
+# rename the column to the shorter MHS_setting name
   dplyr::rename(MHS_setting = 
                   `Setting Where Mental Health ServiceWas Received`) %>%
+# remove numbers, carriage return, new lines, and punctuation marks from the values for the MHS_setting column
   mutate(MHS_setting = 
          str_remove_all(string = MHS_setting, 
                        pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
+# replace the white spaces with a single space
   mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                         pattern = "[:blank:]{1,}", 
                     replacement = " ")) %>%
+# remove "a" and commas from the values in the columns except the column called MHS_setting
   mutate(dplyr::across(.cols = -MHS_setting,
                 stringr::str_remove_all, "a|,")) %>%
+# make those columns numeric
   mutate(across(-MHS_setting, as.numeric)) %>%
+# create a new type column with the values: "Specialty repeated 9 times followed by "Nonspecialty" repeated 11 times
   mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+# create a new variable called subtype 
   mutate(subtype =c("Specialty_total", 
                     rep("Outpatient", 5), 
                     rep("Inpatient", 3), 
@@ -1207,6 +1219,7 @@ table11.1a %<>%
                     rep("Juvenile_Justice", 2),
                     rep("Child_Welfare", 2), 
                     "combination")) %>%
+# create a new variabel called short_label
   mutate(short_label = c("Specialty total", "Outpatient total",
                          "Therapist", "Clinic", "Day program", 
                          "In-home Therapist", "Inpatient total",
@@ -1217,12 +1230,17 @@ table11.1a %<>%
                          "Justice System", "Justice System",
                          "Welfare", "Fostercare", 
                          "Specialty Combination")) %>%
+# remove rows with General_Medicine as the value in the MHS_setting column because it is empty
   dplyr::filter(MHS_setting != "General_Medicine") %>%
+# remove rows with Juvenile_Justice as the value in the MHS_setting column because it is empty
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
+# remove rows with Child_Welfare as the value in the MHS_setting column because it is empty
   dplyr::filter(MHS_setting != "Child_Welfare") %>%
+# make the table in long format
     tidyr::pivot_longer(cols = contains("20"),
                         names_to = "Year",
                         values_to = "Number") %>%
+# make the new Year varaible to be numeric
    mutate(Year = as.numeric(Year))
 ```
 
@@ -1301,24 +1319,34 @@ OK, so putting everything together from what we did previously for `table11.1a` 
 
 ```{r}
 data_prep_settings <- function(TABLE, new_col, pivot_col){
+# make the table a tibble
   dplyr::as_tibble(TABLE) %>%
+# remove the last row
     slice(1:(n() - 1)) %>%
+# make "nc" values NA etc.
     na_if("nc") %>%
     na_if("--") %>%
     na_if("") %>%
     na_if("*") %>% 
+# rename the first column (names(.)[1]) to be what was specified with the new_col argument
     rename({{new_col}} := names(.)[1]) %>%
+# remove the numbers and punctuation marks and carriage returns (\r) and new lines (\n) from the first column
     mutate({{new_col}} := 
         str_remove_all(string = pull(., {{new_col}}), 
                         pattern = "[:digit:]|\r\n|[:punct:]|")) %>%
+# replace white spaces with a single space
     mutate({{new_col}} := 
         str_replace_all(string =pull(., {{new_col}}),
                          pattern = "[:blank:]{1,}", 
                          replacement = " ")) %>%
+# remove "a" and , from the values for the columns that are not the first column (called new_col)
     mutate(dplyr::across(.cols = -{{new_col}},
                        stringr::str_remove_all, "a|,")) %>%
+# make these columns numeric  (all the columns but the first column)
     mutate(across(-{{new_col}}, as.numeric)) %>%
+# make a new variable called type with 9 values that are Specialty followed by 11 values of Nonspecialty
     mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+# make a new variable called subtype with the following values repeated various times
     mutate(subtype = c("Specialty_total",
                        rep("Outpatient", 5),
                        rep("Inpatient", 3),
@@ -1328,6 +1356,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                        rep("Juvenile_Justice", 2),
                        rep("Child_Welfare", 2),
                        "combination")) %>% 
+# make a new variable called short_label to use as labels for plots for the data
     mutate(short_label = c("Specialty total", "Outpatient total",  
                            "Therapist", "Clinic", "Day program", 
                            "In-home Therapist", "Inpatient total",
@@ -1338,11 +1367,16 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                            "Justice System", "Justice System", 
                            "Welfare", "Fostercare", 
                            "Specialty Combination")) %>%
+# remove rows were all the values are NA - 
+# the number of `NA` values for a row should be less than the number of columns that could have `NA` values
   filter(rowSums(is.na(select(., is.numeric))) <
            length(select(., is.numeric))) %>%
+# make the table into long format so that the year columns are collapsed together 
+# the new value column is called what was specified with the "pivot_col" argument
   pivot_longer(cols = contains("20"),
                names_to = "Year", 
                values_to = pivot_col)%>%
+# make the new "Year" variable numeric
   mutate(Year = as.numeric(Year))
 }
 ```
@@ -1361,7 +1395,7 @@ table11.1b <-
 head(table11.1b)
 ```
 
-Great!
+Now we have tidy data about the counts and percentages of where youths, who experienced a major depressive episode, received treatment for depression.
 
 What about the subsequent tables?
 
@@ -1390,24 +1424,34 @@ OK let's put this all together into a `data_dem_settings()` function:
 
 ```{r}
 data_dem_settings <- function(TABLE){
+  # make the table a tibble
   dplyr::as_tibble(TABLE) %>%
+  # Remove the last row - keep only the 1st through 2nd to last rows
   slice(1:(n()-1)) %>%
+  # change the values from "nc, --" etc to NA
   na_if("nc") %>%
   na_if("--") %>%
   na_if("") %>%
   na_if("*") %>%
+  # rename the first column to be "Demographic"
   rename(Demographic := names(.)[1]) %>%
+  # replace white spaces form the values of the "Demographic" variable with a single space
   mutate(Demographic := str_replace_all(string = pull(., Demographic),
                                         pattern = "[:blank:]{1,}", 
                                         replacement = " ")) %>%
+  # replace values where there is a "1" in the "Demographic" variable to be "Age: 1"
   mutate(Demographic = str_replace(string = Demographic, 
                                    pattern = "1", 
                                    replacement = "Age: 1")) %>%
+  # create a new variable called subgroup
   mutate(subgroup = c("Total", rep("Age", 4), 
                     rep("Gender", 3), rep("Race/Ethnicity", 9))) %>%
+  # remove "a" and commas from the variables that have column names with "20" in them
   mutate(dplyr::across(.cols = contains("20"),
                        stringr::str_remove_all, "a|,")) %>%
+  # make the variables with "20" in the names (the year varaibles) to be numeric
   mutate(across(contains("20"), as.numeric)) %>%
+  # remove empty rows - rows were the number of NA values is equal to the number of numeric columns
   filter(rowSums(is.na(select(., is.numeric))) < length(select(., is.numeric)))
   }
 ```
@@ -1491,7 +1535,7 @@ Using the definitions from the [Census Bureau](https://www.census.gov/programs-s
 
 Let's update our data to reflect these definitions. 
 
-However, we would like to note that there is [controversy](https://en.wikipedia.org/wiki/Native_American_name_controversy) about the best term if any to identify the various groups of people that may have self-reported as one of these categories amomg the options provided in the survey where the data came from.  It is a limitation of the data that more specific racial and ethnic information is not available. We will stick with the abbreviation definitions provided in the tables simply to remain consistent with the original data.
+However, we would like to note that there is [controversy](https://en.wikipedia.org/wiki/Native_American_name_controversy) about the best term if any to identify the various groups of people that may have self-reported as one of these categories among the options provided in the survey where the data came from.  It is a limitation of the data that more specific racial and ethnic information is not available. We will stick with the abbreviation definitions provided in the tables simply to remain consistent with the original data.
 
 
 To do this we will use the `str_replace()` function.
@@ -1775,7 +1819,7 @@ MDE_age_gender <- directlabels::direct.label(
        "far.from.others.borders",
        cex = .8, 
        fontface=c("bold"), 
-       dl.move("Age: 14-15", x = 2008, y = 10))
+       dl.move("Age: 14-15", x = 2007, y = 9.7))
   )
 
 MDE_age_gender 
@@ -2150,7 +2194,7 @@ The data for the `American Indian and Alaska Native` group is sparse, so it is u
 ### **MDE Treatment**
 ***
 
-Now we will take a look at those who reported having a MDE and received treatment for depression. 
+Now we will take a look at those who reported having a MDE and received treatment for depression.
 
 First, let's look overall using the `Demographic == "TOTAL"` group. We will remove the legend for this plot.
 
@@ -2195,7 +2239,7 @@ Treat_total
 
 Overall, roughly 40 percent of youths who self-reported experiencing a major depressive episode, also received treatment for depression. Thus the majority of youths reporting major depressive episode symptoms are not receiving treatment. 
 
-This rate is increasing over time like the trend of those who had a major depressive episode, yet the data are much more variable from one year to the next. 
+This shows an overall increase in the rate in which youths are receiving treatment since 2011, like the trend seen for the number of youths reporting having had a major depressive episode, yet the data for treatment are much more variable from one year to the next. 
 
 Next, we consider differences between males and females and different age groups. 
 
@@ -2319,7 +2363,8 @@ plotMHS <- direct.label(
 plotMHS
 ```
 
-We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. 
+We can see that youths appear to be receiving care in nonspecialty facilities at a slightly higher rate than that of specialty facilities. See [here](https://www.northtexashelp.com/mental-health-treatment-settings.html) for more information about these different types of mental health services. A nonspecialty facility provides general health treatment and other services, such as a typical hospital or a school. A specialty facility, in contrast, focuses on the treatment of mental health. Outpatient services are those in which the patient does not stay overnight for even one night at the hospital or treatment facility, while inpatient services are those in which the patient stays overnight for at least one night at the care facility.
+
 However, the rates appear to be very similar and the relative differences appear to be consistent across time.
 
 Let's take a look at subcategories of mental health services.
@@ -2508,7 +2553,7 @@ According to [wikipedia](https://en.wikipedia.org/wiki/Chi-squared_test?oldforma
 
 > Pearson's chi-square test is used to determine whether there is a statistically significant difference between the **expected frequencies** and the **observed frequencies** in one or more **categories** of a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}.
 
-The null hypothesis is that the variables are indeed independent, or that the difference in the proportion of observed to expected frequecies is equal to zero. 
+The null hypothesis is that the variables are indeed independent, or that the difference in the proportion of observed to expected frequencies is equal to zero. 
 
 Thus, to conduct this statistical test, we first need to create a [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}, which in this case could also be called a 2x2 table, which is the simplest kind of contingency table (only two levels for two variables).
 
