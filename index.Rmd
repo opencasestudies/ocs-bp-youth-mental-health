@@ -456,6 +456,8 @@ We accomplish STEP 1 with our web browser.
 
 We accomplish STEP 2 in the `R` programming environment. 
 
+The **location** of the data on the webpage that will be scraped can be identified using a language called [XPath](https://en.wikipedia.org/wiki/XPath), which is short for XML Path Language. It is used to identify pieces (in this case called **nodes**) of a document written in the [XML](https://en.wikipedia.org/wiki/XML) langauge.  [XML](https://en.wikipedia.org/wiki/XML) which is short for Extensible Markup Language is frequently used for documents on the internet, similar to [HTML](https://en.wikipedia.org/wiki/HTML). One of the [major differences](https://techdifferences.com/difference-between-xml-and-html.html) between these two, is that HTML does not provide structrual information, while XML does. This structural information can be used to parse documents so that we can scrape only the data that we are interested in from a website. 
+
 #### {.resource_block} 
 
 <u>Additional resources for web scraping</u>:
@@ -804,11 +806,11 @@ Now that we have imported the data, let's see if we can wrangle a table.
 
 What do we mean by "wrangle"? We mean that we intend to get the data into what is called "tidy" format. 
 
-This means that the data:
-1) has each observation in single row
-2) has a single aspect about each observation as a single column
-3) is rectangular (meaning there are no empty cells)
-4) the values within the cells are in a format that is useful for making visualizations and for analysis
+This means that the data:  
+1) has each observation in single row  
+2) has a single aspect about each observation as a single column  
+3) is rectangular (meaning there are no empty cells)  
+4) the values within the cells are in a format that is useful for making visualizations and for analysis  
 
 Check out this [paper](https://vita.had.co.nz/papers/tidy-data.pdf) for more information about tidy data.
 
@@ -822,7 +824,7 @@ We can take advantage of this similarity to speed up the wrangling process.
 
 Let's take a look at our table on the website to see what it needs to get it into "tidy" format.
 
-First, we can see that we want to remove the legend of our table. .
+First, we can see that we want to remove the legend of our table.
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "table11.1a.png"))
