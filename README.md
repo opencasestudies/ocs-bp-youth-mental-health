@@ -1,39 +1,49 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-OpenCaseStudies
-===============
+
+Open Case Studies: Mental Health of American Youth
+==================================================
 
 <!-- badges: start -->
-[![R build
-status](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/actions)
+
+[![render-README](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-README/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
+[![render-index](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-index/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
 <!-- badges: end -->
+
+### Important links
+
+-   HTML:
+    <a href="https://www.opencasestudies.org/ocs-bp-youth-mental-health" class="uri">https://www.opencasestudies.org/ocs-bp-youth-mental-health</a>
+-   GitHub:
+    <a href="https://github.com/opencasestudies/ocs-bp-youth-mental-health" class="uri">https://github.com/opencasestudies/ocs-bp-youth-mental-health</a>
+-   Bloomberg American Health Initiative:
+    <a href="https://americanhealth.jhu.edu/open-case-studies" class="uri">https://americanhealth.jhu.edu/open-case-studies</a>
 
 ### Disclaimer
 
-The purpose of the [Open Case
-Studies](https://opencasestudies.github.io) project is **to demonstrate
-the use of various data science methods, tools, and software in the
-context of messy, real-world data**. A given case study does not cover
-all aspects of the research process, is not claiming to be the most
-appropriate way to analyze a given dataset, and should not be used in
-the context of making policy decisions without external consultation
-from scientific experts.
+The purpose of the [Open Case Studies](https://www.opencasestudies.org)
+project is **to demonstrate the use of various data science methods,
+tools, and software in the context of messy, real-world data**. A given
+case study does not cover all aspects of the research process, is not
+claiming to be the most appropriate way to analyze a given dataset, and
+should not be used in the context of making policy decisions without
+external consultation from scientific experts.
 
 ### License
 
-This case study is part of the
-[OpenCaseStudies](https://opencasestudies.github.io) project. This work
-is licensed under the Creative Commons Attribution-NonCommercial 3.0
-([CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/us/))
-United States License.
+This case study is part of the [Open Case
+Studies](https://www.opencasestudies.org) project. This work is licensed
+under the Creative Commons Attribution-NonCommercial 3.0 ([CC BY-NC
+3.0](https://creativecommons.org/licenses/by-nc/3.0/us/)) United States
+License.
 
 ### Citation
 
 To cite this case study:
 
 Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret
-and Hicks, Stephanie. (2020).
-<a href="https://github.com/opencasestudies/ocs-youth-mental-health-case-study" class="uri">https://github.com/opencasestudies/ocs-youth-mental-health-case-study</a>.
-Mental Health of American Youth (Version v1.0.0).
+and Hicks, Stephanie C. (2020).
+<a href="https://github.com/opencasestudies/ocs-bp-youth-mental-health" class="uri">https://github.com/opencasestudies/ocs-bp-youth-mental-health</a>.
+Mental Health of American Youth.
 
 ### Acknowledgements
 
@@ -195,7 +205,7 @@ for more information about web scraping
 <a href="https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html" target="_blank">Piping in R</a>  
 <a href="https://r4ds.had.co.nz/functions.html" target="_blank">Writing functions</a>
 Also see
-<a href="https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/" target="_blank">this case study</a>
+<a href="https://www.opencasestudies.org/ocs-bp-vaping-case-study/" target="_blank">this case study</a>
 for more information on writing functions.  
 <a href="https://rstudio.com/resources/cheatsheets/" target="_blank">String manipulation cheatsheet</a>  
 <a href="https://en.wikipedia.org/wiki/Wide_and_narrow_data" target="_blank">Table formats</a>
@@ -207,7 +217,7 @@ See here for a more thorough explanation of the
 <a href="https://www.ling.upenn.edu/~clight/chisquared.htm" target="_blank">chi-square test</a>  
 <a href="http://ggplot2.tidyverse.org" target="_blank"><code>ggplot2</code> package</a>  
 Please see
-<a href="https://opencasestudies.github.io/ocs-bp-co2-emissions/" target="_blank">this case study</a>
+<a href="https://www.opencasestudies.org/ocs-bp-co2-emissions/" target="_blank">this case study</a>
 for more details on using `ggplot2`.
 <a href="http://vita.had.co.nz/papers/layered-grammar.html" target="_blank">grammar of graphics</a>  
 <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" target="_blank"><code>ggplot2</code> themes</a>  
@@ -249,8 +259,8 @@ for more details on using `ggplot2`.
 <td>to subset and filter the data for specific groups, to replace specific values with <code>NA</code>, rename variables, and perform functions on multiple variables</td>
 </tr>
 <tr class="even">
-<td><a href="https://magrittr.tidyverse.org/" target="_blank">magrittr</a></td>
-<td>to use and reassign data objects using the %&lt;&gt;%pipe operator</td>
+<td><a href="https://cran.r-project.org/web/packages/magick/vignettes/intro.html#Kernel_convolution">magick</a></td>
+<td>to create a gif <a href="https://magrittr.tidyverse.org/" target="_blank">magrittr</a></td>
 </tr>
 <tr class="odd">
 <td><a href="https://stringr.tidyverse.org/" target="_blank">stringr</a></td>
@@ -312,14 +322,7 @@ information over text message. Visit
 Also see
 <a href="https://www.mhanational.org/depression-teens-0" target="_blank">here</a>
 for more information about how to recognize and help youths experiencing
-symptoms of depression
-
-#### For users
-
-There is a [`Makefile`](Makefile) in this folder that allows you to type
-`make` to knit the case study contained in the `index.Rmd` to
-`index.html` and it will also knit the [`README.Rmd`](README.Rmd) to a
-markdown file (`README.md`).
+symptoms of depression.
 
 #### For instructors
 
