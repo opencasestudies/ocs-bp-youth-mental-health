@@ -58,7 +58,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie C. (2020). https://github.com/opencasestudies/ocs-bp-youth-mental-health. Mental Health of American Youth.
 
 ####
 
@@ -2411,7 +2411,6 @@ This is what we tackle in the next section.
 In the next plot, we first filter for `Male`, `Female` and `Total` and then facet by the `Demographic` variable. We will use different types of lines to indicate the different outcome values by using the `scale_linetype_manual()` function. We can use the `ggthemes` package and the `scales` package in order to see all the current options for different linetypes.
 
 ```{r}
-
 ggthemes::show_linetypes(scales::linetype_pal()(12), labels = TRUE)
 ```
 
@@ -2965,8 +2964,7 @@ Finally, we will use the `png()` function of the `grDevices` package which is au
 We will use the `here()` function of the `here` package, to specify that we want to save it in the `img` directory and call it `mainplot.png`.
 We can also use this function to specify the resolution with `res` and in doing so, we need to save the image with size specifications to make it larger. 
 
-```{r, eval = TRUE, message = FALSE}
-
+```{r, eval = FALSE, message = FALSE}
 png(filename = here::here("img", "mainplot_orig.png"), 
          res = 300, width = 10, height = 10, units = "in")
 plot_grid(title_plots, 
@@ -2982,7 +2980,13 @@ dev.off()
 The `dev.off()` function is necessary to close the graphics device. This is good practice to allow you to create another plot again later.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "mainplot_orig.png"))
+plot_grid(title_plots, 
+          forward,
+          row_1,
+          row_2,
+          legend,
+          ncol = 1, 
+          rel_heights = c(0.1,0.2,.8, 1, 0.3))
 ```
 
 
@@ -3187,6 +3191,7 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
+[magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html#Kernel_convolution)      | to create a gif   
 [magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  

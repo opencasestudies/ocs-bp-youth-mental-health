@@ -4,16 +4,23 @@ output: md_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# OpenCaseStudies
+# Open Case Studies: Mental Health of American Youth
 
 <!-- badges: start -->
-[![R build status](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-youth-mental-health-case-study/actions)
+[![render-README](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-README/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
+[![render-index](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-index/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
 <!-- badges: end -->
+
+### Important links 
+
+- HTML: https://www.opencasestudies.org/ocs-bp-youth-mental-health
+- GitHub: https://github.com/opencasestudies/ocs-bp-youth-mental-health
+- Bloomberg American Health Initiative: https://americanhealth.jhu.edu/open-case-studies
 
 ### Disclaimer 
 
-The purpose of the [Open Case
-Studies](https://opencasestudies.github.io) project is **to demonstrate
+The purpose of the [Open Case Studies](https://www.opencasestudies.org) 
+project is **to demonstrate
 the use of various data science methods, tools, and software in the
 context of messy, real-world data**. A given case study does not cover
 all aspects of the research process, is not claiming to be the most
@@ -23,14 +30,14 @@ from scientific experts.
 
 ### License 
 
-This case study is part of the [OpenCaseStudies](https://opencasestudies.github.io) project. 
+This case study is part of the [Open Case Studies](https://www.opencasestudies.org) project. 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 ([CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/us/)) United States License.
 
 ### Citation 
 
 To cite this case study:
 
-Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-youth-mental-health-case-study. Mental Health of American Youth (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie C. (2020). https://github.com/opencasestudies/ocs-bp-youth-mental-health. Mental Health of American Youth.
 
 ### Acknowledgements
 
@@ -49,8 +56,8 @@ We will explore the rate of self-reported depression among american youths age 1
 
 ### Motivating question
 
-1) How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
-2) Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
+1. How have depression rates in American youth changed since 2004, according to the NSDUH data? How have rates differed between different youth subgroups (age, gender, ethnicity)?
+2. Do mental health services appear to be reaching more youths? Again, how have rates differed between different youth subgroups (age, gender, ethnicity)?
 
 
 ### Data   
@@ -126,7 +133,7 @@ See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-sc
 [CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
 [Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
 [Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}
-Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"}  for more information on writing functions.   
+Also see [this case study](https://www.opencasestudies.org/ocs-bp-vaping-case-study/){target="_blank"}  for more information on writing functions.   
 [String manipulation cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
 [Table formats](https://en.wikipedia.org/wiki/Wide_and_narrow_data){target="_blank"}
 [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
@@ -135,7 +142,7 @@ Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vapin
 [chi-square distribution applet](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}   
 [`ggplot2` package](http://ggplot2.tidyverse.org){target="_blank"}    
-Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
+Please see [this case study](https://www.opencasestudies.org/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
 [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html){target="_blank"}  
 [`ggplot2` themes](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"}   
 [`directlabels` package methods](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}  
@@ -156,7 +163,7 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
+[magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html#Kernel_convolution)      | to create a gif [magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
@@ -165,7 +172,8 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
-[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together
+
 
 #### {.emphasis_block}
 If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
@@ -174,14 +182,10 @@ The **Crisis Text Line** is another free, confidential resource available 24 hou
 
 ####
 
-Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression
-
-
-#### For users 
-
-There is a [`Makefile`](Makefile) in this folder that allows you to type `make` to knit the case study contained in the `index.Rmd` to `index.html` and it will also knit the [`README.Rmd`](README.Rmd) to a markdown file (`README.md`). 
+Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression.
 
 #### For instructors
+
 Instructors can start at the Data Analysis or Data Visualization section if they choose to skip the Data Import and  Data Wrangling sections.
 
 #### Target audience 
