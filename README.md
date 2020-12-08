@@ -68,7 +68,7 @@ A
 also shows that youths appear to be seeking more care from mental health
 services.
 
-We will explore the rate of self-reported depression among american
+We will explore the rate of self-reported depression among American
 youths age 12-17 from roughly 2004 to 2018. We will also explore data
 about the rate at which youths that have experienced depression symptoms
 are receiving mental health services. We also investigate where youths
@@ -123,7 +123,7 @@ the end of this case study are:
 
 <u>**Statistical Learning Objectives:**</u>
 
-1.  Discuss the impact and of self-reporting bias on survey responses  
+1.  Discuss the impact of self-reporting bias on survey responses  
 2.  Define and create a contingency table  
 3.  Implementation of a chi-squared test for independence  
 4.  Interpretation of a chi-squared test for independence
