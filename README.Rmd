@@ -53,7 +53,7 @@ Mental Health of American Youth
 
 Rates of depression appear to have been increasing among American youths since around 2010 according to a recent [report](https://content.apa.org/record/2019-12578-001){target="_blank"}. A [recent study](https://pubmed.ncbi.nlm.nih.gov/24285382/){target="_blank"}) also shows that youths appear to be seeking more care from mental health services.
 
-We will explore the rate of self-reported depression among american youths age 12-17 from roughly 2004 to 2018. We will also explore data about the rate at which youths that have experienced depression symptoms are receiving mental health services. We also investigate where youths are receiving care.
+We will explore the rate of self-reported depression among American youths age 12-17 from roughly 2004 to 2018. We will also explore data about the rate at which youths that have experienced depression symptoms are receiving mental health services. We also investigate where youths are receiving care.
 
 ### Motivating question
 
@@ -89,7 +89,7 @@ The skills, methods, and concepts that students will be familiar with by the end
 
 <u>**Statistical Learning Objectives:**</u> 
 
-1. Discuss the impact and of self-reporting bias on survey responses  
+1. Discuss the impact of self-reporting bias on survey responses  
 2. Define and create a contingency table  
 3. Implementation of a chi-squared test for independence  
 4. Interpretation of a chi-squared test for independence  
