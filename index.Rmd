@@ -77,6 +77,9 @@ Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"}
 
 ####
 
+To access the GitHub repository for this case study see here: https://github.com//opencasestudies/ocs-bp-youth-mental-health.  
+This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
 ## **Motivation**
 *** 
 
@@ -255,6 +258,7 @@ library(magrittr)
 library(stringr)
 library(tidyr)
 library(tibble)
+library(purrr)
 library(ggplot2)
 library(directlabels)
 library(scales)
@@ -274,6 +278,7 @@ library(cowplot)
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
+[purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
@@ -457,7 +462,7 @@ We accomplish STEP 1 with our web browser.
 
 We accomplish STEP 2 in the `R` programming environment. 
 
-The **location** of the data on the webpage that will be scraped can be identified using a language called [XPath](https://en.wikipedia.org/wiki/XPath), which is short for XML Path Language. It is used to identify pieces (in this case called **nodes**) of a document written in the [XML](https://en.wikipedia.org/wiki/XML) langauge.  [XML](https://en.wikipedia.org/wiki/XML) which is short for Extensible Markup Language is frequently used for documents on the internet, similar to [HTML](https://en.wikipedia.org/wiki/HTML). One of the [major differences](https://techdifferences.com/difference-between-xml-and-html.html) between these two is that HTML does not provide structural information, while XML does. This structural information can be used to parse documents so that we can scrape only the data that we are interested in from a website. 
+The **location** of the data on the webpage that will be scraped can be identified using a language called [XPath](https://en.wikipedia.org/wiki/XPath), which is short for XML Path Language. It is used to identify pieces (in this case called **nodes**) of a document written in the [XML](https://en.wikipedia.org/wiki/XML) language.  [XML](https://en.wikipedia.org/wiki/XML) which is short for Extensible Markup Language is frequently used for documents on the internet, similar to [HTML](https://en.wikipedia.org/wiki/HTML). One of the [major differences](https://techdifferences.com/difference-between-xml-and-html.html) between these two is that HTML does not provide structural information, while XML does. This structural information can be used to parse documents so that we can scrape only the data that we are interested in from a website. 
 
 #### {.resource_block} 
 
@@ -1243,7 +1248,7 @@ table11.1a %<>%
     tidyr::pivot_longer(cols = contains("20"),
                         names_to = "Year",
                         values_to = "Number") %>%
-# make the new Year varaible to be numeric
+# make the new Year variable to be numeric
    mutate(Year = as.numeric(Year))
 ```
 
@@ -1315,7 +1320,7 @@ function(TABLE, new_col, pivot_col){
   
 ```
 
-Note that if we were using the `summarise()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
+Note that if we were using the `summarize()` or `mutate()` function or the `dplyr` package, then we could use the `across()` function of the `dplyr` package to select what columns we wanted to use in our calculation.
 
 
 OK, so putting everything together from what we did previously for `table11.1a` and these new flexible steps we can create this function:
@@ -1452,7 +1457,7 @@ data_dem_settings <- function(TABLE){
   # remove "a" and commas from the variables that have column names with "20" in them
   mutate(dplyr::across(.cols = contains("20"),
                        stringr::str_remove_all, "a|,")) %>%
-  # make the variables with "20" in the names (the year varaibles) to be numeric
+  # make the variables with "20" in the names (the year variables) to be numeric
   mutate(across(contains("20"), as.numeric)) %>%
   # remove empty rows - rows were the number of NA values is equal to the number of numeric columns
   filter(rowSums(is.na(select(., is.numeric))) < length(select(., is.numeric)))
@@ -1491,7 +1496,256 @@ head(table11.4b)
 
 Great! All of the demographic tables look good.
 
-Next, let's combine the count data (the "a" tables) and the percent data (the "b" tables) using the `bind_rows()` function of the `dplyr` package, which will append each of the subsequent tables together.
+
+It's a good idea to regularly check your data to makes sure it is as you expect. 
+
+Now let's make a function to check that our data is as we expect. We have quite a few tables which could make this a bit challenging, but you might find yourself in future in a situation where you have lots of data, and checking by looking at the data would not be feasible.  
+
+First let's make sure our tables are tibbles by using the `is_tibble()` function of the `tibble` package. We can use the `case_when()` function to give us a message if the value for the `is_tibble()` function is `TRUE` - this is the message after the first `~` and a different message for all other cases using `TRUE` followed again by `~` and a helpful message about the data. 
+
+```{r}
+data_dem_check <- function(TABLE){
+  # check that the data is a tibble
+  case_when(is_tibble(TABLE) ~ "Good!",
+                        TRUE ~ "Not a tibble")
+}
+```
+
+Now we will try this on some data we know is for sure a tibble (table11.1a) and data that we know for sure is not.
+
+```{r}
+test_that_should_fail <- c(1,2,3)
+class(test_that_should_fail)
+class(table11.1a)
+
+data_dem_check(test_that_should_fail)
+data_dem_check(table11.1a)
+```
+Great! it looks like it's working! Now we will create more functions to do additional checks on the data. 
+
+***
+<details><summary> Click here for more information about each of the check functions. </summary>
+
+Next we will check that the legend has been removed. To do this we will make sure that there are no `-- = not available` (as this was part of the legend) in the last row by using `str_detect()` to look for `--=` and `slice(n())` to look at the last row specifically. 
+
+First let's take a look again at what the legend looked like:
+
+```{r}
+legend
+```
+
+```{r}
+
+data_dem_check <- function(TABLE){
+  # check that the last row does not contain "--" by..
+   #first grabbing only the last row
+   #pulling one of the years
+  case_when(TABLE %>% slice(n()) %>% pull(`2004`) %>%
+  # if it is detected print 
+            str_detect(pattern = "-- = not available")  ~ "Legend might still be there",
+                                                   TRUE ~ "Good!")
+}
+
+data_dem_check(table11.4a)
+```
+
+
+Now we will put these together in a new tibble:
+```{r}
+
+data_dem_check <- function(TABLE){
+tibble(tibble_check = case_when(is_tibble(table11.4a) ~ "Good!",
+                                                 TRUE ~ "Not a tibble"),
+       legend_check = case_when(table11.4a %>% slice(n()) %>%pull(`2004`) %>%
+   # if it is detected print 
+                          str_detect(pattern = "--")  ~ "Legend might still be there",
+                                                 TRUE ~ "Good!"))
+}
+
+data_dem_check(table11.4a)
+```
+Note here that we will make all of the positive checks have the same value of `Good!`. This will allow us to make an overall check later that all of the checks passed. 
+
+Now we will write a function to check if any of the values that were `nc`,`*`, `--` , or they got converted to `NA`. We can check for the presence of a value in entire tibble using the base `any()` function.
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(any(str_detect(TABLE, pattern = "nc|\\*|--")) 
+  # if it is detected, print this:
+         ~ "NA not fixed",
+  # if not detected, print this:
+    TRUE ~ "Good!")
+}
+
+
+data_dem_check(table11.4a)
+```
+
+
+Now we will check that the first variable is called "Demographic".
+
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(names(TABLE)[1] == "Demographic" ~ "Good!",
+                                        TRUE ~ "check first column")
+  }
+
+data_dem_check(table11.4a)
+```
+
+Now let's check that there are no white spaces larger than one space. We can use `[:blank:]{2,}` to indicate two or more white spaces. 
+
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(any(str_detect(TABLE, pattern = "[:blank:]{2,}")) 
+         ~ "white spaces not fixed",
+    TRUE ~ "Good!")
+}
+
+
+data_dem_check(table11.4a)
+
+```
+
+
+Now let's check that all the age values start with `Age: ` for the demographic variable. We can use `^` to look at the beginning of each character string in the `Demographic` variable. None should start with `1` anymore. Thus we can use `^1` to check if any strings do start with a `1`.
+
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(any(str_detect(pull(TABLE,Demographic), pattern = "^1"))
+  # if it is detected print 
+         ~ "Age data not fixed!",
+    TRUE ~ "Good!")
+}
+
+
+data_dem_check(table11.4a)
+
+
+```
+
+
+Now we will cehck that we have a variable called subgroup
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(any(names(TABLE) == "subgroup")
+  # if it is detected print 
+         ~ "Good",
+    TRUE ~ "No subgroup variable!")
+}
+
+data_dem_check(table11.4a)
+```
+
+Next we will check that the year variables do not contain "a" or ",". To do so instead of selecting the columns with names that are years, we will not include the columns that are not years. We will also use the`map_df` function of the `purrr` package to check for detecting commas and "a"s for each column separately. Typically this would not be necessary because as long as we aren't checking for commas it should work. However, `str_detect()` will coerce the data to be vectorized and to do so it will add commas to our data! Since we are looking for commas this would lead us to detect commas regardless of if they were present in our data. The `map` functions of the `purrr` package allows us to perform functions across multiple columns of tibbles. The `map_df()` function preserves the data frame structure, otherwise we are left with a list, which would be slightly harder to work with.  This will create a data frame of `TRUE` and `FALSE` values. We can then sum each row as `FALSE` is evaluated as a zero and `TRUE` is evaluated as a one. Then to get a single value for our `case_when()` function, we will sum the sums of the rows. We should have no values with either "a" or "," thus when we run this check, the sum should be equal to zero. To pipe the data into the `map_df()` function and then into `str_detect()`, we need to use the `~` and `.x` notation. Thus the `.X` is the columns within the selected columns of the table that will be piped into `str_detect`. The `~` indicates the function we will be using on each column. 
+
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(
+   TABLE%>% select(-Demographic, -subgroup, -data_type) %>% 
+     map_df(~str_detect(.x, pattern ="a|,")) %>%
+     rowSums(na.rm = TRUE) %>% 
+     sum() == 0
+         ~ "Good!",
+    TRUE ~ "There may be commas or the letter a in the year columns!")
+}
+
+
+data_dem_check(table11.4a)
+```
+
+
+Now we will check that the year variables are numeric.
+
+```{r}
+
+data_dem_check <- function(TABLE){
+  case_when(sum(map_dbl(TABLE, is.numeric))== sum(str_count(names(TABLE), "20"))
+  # if it is detected print 
+         ~ "Good!",
+    TRUE ~ "Variables are not numeric!")
+}
+
+data_dem_check(table11.4a)
+```
+
+Finally we will make sure that there are no rows where all the year columns have `NA` values.
+
+```{r}
+data_dem_check <- function(TABLE){
+  case_when(nrow(TABLE %>%filter(rowSums(is.na(select(., is.numeric))) > length(select(., is.numeric))))
+ >0 
+  # if it is detected print 
+         ~ "There are empty rows ",
+    TRUE ~ "Good!")
+}
+
+data_dem_check(table11.4a)
+```
+
+</details>
+
+***
+
+Now let's put all our check functions together into one large data checking function. Notice that if the result is good for each check it results in a value of "Good!". We can then use the base `all()` function to check that all the values in the `results` tibble that gets created during our overall function yields a value of "Good!".
+
+We can use the `ifelse` base function to give our result similar to how we have used `case_when()`. **If** all values for each check are "Good!" then we will get "Data looks good!", otherwise or **else** we will see all of the check results. There is an `if_else()` function in `dplyr` but it only outputs character strings, so this would not work to show what checks failed when not all values were "Good!".
+
+```{r}
+
+data_dem_check <- function(TABLE){
+results <-tibble(tibble_check = case_when(is_tibble(table11.4a) ~ "Good!",
+                                                 TRUE ~ "Not a tibble"),
+       legend_check = case_when(table11.4a %>% slice(n()) %>%pull(`2004`) %>%
+   # if it is detected print 
+                          str_detect(pattern = "--")  ~ "Legend might still be there",
+                                                 TRUE ~ "Good!"),
+       NAs_check = case_when(any(str_detect(TABLE, pattern = "nc")) 
+                                                      ~ "NA not fixed",
+                                                 TRUE ~ "Good!"),
+  firstcol_check = case_when(names(TABLE)[1] == "Demographic" 
+                                                      ~ "Good!",
+                                                 TRUE ~ "check first column"),
+  white_space_check = case_when(any(str_detect(TABLE, pattern = "[:blank:]{2,}")) 
+                                                      ~ "white spaces not fixed",
+                                                 TRUE ~ "Good!"),
+  age_data_check = case_when(any(str_detect(pull(TABLE,Demographic), pattern = "^1"))
+                                                      ~ "Age data not fixed!",
+                                                 TRUE ~ "Good!"),
+  subgroup_check = case_when(any(names(TABLE) == "subgroup")
+                                                      ~ "Good!",
+                                                 TRUE ~ "No subgroup variable!"),
+    a_comma_check = case_when(TABLE%>% select(-Demographic, -subgroup, -data_type) %>% 
+                                      map_df(~(str_detect(.x, pattern ="a|,"))) %>%
+                                           rowSums(na.rm = TRUE) %>% 
+                                                sum() == 0
+                                                       ~ "Good!",
+                                                  TRUE ~ "There may be commas or the letter a in the year columns!"),
+numeric_check = case_when(sum(map_dbl(TABLE, is.numeric))== sum(str_count(names(TABLE), "20"))
+                                                     ~ "Good!",
+                                                TRUE ~ "Variables are not numeric!"),
+  empty_row_check = case_when(nrow(TABLE %>%filter(rowSums(is.na(select(., is.numeric))) > 
+                                                     length(select(., is.numeric)))) >0 
+                                                     ~ "There are empty rows ",
+                                                TRUE ~ "Good!"))
+
+ifelse(all(results == "Good!"),
+       "Data looks good!", glimpse(results))
+}
+
+data_dem_check(table11.4a)
+```
+
+Great! now let's check all of our wrangled demographic tibbles. We can use the general `map()` function of the `purrr` package to check all of our demographic tables efficiently. We will create a list of the names of the tibbles and then apply the `data_dem_check()` function that we wrote to each tibble by using `map()`.
+
+```{r}
+tables_tocheck <-list(table11.2a, table11.2b, table11.3a, table11.3b, table11.4a, table11.4b)
+tables_tocheck %>% map(data_dem_check)
+
+```
+
+Great! Now that we have checked our data, let's put it together.
+
+Let's combine the count data (the "a" tables) and the percent data (the "b" tables) using the `bind_rows()` function of the `dplyr` package, which will append each of the subsequent tables together.
 
 We can use the `distinct()` function of the `dplyr` package to check that we indeed have all the data types now in these larger tibbles.
 
@@ -1713,7 +1967,7 @@ We will add a facet using the `facet_wrap()` function to add strip of text to th
 
 We will use the `strip.background` and `strip.text` of the `theme()` function to specify how the text at the top of the plot will look.
 
-We want to change the value `TOTAL` of the `Demographic varaible` to `"Percent of respondants with MDE"` so that the text in the strip above the plot shows this instead. We can do so by using the `recode()` function of the `dplyr` package. 
+We want to change the value `TOTAL` of the `Demographic variable` to `"Percent of respondants with MDE"` so that the text in the strip above the plot shows this instead. We can do so by using the `recode()` function of the `dplyr` package. 
 
 We will also change the color of the line using the `scale_color_manual()` function of the `ggplot2` package.
 
@@ -2608,7 +2862,7 @@ $${\chi}^2=\sum_{j=1}^{m} \frac{(O_j - E_j)^2}{E_j}$$
 where $O_j = j^{th}$ observed count and $E_j = j^{th}$ expected count for
 the $j^{th}$ cell of a contingency table with $m$ cells.
 
-The degrees of freedom ($df$) is calculated like so: $df= (r-1)(c-1)$.
+The [degrees of freedom](https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)) ($df$) is calculated like so: $df= (r-1)(c-1)$. Note that as according to Wikipedia: "degrees of freedom is the number of values in the final calculation of a statistic that are free to vary" or "the number of independent pieces of information that go into the estimate of a parameter".
 
 Where $r$ = # of rows and $c$ = the # of columns.
 
@@ -2737,6 +2991,7 @@ stats::chisq.test(chi_square_11.2a)
 ```
 
 We see that the $p$-value is very small, which suggests there is an association between `Gender` and the number of major depressive episodes across time (2004 compared to 2018). 
+
 
 
 #### {.question_block}
@@ -3197,12 +3452,14 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
+[purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
-[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together 
+
 #### {.emphasis_block}
 If you are in crisis and need help, call this toll-free number for the **National Suicide Prevention Lifeline (NSPL)**, available 24 hours a day, every day: **1-800-273-TALK (8255)**. The service is available to everyone. The deaf and hard of hearing can contact the Lifeline via TTY at 1-800-799-4889. All calls are confidential. You can also visit the Lifeline’s website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
 
@@ -3213,7 +3470,7 @@ The **Crisis Text Line** is another free, confidential resource available 24 hou
 Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression
 
 
-### **Acknowledgements**
+### **Acknowledgments**
 ***
 
 We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson){target="_blank"} for assisting in framing the major direction of the case study.

@@ -39,7 +39,7 @@ To cite this case study:
 
 Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie C. (2020). https://github.com/opencasestudies/ocs-bp-youth-mental-health. Mental Health of American Youth.
 
-### Acknowledgements
+### Acknowledgments
 
 We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson) for assisting in framing the major direction of the case study.
 
@@ -168,6 +168,7 @@ Please see [this case study](https://www.opencasestudies.org/ocs-bp-co2-emission
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
+[purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
 [directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  

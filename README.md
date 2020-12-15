@@ -1,10 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 Open Case Studies: Mental Health of American Youth
 ==================================================
 
 <!-- badges: start -->
-
 [![render-README](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-README/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
 [![render-index](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-index/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
 <!-- badges: end -->
@@ -45,7 +43,7 @@ and Hicks, Stephanie C. (2020).
 <a href="https://github.com/opencasestudies/ocs-bp-youth-mental-health" class="uri">https://github.com/opencasestudies/ocs-bp-youth-mental-health</a>.
 Mental Health of American Youth.
 
-### Acknowledgements
+### Acknowledgments
 
 We would like to acknowledge [Tamar
 Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson)
@@ -275,26 +273,30 @@ for more details on using `ggplot2`.
 <td>to create tibbles and convert values of a column to row names</td>
 </tr>
 <tr class="even">
+<td><a href="https://purrr.tidyverse.org/" target="_blank">purrr</a></td>
+<td>to apply a function to each column of a tibble or each tibble in a list</td>
+</tr>
+<tr class="odd">
 <td><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></td>
 <td>to create plots</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="http://directlabels.r-forge.r-project.org/docs/index.html" target="_blank">directlabels</a></td>
 <td>to add labels directly to lines in plots</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/scales/scales.pdf">scales</a></td>
 <td>to get the current linetype options</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://forcats.tidyverse.org/" target="_blank">forcats</a></td>
 <td>to reorder factor for plot</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf">ggthemes</a></td>
 <td>to create a plot to see what the different linetypes look like</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
 <td>to combine plots together</td>
 </tr>
