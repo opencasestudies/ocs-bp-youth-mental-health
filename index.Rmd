@@ -1497,7 +1497,7 @@ head(table11.4b)
 Great! All of the demographic tables look good.
 
 
-It's a good idea to regularly check your data to makes sure it is as you expect. 
+It's a good idea to regularly check your data to make sure it is as you expect. 
 
 Now let's make a function to check that our data is as we expect. We have quite a few tables which could make this a bit challenging, but you might find yourself in future in a situation where you have lots of data, and checking by looking at the data would not be feasible.  
 
