@@ -12,7 +12,7 @@ Version: 0.99.0
 Depends: R (>= 4.0)
 Imports:
     here,
-    knitr,
+    knitr(== 1.28),
     magick,
     xml2,
     rvest,
