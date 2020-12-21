@@ -299,6 +299,10 @@ for more details on using `ggplot2`.
 <td>to create a plot to see what the different linetypes look like</td>
 </tr>
 <tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/rstatix/rstatix.pdf" target="_blank">rstatix</a></td>
+<td>to preform proportion test</td>
+</tr>
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
 <td>to combine plots together</td>
 </tr>
