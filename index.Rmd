@@ -3018,13 +3018,15 @@ Here $n$ is the total for both males and females of both years.
 The $n1$ is the total n for males across both years.  
 The $n2$ is the total n for females across both years.  
 We can see that the statistic is equivalent to the Chi-squared statistic that we saw previously.  
-Estimate 1 is the proportion of the male reports given in 2004 (out of the total number of males reporting an episode in 2004 and 2018) and estimate 2 to is the equivalent for females. 
+Estimate 1 is the proportion of the male reports given in 2004 (out of the total number of males reporting an episode in 2004 and 2018) and estimate 2 to is the equivalent for females.  
+
 Thus estimate 1 for males is: 
 $$\text{Males_2004/Males_bothYears} = (637000/( 637000 + 946000)) = (637000/1583000) = (637000/n1) = .40$$
-
-Estimate 2 for females is:
+  
+  
+Thus estimate 2 for females is:
 $$\text{Females_2004/Females_bothYears} =(1588000/(2537000 + 1588000)) = (1588000/(4125000)) = (1588000/n2) = .38$$
-
+  
 So of all the reports given by males in these two years, 40% came in 2004.  For females, 38% of the reports came in 2004.  The confidence interval gives a range of plausible values for the true difference in these proportions in the population.  It gives us a sense of the difference in the proportion of reports that came in 2004 between males and females.  
 
 According to our confidence interval, we are 95% confident that the true difference in the proportion of reports that came in 2004 between males and females (out of the total for each) is between 1.65% and 1.83%. OK, so this isn't a super large change. But we do notice that 0 is not in this confidence interval.  This means we are confident that the difference isn’t 0, which suggests that there is indeed a difference between the proportions (this is a similar to checking if the p value is less than 0.05). For more information on the relationship between confidence intervals and p-values, see [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4111020/). 
@@ -3050,9 +3052,11 @@ We can gain see that the statistic is equivalent to the Chi-squared statistic th
 Estimate 1 is the proportion of the male reports given in 2004 (out of the total number of males and females reporting an episode in 2004) and estimate 2 to is the equivalent for 2018. 
 
 Thus estimate 1 is: 
-$$\text{Males_2004/Males_and_Females_2004} = (637000/(637000 + 1588000)) = (637000/2225000) = (637000/n1) = .29$$
-Estimate 2 is:
-$$\text{Males_2018/Males_and_Females_2018} = (946000/(946000 + 2537000)) = (946000/3483000) = (637000/n1) = .27$$
+$$\text{Males_2004/Males_and_Females_2004} = (637000/(637000 + 1588000)) = (637000/2225000) = (637000/n1) = .29$$  
+  
+Thus estimate 2 is:  
+$$\text{Males_2018/Males_and_Females_2018} = (946000/(946000 + 2537000)) = (946000/3483000) = (637000/n1) = .27$$  
+  
 
 Now we can interpret our confidence interval like so: we are 95% confident that the difference in the proportion of males reporting over the two years is between 1.39% and 1.54%. We see around 1.5% more males reporting in 2004 out of the total reports than we do in 2018.
 
@@ -3106,7 +3110,7 @@ MDE_age_gender_counts
 ```
 
 
-We can see that the blue line relative to the sum of the pink and blue lines in 2004 (about 29%) is fairly similar to that of 2018 (about 27%). It can be difficult to eyeball proportions and especially a proportional difference of ~  1.5%, especially because our eyes tend to see larger proportional differences just with higher values.
+We can see that the blue line relative to the sum of the pink and blue lines in 2004 (about 29%) is fairly similar to that of 2018 (about 27%). It can be difficult to see proportions and especially a proportional difference of ~  1.5%!
 
 
 How about for severe major depressive episodes?
@@ -3199,7 +3203,6 @@ t(chi_squared_11.4a) %>%
 Again the values of our confidence interval suggests that there is a small difference (roughly 2% difference in the proportion of males across the two years receiving treatment) and again the range does not cross 0, suggesting that there is indeed a difference in the proportions. 
 
 In this case we find that the males in 2004 made up 27% of all youths reporting receiving treatment for depression that year, and males made up only 25% of the youths reporting receiving treatment in 2018.
-
 
 
 

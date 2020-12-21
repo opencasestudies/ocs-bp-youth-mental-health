@@ -32,6 +32,7 @@ Imports:
     png, 
     testthat, 
     rmarkdown(== 2.2),
-    stats
+    stats,
+    rstatix
 VignetteBuilder: knitr
 Encoding: UTF-8
