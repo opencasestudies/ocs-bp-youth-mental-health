@@ -174,6 +174,7 @@ Please see [this case study](https://www.opencasestudies.org/ocs-bp-co2-emission
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
+[rstatix](https://cran.r-project.org/web/packages/rstatix/rstatix.pdf){target="_blank"} | to preform proportion test   
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"}      | to combine plots together
 
 
