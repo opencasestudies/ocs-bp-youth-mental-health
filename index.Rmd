@@ -3,6 +3,8 @@ title: "Open Case Studies: Mental Health of American Youth"
 css: style.css
 output:
   html_document:
+    includes:
+       in_header: GA_Script.Rhtml
     self_contained: yes
     code_download: yes
     highlight: tango
@@ -3612,5 +3614,5 @@ We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/dir
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/){target="_blank"} for funding this work. 
 
 
-
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=080808&w=a&t=tt&d=V1QZLVYhdPKkJALpt8zp68Hxs1qOXSEVgEylL9gFs9g&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
 
