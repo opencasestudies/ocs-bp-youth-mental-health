@@ -696,6 +696,14 @@ First, we assign the URL to a character string to use within the `read_html()` f
 NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
 ```
 
+We have also saved the data as it was on this website to our own website to ensure that our case study will remain stable despite possible changes to this website.
+
+Thus we will proceed with this URL:
+
+```{r}
+#NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
+```
+
 One could also directly use the URL but this is less convenient for piping.  
 
 ***
@@ -766,7 +774,7 @@ One option is to copy and paste code we wrote above.
 However, this is not very efficient and is error prone.
 Alternatively, we can create an R function to accomplish this succinctly. 
 Functions allow us to perform the same process on multiple data inputs. 
-See [this other case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more details about how to write a function.
+See [this other case study](https://opencasestudies.github.io/ocs-bp-vaping-case-study/){target="_blank"} for more details about how to write a function.
 
 In general, the process of writing functions involves first specifying an input that is used within the function to create an output. In this case, `XPATH` will be used as an "input argument" to the function, which will be replaced by an actual XPath and then used in the subsequent steps to scrape the data from each table that an XPath is supplied for.
 
@@ -801,21 +809,54 @@ Great! We have successfully scraped the data from the web into R!
 
 Next, we need to wrangle the data.
 
-We will save the data now in case the website gets removed in the future. To do this we will use the base `save()` function.
+We will save the imported data now. To do this we will use the base `save()` function. We will save it within a directory called "imported" of our "data" directory. Make sure you make this directory first.
 
 ```{r, eval = FALSE}
 save(table11.1a, table11.1b, table11.2a, table11.2b, 
-     table11.3a, table11.3b, table11.4a, table11.4b, file = here::here("data", "raw_data.rda"))
+     table11.3a, table11.3b, table11.4a, table11.4b, 
+     file = here::here("data", "imported", "imported_data.rda"))
 ```
 
 
 ## **Data Wrangling**
 *** 
-  
-```{r, echo = FALSE}
-# for instructors that wish to start at this section, they can just load the imported data.
-load(file = here::here("data", "raw_data.rda"))
+If you stopped and want to restart the case study, or if you are starting here, you can load the data like this:
+
+```{r}
+load(file = here::here("data", "imported", "imported_data.rda"))
 ```
+
+
+<details> <summary> If you skipped the data import section click here. </summary>
+
+An rda file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "imported", "imported_data.rda"))
+```
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
 
 
 Now that we have imported the data, let's see if we can wrangle a table. 
@@ -1574,9 +1615,11 @@ tibble(tibble_check = case_when(is_tibble(table11.4a) ~ "Good!",
 
 data_dem_check(table11.4a)
 ```
+
 Note here that we will make all of the positive checks have the same value of `Good!`. This will allow us to make an overall check later that all of the checks passed. 
 
 Now we will write a function to check if any of the values that were `nc`,`*`, `--` , or they got converted to `NA`. We can check for the presence of a value in entire tibble using the base `any()` function.
+
 ```{r}
 data_dem_check <- function(TABLE){
   case_when(any(str_detect(TABLE, pattern = "nc|\\*|--")) 
@@ -1842,19 +1885,58 @@ Looks good!
 
 
 We finished wrangling the data and we are ready to proceed with our analysis. 
+Let's save our data first. This will allow us to come back without running our previous code. We will save it as an rda file and as a csv file as this is useful to give to collaborators. We will save this in a directory called "wrangled" within our "data" directory of our project. We will use the `write_csv()` function from the `readr` package to do this. We need to do this for each tibble separately. 
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 save(percents, counts, table11.1a, table11.1b, 
-     file = here::here("data", "wrangled_data.rda"))
+     file = here::here("data", "wrangled", "wrangled_data.rda"))
+readr::write_csv(percents, file = here::here("data", "wrangled", "percents.csv"))
+readr::write_csv(counts, file = here::here("data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, file = here::here("data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, file = here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
 
 ## **Data Visualization**
 *** 
 
-```{r, echo = FALSE}
-load(file = here::here("data", "wrangled_data.rda"))
+If you have been following along but stopped, you can load your data like so:
+```{r}
+load(file = here::here("data", "wrangled", "wrangled_data.rda"))
 ```
+
+
+<details> <summary> If you skipped the data wrangling section click here. </summary>
+
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
 
 In this section, we will create some data visualizations to explore our data and questions of interest: 
 
@@ -2010,6 +2092,20 @@ MDE_total <- percents %>%
 MDE_total
 ```
 
+Nice! 
+
+Now let's say we wanted to save this plot.
+
+We could do so using the using the  `save()` function to save this to a "plots" directory in our working directory as an rda file and we can use the `png()` function to save a png for collaborators. We need to use `dev.off()` function to close the graphical device that we will use to create the png version of the plot so that we are ready to make another plot like this.
+
+```{r}
+save(MDE_total, file =here::here("plots", "MDE_total.rda"))
+png(here::here("plots", "MDE_total.png"))
+MDE_total
+dev.off()
+```
+
+
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -2023,6 +2119,8 @@ MDE_total +
             ymin = -Inf, ymax = Inf,  
             fill = "light gray")
 ```
+
+
 
 ####
 
@@ -2206,6 +2304,15 @@ MDE_age_gender <- direct.label(
 MDE_age_gender
 ```
 
+
+Let's save this plot as well:
+```{r}
+save(MDE_age_gender, file =here::here("plots", "MDE_age_gender.rda"))
+png(here::here("plots", "MDE_age_gender.png"))
+MDE_age_gender
+dev.off()
+```
+
 Nice!
 
 In the next section, we will formally test whether `Gender` is independent of the differences in rates of MDE across time. 
@@ -2325,6 +2432,16 @@ Those group who reported as Black or African American had the lowest percentages
 However, we can see that most of the racial/ethnic groups are fairly similar and we see an increasing for most groups since around 2011. 
 Keep in mind the limitations listed in the [**Limitations**] section as you view these findings. 
 It is possible that this group may be less likely to report experiencing symptoms of depression.
+
+
+Let's save this plot too:
+```{r}
+save(MDE_race, file =here::here("plots", "MDE_race.rda"))
+png(here::here("plots", "MDE_race.png"))
+MDE_race
+dev.off()
+```
+
 
 ### **MDE with Severe Impairment**
 ***
@@ -2509,6 +2626,14 @@ Overall, roughly 40 percent of youths who self-reported experiencing a major dep
 This shows an overall increase in the rate in which youths are receiving treatment since 2011, like the trend seen for the number of youths reporting having had a major depressive episode, yet the data for treatment are much more variable from one year to the next. 
 
 Next, we consider differences between males and females and different age groups. 
+
+First let's save this plot:
+```{r}
+save(Treat_total, file =here::here("plots", "Treat_total.rda"))
+png(here::here("plots", "Treat_total.png"))
+Treat_total
+dev.off()
+```
 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
@@ -2788,9 +2913,44 @@ The rate of receiving treatment is fairly similar relative to the percentage of 
 ## **Data Analysis**
 *** 
 
-```{r, echo = FALSE}
-load(file = here::here("data", "wrangled_data.rda"))
+If you have been following along but stopped, you can load your data like so:
+```{r}
+load(file = here::here("data", "wrangled", "wrangled_data.rda"))
 ```
+
+
+<details> <summary> If you skipped the previous sections click here. </summary>
+
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
+
 Recall what our main questions were:
 
 #### {.main_question_block}
@@ -3269,6 +3429,14 @@ forward <- ggdraw() +
 
 Next, we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
 
+First let's load the plots we intend to use:
+```{r}
+load(file = here::here("plots", "MDE_total.rda"))
+load(file = here::here("plots", "Treat_total.rda"))
+load(file = here::here("plots", "MDE_age_gender.rda"))
+load(file = here::here("plots", "MDE_race.rda"))
+```
+
 Using our `MDE_total` plot: 
 ```{r}
 
@@ -3558,7 +3726,7 @@ See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-sc
 [CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
 [Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
 [Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}
-Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"}  for more information on writing functions.   
+Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-study/){target="_blank"}  for more information on writing functions.   
 [String manipulation cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
 [Table formats](https://en.wikipedia.org/wiki/Wide_and_narrow_data){target="_blank"}
 [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
