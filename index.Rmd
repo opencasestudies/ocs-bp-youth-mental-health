@@ -701,7 +701,7 @@ We have also saved the data as it was on this website to our own website to ensu
 Thus we will proceed with this URL:
 
 ```{r}
-#NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
+NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
 ```
 
 One could also directly use the URL but this is less convenient for piping.  
@@ -782,7 +782,7 @@ We will call this function `scraper`.
 
 ```{r}
 scraper <- function(XPATH){
-  NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
+  NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
   table <- NSDUH_url %>%
     read_html() %>%
     html_nodes(xpath = XPATH) %>%
