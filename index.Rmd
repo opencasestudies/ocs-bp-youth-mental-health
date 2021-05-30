@@ -1,10 +1,12 @@
 ---
-title: "Open Case Studies: Mental Health of American Youth"
-css: style.css
+title: |
+  ![](https://opencasestudies.github.io/img/icon-bahi.png){width=120px align=left style="padding-right: 20px"} 
+  Mental Health of American Youth
+css: www/style.css
 output:
   html_document:
     includes:
-       in_header: GA_Script.Rhtml
+      in_header: www/GA_Script.Rhtml
     self_contained: yes
     code_download: yes
     highlight: tango
@@ -16,21 +18,13 @@ output:
     toc: yes
   word_document:
     toc: yes
+runtime: shiny_prerendered
 ---
-
-<style>
-#TOC {
-  background: url("https://opencasestudies.github.io/img/icon-bahi.png");
-  background-size: contain;
-  padding-top: 240px !important;
-  background-repeat: no-repeat;
-}
-</style>
 
 <!-- Open all links in new tab-->  
 <base target="_blank"/>  
 
-<div id="google_translate_element"></div>
+<div align="left" id="google_translate_element",></div>
 
 <script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
 
@@ -48,11 +42,15 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
 library(here)
 library(knitr)
 library(magick) # to create gif
+
+library(learnr)
+library(gradethis)
+gradethis::gradethis_setup()
 ```
 
 #### {.outline }
 ```{r, echo = FALSE, out.width = "800 px"}
-knitr::include_graphics(here::here("img", "mainplot.png"))
+knitr::include_graphics(here::here("www", "img", "mainplot.png"))
 ```
 
 ####
@@ -112,7 +110,7 @@ We also will explore how rates of treatment for depression of youths have change
 
 
 ```{r,echo = FALSE, out.width="40%"}
-knitr::include_graphics(here::here("img", "k-mitch-hodge-IqSaG9zv2e0-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "k-mitch-hodge-IqSaG9zv2e0-unsplash.jpg"))
 ```
 <span>Photo by <a href="https://unsplash.com/@kmitchhodge?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">K. Mitch Hodge</a> on <a href="https://unsplash.com/s/photos/depression?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>  
 
@@ -132,7 +130,7 @@ The major symptoms of a major depressive episode include:
 
 
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics(here::here("img", "depression-symptoms-and-treatment-768x768.jpg"))
+knitr::include_graphics(here::here("www", "img", "depression-symptoms-and-treatment-768x768.jpg"))
 ```
 
 ##### [[source]](https://newmilfordcounselingcenter.com/depression-2/){target="_blank"}  
@@ -341,7 +339,7 @@ According to the [CDC](https://www.cdc.gov/nchs/products/databriefs/db309.htm){t
 > Since 2008, suicide has ranked as the 10th leading cause of death for **all ages** in the United States. 
 
 ```{r, echo = FALSE, out.width="800px"}
-knitr::include_graphics(here::here("img","mortality.png"))
+knitr::include_graphics(here::here("www", "img","mortality.png"))
 ```
 
 ##### [[source]](https://www.cdc.gov/nchs/data/databriefs/db293.pdf){target="_blank"}   
@@ -356,7 +354,7 @@ Furthermore, according to the [CDC](https://www.cdc.gov/nchs/products/databriefs
 Thus, this warrants further examination of the mental health of American youths.  
 
 ```{r, echo = FALSE, out.width="800px"}
-knitr::include_graphics(here::here("img","mortality_age.png"))
+knitr::include_graphics(here::here("www", "img","mortality_age.png"))
 ```
 
 ##### [[source]](https://www.cdc.gov/nchs/data/nvsr/nvsr68/nvsr68_06-508.pdf){target="_blank"}
@@ -365,7 +363,7 @@ knitr::include_graphics(here::here("img","mortality_age.png"))
 Historically, suicide rates were much higher before 1950, however, we are seeing an increase in the last 20 years.
 
 ```{r, echo = FALSE, out.width="800px"}
-knitr::include_graphics(here::here("img","suicide.png"))
+knitr::include_graphics(here::here("www", "img","suicide.png"))
 ```
 
 ##### [[source]](https://time.com/5609124/us-suicide-rate-increase/){target="_blank"}
@@ -404,13 +402,13 @@ This survey started in 1971 and is conducted annually in all 50 states and the D
 The data are made available publicly online on the [Substance Abuse & Mental Health Data Archive](https://datafiles.samhsa.gov/){target="_blank"}. 
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
-include_graphics(here::here("img", "nsudh_screenshot_webpage.png"))
+include_graphics(here::here("www", "img", "nsudh_screenshot_webpage.png"))
 ```
 
 On the [website](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm){target="_blank"} with the survey data, you can see that the results are displayed in many tables. Importantly, there is no obvious way to download the data directly from this particular website.
 
 ```{r, out.width = "100%", echo = FALSE, fig.align ="center"}
-include_graphics(here::here("img", "website_overview.png"))
+include_graphics(here::here("www", "img", "website_overview.png"))
 ```
 
 
@@ -537,13 +535,22 @@ Below is a animated overview of the process.
 
 First the images need to be imported into R using the `image_read` function of the `magick` package.
 
-```{r}
+```{r, eval=FALSE}
 step1 <- magick::image_read(here::here("img", "webpage_screenshot.png"))
 step2 <- image_read(here::here("img", "table_screenshot_inspect.png"))
 step3 <- image_read(here::here("img", "table_screenshot_inspect_table.png"))
 step4 <- image_read(here::here("img", "table_screenshot_inspect_table_xpath.png"))
 step5 <- image_read(here::here("img", "table_screenshot_xpath_copy_r.png"))
 step5_zoom <- image_read(here::here("img", "table_screenshot_xpath_copy_r_zoom.png"))
+```
+
+```{r, echo=FALSE}
+step1 <- magick::image_read(here::here("www", "img", "webpage_screenshot.png"))
+step2 <- image_read(here::here("www", "img", "table_screenshot_inspect.png"))
+step3 <- image_read(here::here("www", "img", "table_screenshot_inspect_table.png"))
+step4 <- image_read(here::here("www", "img", "table_screenshot_inspect_table_xpath.png"))
+step5 <- image_read(here::here("www", "img", "table_screenshot_xpath_copy_r.png"))
+step5_zoom <- image_read(here::here("www", "img", "table_screenshot_xpath_copy_r_zoom.png"))
 ```
 
 The last image is smaller than the others, to get a sense of the size we can use the `image_info()` function of the `magick` package.
@@ -619,7 +626,7 @@ image_write(educational_gif,
 
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img","educational.gif"))
+knitr::include_graphics(here::here("www", "img","educational.gif"))
 ```
 
 
@@ -698,7 +705,7 @@ To do this:
 In fact, when we load `rvest` the first time we see:
 
 ```{r, out.width= "60%", echo=FALSE}
-knitr::include_graphics(here::here("img", "rvest.png"))
+knitr::include_graphics(here::here("www", "img", "rvest.png"))
 ```
 
 In this case, we are scraping Table 11.1A from the website. 
@@ -829,13 +836,48 @@ save(table11.1a, table11.1b, table11.2a, table11.2b,
      file = here::here("data", "imported", "imported_data.rda"))
 ```
 
+### **Exercise**
+***
+
+``` {r di_quiz, echo = FALSE}
+quiz(caption = "",
+  question("What does the `html_nodes()` function of the `rvest` do?",
+    answer("Import html code", message = "Importing html code is the function of `read_html()`."),
+    answer("Convert an html table into a dataframe", message = "Converting an html table into a dataframe is the funtion of `html_table()`."),
+    answer("Extract specific components of the webpage", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("What does the `glimpse()` function of the `dplyr` package do?",
+    answer("It allows us to see just the first rows of the data frame.", message = "This is the function of `slice_head()` of the dplyr package."),
+    answer("It allows us to see a selection of random rows of the data frame.", message = "This is the function of `slice_sample()` of the dplyr package."),
+    answer("It allows us to see the rows at the end of the data frame.", message = "This is the function of `slice_tail()` of the dplyr package."),
+    answer("It allows us to view the data frame sideways with the columns listed on the far left.", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Suppose that we have a list called `my_list`, which command can we use to select the first element of this list?",
+    answer("`my_list[1]`"),
+    answer("`my_list(1)`"),
+    answer("`my_list{{1}}`"),
+    answer("`my_list[[1]]`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
 
 ## **Data Wrangling**
 *** 
 If you stopped and want to restart the case study, or if you are starting here, you can load the data like this:
 
-```{r}
+```{r, eval=FALSE}
 load(file = here::here("data", "imported", "imported_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "imported", "imported_data.rda"))
 ```
 
 
@@ -843,8 +885,12 @@ load(file = here::here("data", "imported", "imported_data.rda"))
 
 An rda file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
-```{r}
-load(here::here("data", "imported", "imported_data.rda"))
+```{r, eval=FALSE}
+load(file = here::here("data", "imported", "imported_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "imported", "imported_data.rda"))
 ```
 
 ***
@@ -854,13 +900,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
@@ -896,7 +942,7 @@ Let's take a look at our table on the website to see what it needs to get it int
 First, we can see that we want to remove the legend of our table.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "table11.1a.png"))
+knitr::include_graphics(here::here("www", "img", "table11.1a.png"))
 ```
 
 We can take a look at the last row using the `tail` function of the `dplyr` package. We can specify that we only want to see the last row by using the `n = 1` argument. To use the `dplyr` functions we need to first make this table into a tibble, which is the `tidyverse` version of a dataframe.
@@ -1043,7 +1089,7 @@ To use these, we need to be able to specify what we want to remove and replace.
 Here is a part of a [cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"} about string manipulation from RStudio.
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "regex.png"))
+knitr::include_graphics(here::here("www", "img", "regex.png"))
 ```
 
 We can see that we can refer to any digit (such as 1, 2, 3 etc.) as `[:digit:]`.
@@ -1085,7 +1131,7 @@ We can specify that we want any occurrence of 1 or more to be replaced by using 
 See here for an explanation of this on the cheat sheet:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "quantifiers.png"))
+knitr::include_graphics(here::here("www", "img", "quantifiers.png"))
 ```
 
 So, we will use the `str_replace_all()` function of the `stringr` package.
@@ -1133,7 +1179,7 @@ We would also like to add a `type` and `subtype` variable, that specifies the ge
 These are the rows where the first column values are `General Medicine` and `Juvenile Justice`, and `Child Welfare`. If we look at the website, we can see that these were leading lines with no data.
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "table11.1a.png"))
+knitr::include_graphics(here::here("www", "img", "table11.1a.png"))
 ```
 
 First, we will add the `type` and `subtype` variables using the `mutate` function.
@@ -1477,7 +1523,7 @@ What about the subsequent tables?
 All of the rest of the tables have demographic information and have this general structure:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "dem_table.png"))
+knitr::include_graphics(here::here("www", "img", "dem_table.png"))
 ```
 
 In these tables, we have age groups in our first column so we don't want to remove digits or punctuation marks anymore so we need to modify our function a bit to remove that step. 
@@ -1899,7 +1945,7 @@ Looks good!
 We finished wrangling the data and we are ready to proceed with our analysis. 
 Let's save our data first. This will allow us to come back without running our previous code. We will save it as an rda file and as a csv file as this is useful to give to collaborators. We will save this in a directory called "wrangled" within our "data" directory of our project. We will use the `write_csv()` function from the `readr` package to do this. We need to do this for each tibble separately. 
 
-```{r}
+```{r, eval=FALSE}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("data", "wrangled", "wrangled_data.rda"))
 readr::write_csv(percents, file = here::here("data", "wrangled", "percents.csv"))
@@ -1908,13 +1954,107 @@ readr::write_csv(table11.1a, file = here::here("data", "wrangled", "table11.1a.c
 readr::write_csv(table11.1b, file = here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
+```{r, echo=FALSE}
+save(percents, counts, table11.1a, table11.1b, 
+     file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
+readr::write_csv(percents, file = here::here("www", "data", "wrangled", "percents.csv"))
+readr::write_csv(counts, file = here::here("www", "data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, file = here::here("www", "data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, file = here::here("www", "data", "wrangled", "table11.1b.csv"))
+```
+
+### **Exercise**
+***
+
+``` {r dw_quiz, echo = FALSE}
+quiz(caption = "",
+  question("which of the following is NOT a feature of data in \"tidy\" format?",
+    answer("It has each observation in single row.", message = "This is a feature of data in \"tidy\" format"),
+    answer("It is rectangular (meaning there are no empty cells).", message = "This is a feature of data in \"tidy\" format"),
+    answer("The values within the cells are in a format that is useful for making visualizations and for analysis.", message = "This is a feature of data in \"tidy\" format"),
+    answer("It has multiple aspects about each observation in a single column.", correct = TRUE, message = "Data in ''tidy'' format has a single aspect about each observation as a single column."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("We used the `as_tibble()` function of the `dplyr` package to convert dataframs into tibbles as the first step of data wrangling. We did this because we wanted to use `tidyverse` functions, and tibble is the `tidyverse` version of dataframe.",
+    answer("False"),
+    answer("True", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which one of the pipe operators (from the `magrittr` package) should be used right after a variable name if we want to perform a sequence of operations on that variable, and meanwhile, assign the final output to that variable (without redefining that variable using `<-` or `=`)?",
+    answer("`%>%`", message = "This operator cannot assign the final output to that variable."),
+    answer("`%<%`", message = "This is not a valie pipe operator."),
+    answer("`%T>%`", message = "This is the [side-effects operator] (https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html#additional-pipe-operators)."),
+    answer("`%<>%`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Suppose we have a tibble called `my_tibble`. By using the command `dplyr::na_if(my_tibble, \"*\")`, we can replace all `NA` values by `*`.",
+    answer("True", message = "`dplyr::na_if(my_tibble, \"*\")` replaces all `*` by `NA`."),
+    answer("False", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),  
+  question("`str_remove()` function of the `stringr` package allows us to remove all occurrences of specified characters in each row.",
+    answer("True", message = "Removing all occurrences of specified characters in each row is the function of `str_remove_all()`. `str_remove()` only removes the first occurrence."),
+    answer("False", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which one of the following functions of the `dplyr` package can be used to append (not merge) tables?",
+    answer("`left_join()`", message = "`left_join` is a function used to [join/merge tables](https://dplyr.tidyverse.org/reference/join.html), not append."),
+    answer("`inner_join()`", message = "`inner_join` is a function used to [join/merge tables](https://dplyr.tidyverse.org/reference/join.html), not append."),
+    answer("`bind_rows()`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Suppose that we want to change value \"a\" in a column to value \"b\" , which one of the following functions of the `dplyr` package should be used?",
+    answer("`rename()`", message = "`rename()` renames a column, not a value in that column."),
+    answer("`recode()`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+`mtcars` is a built-in R data set. 
+
+```{r}
+mtcars
+```
+
+Write some code that uses the `slice()` function of the `dplyr` package to remove the last two rows of this data set. Note: replace the underscores("_") with your code with one character per "_".
+
+```{r dw_exercise, exercise=TRUE, eval=FALSE}
+# View the data
+mtcars
+# Remove the last two rows
+mtcars %>%
+  slice(_:(___-_))
+# Compare the outputs. Did your code work?
+# When submitting your answer, DELETE the first two lines where you viewed the data.
+```
+
+```{r dw_exercise-solution}
+mtcars %>%
+  slice(1:(n()-2))
+```
+ 
+```{r dw_exercise-code-check}
+grade_code()
+```
 
 ## **Data Visualization**
 *** 
 
 If you have been following along but stopped, you can load your data like so:
-```{r}
+```{r, eval=FALSE}
 load(file = here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 
@@ -1922,8 +2062,12 @@ load(file = here::here("data", "wrangled", "wrangled_data.rda"))
 
 An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
-```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+```{r, eval=FALSE}
+load(file = here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 
@@ -1934,13 +2078,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
@@ -2110,9 +2254,16 @@ Now let's say we wanted to save this plot.
 
 We could do so using the using the  `save()` function to save this to a "plots" directory in our working directory as an rda file and we can use the `png()` function to save a png for collaborators. We need to use `dev.off()` function to close the graphical device that we will use to create the png version of the plot so that we are ready to make another plot like this.
 
-```{r}
+```{r, eval=FALSE}
 save(MDE_total, file =here::here("plots", "MDE_total.rda"))
 png(here::here("plots", "MDE_total.png"))
+MDE_total
+dev.off()
+```
+
+```{r, echo=FALSE}
+save(MDE_total, file =here::here("www", "plots", "MDE_total.rda"))
+png(here::here("www", "plots", "MDE_total.png"))
 MDE_total
 dev.off()
 ```
@@ -2318,9 +2469,16 @@ MDE_age_gender
 
 
 Let's save this plot as well:
-```{r}
+```{r, eval=FALSE}
 save(MDE_age_gender, file =here::here("plots", "MDE_age_gender.rda"))
 png(here::here("plots", "MDE_age_gender.png"))
+MDE_age_gender
+dev.off()
+```
+
+```{r, echo=FALSE}
+save(MDE_age_gender, file =here::here("www", "plots", "MDE_age_gender.rda"))
+png(here::here("www", "plots", "MDE_age_gender.png"))
 MDE_age_gender
 dev.off()
 ```
@@ -2447,9 +2605,16 @@ It is possible that this group may be less likely to report experiencing symptom
 
 
 Let's save this plot too:
-```{r}
+```{r, eval=FALSE}
 save(MDE_race, file =here::here("plots", "MDE_race.rda"))
 png(here::here("plots", "MDE_race.png"))
+MDE_race
+dev.off()
+```
+
+```{r, echo=FALSE}
+save(MDE_race, file =here::here("www", "plots", "MDE_race.rda"))
+png(here::here("www", "plots", "MDE_race.png"))
 MDE_race
 dev.off()
 ```
@@ -2640,9 +2805,16 @@ This shows an overall increase in the rate in which youths are receiving treatme
 Next, we consider differences between males and females and different age groups. 
 
 First let's save this plot:
-```{r}
+```{r, eval=FALSE}
 save(Treat_total, file =here::here("plots", "Treat_total.rda"))
 png(here::here("plots", "Treat_total.png"))
+Treat_total
+dev.off()
+```
+
+```{r, echo=FALSE}
+save(Treat_total, file =here::here("www", "plots", "Treat_total.rda"))
+png(here::here("www", "plots", "Treat_total.png"))
 Treat_total
 dev.off()
 ```
@@ -2926,8 +3098,12 @@ The rate of receiving treatment is fairly similar relative to the percentage of 
 *** 
 
 If you have been following along but stopped, you can load your data like so:
-```{r}
+```{r, eval=FALSE}
 load(file = here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 
@@ -2935,8 +3111,12 @@ load(file = here::here("data", "wrangled", "wrangled_data.rda"))
 
 An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-youth-mental-health/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-youth-mental-health/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
-```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+```{r, eval=FALSE}
+load(file = here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 
@@ -2947,13 +3127,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
@@ -3069,7 +3249,7 @@ Where the degrees of freedom  = $df = (92-1)(2-1) = 1$
 What does this mean? We need to consult a chi-squared distribution to determine what the $p$-value is and if this is significant.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "Chi-square_distributionCDF-English.png"))
+knitr::include_graphics(here::here("www", "img", "Chi-square_distributionCDF-English.png"))
 ```
 
 [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
@@ -3102,7 +3282,7 @@ The following code subsets the data we need and makes the necessary manipulation
 If we take a look at the title of the table we can see that the numbers in the table represent individuals by the thousands.
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "dem_table.png"))
+knitr::include_graphics(here::here("www", "img", "dem_table.png"))
 ```
 
 ```{r}
@@ -3442,11 +3622,18 @@ forward <- ggdraw() +
 Next, we will modify some of our existing plots using the `theme()` function as we did before to remove the x-axis title, to change the color of the axis text and the title size and color, as well as change the titles of the plots. 
 
 First let's load the plots we intend to use:
-```{r}
+```{r, eval=FALSE}
 load(file = here::here("plots", "MDE_total.rda"))
 load(file = here::here("plots", "Treat_total.rda"))
 load(file = here::here("plots", "MDE_age_gender.rda"))
 load(file = here::here("plots", "MDE_race.rda"))
+```
+
+```{r, echo=FALSE}
+load(file = here::here("www", "plots", "MDE_total.rda"))
+load(file = here::here("www", "plots", "Treat_total.rda"))
+load(file = here::here("www", "plots", "MDE_age_gender.rda"))
+load(file = here::here("www", "plots", "MDE_race.rda"))
 ```
 
 Using our `MDE_total` plot: 
@@ -3563,7 +3750,7 @@ dev.off()
 The `dev.off()` function is necessary to close the graphics device. This is good practice to allow you to create another plot again later.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "mainplot_orig.png"))
+knitr::include_graphics(here::here("www", "img", "mainplot_orig.png"))
 ```
 
 
@@ -3665,7 +3852,7 @@ forward2 <- ggdraw() +
 ```
 
 
-```{r, message = FALSE}
+```{r, message = FALSE, eval=FALSE}
 
 row_2 <- plot_grid(MDE_age, MDE_gender,
                    nrow = 1)
@@ -3682,9 +3869,26 @@ plot_grid(title_plots,
 dev.off()
 ```
 
+```{r, message = FALSE, echo=FALSE}
+
+row_2 <- plot_grid(MDE_age, MDE_gender,
+                   nrow = 1)
+
+png(filename = here::here("www", "img", "mainplot.png"), 
+         res = 300, width = 10, height = 10, units = "in")
+plot_grid(title_plots, 
+          forward,
+          row_1,
+          forward2,
+          row_2,
+          ncol = 1, 
+          rel_heights = c(0.1, 0.2, 1, 0.1, 1))
+dev.off()
+```
+
 
 ```{r,echo = FALSE}
-knitr::include_graphics(here::here("img", "mainplot.png"))
+knitr::include_graphics(here::here("www", "img", "mainplot.png"))
 ```
 
 ### **Synopsis**

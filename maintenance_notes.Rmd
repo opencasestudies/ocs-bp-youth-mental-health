@@ -1,0 +1,21 @@
+---
+title: "Maintenance Notes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise chunks
+
+## Date Import
+
+* `di_quiz`
+
+## Data Wrangling
+
+* `dw_quiz`
+* `dw_exercise`
+
+# Other Notes
