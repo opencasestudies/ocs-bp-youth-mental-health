@@ -19,3 +19,14 @@ knitr::opts_chunk$set(echo = TRUE)
 * `dw_exercise`
 
 # Other Notes
+
+* set this to `eval = FALSE`
+
+```{r, eval=FALSE}
+save(percents, counts, table11.1a, table11.1b, 
+     file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
+readr::write_csv(percents, file = here::here("www", "data", "wrangled", "percents.csv"))
+readr::write_csv(counts, file = here::here("www", "data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, file = here::here("www", "data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, file = here::here("www", "data", "wrangled", "table11.1b.csv"))
+```

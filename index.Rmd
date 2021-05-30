@@ -1954,7 +1954,7 @@ readr::write_csv(table11.1a, file = here::here("data", "wrangled", "table11.1a.c
 readr::write_csv(table11.1b, file = here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("www", "data", "wrangled", "wrangled_data.rda"))
 readr::write_csv(percents, file = here::here("www", "data", "wrangled", "percents.csv"))

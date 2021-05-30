@@ -13,7 +13,8 @@ output: md_document
 
 ### Important links 
 
-- HTML: https://www.opencasestudies.org/ocs-bp-youth-mental-health
+- Static version: https://www.opencasestudies.org/ocs-bp-youth-mental-health
+- Interactive version: https://rsconnect.biostat.jhsph.edu/ocs-bp-youth-mental-health-interactive/
 - GitHub: https://github.com/opencasestudies/ocs-bp-youth-mental-health
 - Bloomberg American Health Initiative: https://americanhealth.jhu.edu/open-case-studies
 

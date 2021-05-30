@@ -370,6 +370,15 @@ pre code {
 </div>
 <div id="other-notes" class="section level1">
 <h1>Other Notes</h1>
+<ul>
+<li>set this to <code>eval = FALSE</code></li>
+</ul>
+<pre class="r"><code>save(percents, counts, table11.1a, table11.1b, 
+     file = here::here(&quot;www&quot;, &quot;data&quot;, &quot;wrangled&quot;, &quot;wrangled_data.rda&quot;))
+readr::write_csv(percents, file = here::here(&quot;www&quot;, &quot;data&quot;, &quot;wrangled&quot;, &quot;percents.csv&quot;))
+readr::write_csv(counts, file = here::here(&quot;www&quot;, &quot;data&quot;, &quot;wrangled&quot;, &quot;counts.csv&quot;))
+readr::write_csv(table11.1a, file = here::here(&quot;www&quot;, &quot;data&quot;, &quot;wrangled&quot;, &quot;table11.1a.csv&quot;))
+readr::write_csv(table11.1b, file = here::here(&quot;www&quot;, &quot;data&quot;, &quot;wrangled&quot;, &quot;table11.1b.csv&quot;))</code></pre>
 </div>
 
 
