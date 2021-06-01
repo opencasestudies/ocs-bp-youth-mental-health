@@ -1902,10 +1902,10 @@ Let's save our data first. This will allow us to come back without running our p
 ```{r}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("data", "wrangled", "wrangled_data.rda"))
-readr::write_csv(percents, file = here::here("data", "wrangled", "percents.csv"))
-readr::write_csv(counts, file = here::here("data", "wrangled", "counts.csv"))
-readr::write_csv(table11.1a, file = here::here("data", "wrangled", "table11.1a.csv"))
-readr::write_csv(table11.1b, file = here::here("data", "wrangled", "table11.1b.csv"))
+readr::write_csv(percents, path = here::here("data", "wrangled", "percents.csv"))
+readr::write_csv(counts, path = here::here("data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, path = here::here("data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, path = here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
 
