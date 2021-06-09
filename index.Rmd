@@ -392,7 +392,7 @@ There are some important considerations regarding this data analysis to keep in 
 
 4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBTQIA+ (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
 
-Note: While [gender and sex](https://www.who.int/genomics/gender/en/index1.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
+Note: While [gender and sex](https://www.who.int/genomics/gender/en/index.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
 
 ## **What are the data?**
 *** 
@@ -946,7 +946,7 @@ We can use the `slice()` function of the `dplyr` package to remove this row, by 
 We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. 
 This allows us to use the `table11.1a` as our input and reassign it at the end after all the steps have been performed.
 
-We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist).), which is the `tidyverse` version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
+We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist), which is the `tidyverse` version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
 
 ```{r}
 table11.1a %<>%
