@@ -208,7 +208,8 @@ For individuals or classes with some familiarity with R programming.
 
 Ask students to scrape tables 11.5A and 11.5B from the website which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform chi-square tests to evaluate how groups compare over time.
 
-#### RMarkdown Compilation Time
+#### Estimate of RMarkdown Compilation Time:
 
-~ 40 seconds
+~ About 35 - 45 seconds
 
+This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems. 
