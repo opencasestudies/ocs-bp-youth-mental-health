@@ -785,13 +785,13 @@ webpage <- NSDUH_url %>%
 webpage
 ```
 
-Then, we use the `html_nodes()` function of the `rvest` package to select just the Table 11.1A element of the webpage.
+Then, we use the `html_elements()` function of the `rvest` package to select just the Table 11.1A element of the webpage.
 
 See this [tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"} in case you get stuck) on CSS selectors to understand more about how this function works to use the `xpath` to select the elements of interest from the webpage.
 
 ```{r}
 webpage_element <- webpage %>%
-  rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table')
+  rvest::html_elements(xpath='/html/body/div[4]/div[1]/table')
 webpage_element 
 ```
 
@@ -817,7 +817,7 @@ Putting this all of this together we can do the entire process like this with ou
 ```{r}
 table11.1a <- NSDUH_url %>%
   xml2::read_html() %>%
-  rvest::html_nodes(xpath = '/html/body/div[4]/div[1]/table') %>%
+  rvest::html_elements(xpath = '/html/body/div[4]/div[1]/table') %>%
   rvest::html_table()
 table11.1a <- table11.1a[[1]]
 ```
