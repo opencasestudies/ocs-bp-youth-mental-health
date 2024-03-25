@@ -530,7 +530,7 @@ We accomplish STEP 1 with our web browser.
 
 We accomplish STEP 2 in the `R` programming environment. 
 
-The **location** of the data on the webpage that will be scraped can be identified using a language called [XPath](https://en.wikipedia.org/wiki/XPath), which is short for XML Path Language. It is used to identify pieces (in this case called **nodes**) of a document written in the [XML](https://en.wikipedia.org/wiki/XML) language.  [XML](https://en.wikipedia.org/wiki/XML) which is short for Extensible Markup Language is frequently used for documents on the internet, similar to [HTML](https://en.wikipedia.org/wiki/HTML). One of the [major differences](https://techdifferences.com/difference-between-xml-and-html.html) between these two is that HTML does not provide structural information, while XML does. This structural information can be used to parse documents so that we can scrape only the data that we are interested in from a website. 
+The **location** of the data on the webpage that will be scraped can be identified using a language called [XPath](https://en.wikipedia.org/wiki/XPath), which is short for XML Path Language. It is used to identify pieces (in this case called **elements**) of a document written in the [XML](https://en.wikipedia.org/wiki/XML) language.  [XML](https://en.wikipedia.org/wiki/XML) which is short for Extensible Markup Language is frequently used for documents on the internet, similar to [HTML](https://en.wikipedia.org/wiki/HTML). One of the [major differences](https://techdifferences.com/difference-between-xml-and-html.html) between these two is that HTML does not provide structural information, while XML does. This structural information can be used to parse documents so that we can scrape only the data that we are interested in from a website. 
 
 #### {.resource_block} 
 
@@ -736,7 +736,7 @@ We need to:
 To do this:
 
 + We import the html code using the `read_html()` function of the `rvest` package
-+ We extract specific components of the webpage using the `html_nodes()` function of the `rvest` package
++ We extract specific components of the webpage using the `html_elements()` function of the `rvest` package
 + We convert this html table into a dataframe using the `html_table()`function of the `rvest` package
 
 **The `rvest` package provides wrappers for the `xml2` and `httr` packages, thus we can just install and load the `rvest` package and it will install and load dependency packages like `xml2` and `httr` and allow us to use functions from  both of these packages.**
@@ -785,13 +785,13 @@ webpage <- NSDUH_url %>%
 webpage
 ```
 
-Then, we use the `html_nodes()` function of the `rvest` package to select just the Table 11.1A element of the webpage.
+Then, we use the `html_elements()` function of the `rvest` package to select just the Table 11.1A element of the webpage.
 
 See this [tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"} in case you get stuck) on CSS selectors to understand more about how this function works to use the `xpath` to select the elements of interest from the webpage.
 
 ```{r}
 webpage_element <- webpage %>%
-  rvest::html_nodes(xpath='/html/body/div[4]/div[1]/table')
+  rvest::html_elements(xpath='/html/body/div[4]/div[1]/table')
 webpage_element 
 ```
 
@@ -817,7 +817,7 @@ Putting this all of this together we can do the entire process like this with ou
 ```{r}
 table11.1a <- NSDUH_url %>%
   xml2::read_html() %>%
-  rvest::html_nodes(xpath = '/html/body/div[4]/div[1]/table') %>%
+  rvest::html_elements(xpath = '/html/body/div[4]/div[1]/table') %>%
   rvest::html_table()
 table11.1a <- table11.1a[[1]]
 ```
@@ -843,7 +843,7 @@ scraper <- function(XPATH){
   NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
   table <- NSDUH_url %>%
     read_html() %>%
-    html_nodes(xpath = XPATH) %>%
+    html_elements(xpath = XPATH) %>%
     html_table()
   output <- table[[1]]
   output
