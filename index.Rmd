@@ -1036,11 +1036,9 @@ We can use the `na_if()` function to recode these values to `NA`.
 
 
 ```{r}
-table11.1a %<>%
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*")
+
+table11.1a <- table11.1a %>%
+   mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*", "dc", "nr"), NA)))
 
 head(table11.1a)
 ```
@@ -1455,10 +1453,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # remove the last row
     slice(1:(n() - 1)) %>%
 # make "nc" values NA etc.
-    na_if("nc") %>%
-    na_if("--") %>%
-    na_if("") %>%
-    na_if("*") %>% 
+    mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*"), NA))) %>%
 # rename the first column (names(.)[1]) to be what was specified with the new_col argument
     rename({{new_col}} := names(.)[1]) %>%
 # remove the numbers and punctuation marks and carriage returns (\r) and new lines (\n) from the first column
@@ -1476,9 +1471,9 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # make these columns numeric  (all the columns but the first column)
     mutate(across(-{{new_col}}, as.numeric)) %>%
 # make a new variable called type with 9 values that are Specialty followed by 11 values of Nonspecialty
-    mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+    mutate(type = rep(c(rep("Specialty", 9), rep("Nonspecialty", 11)), length.out = n())) %>%
 # make a new variable called subtype with the following values repeated various times
-    mutate(subtype = c("Specialty_total",
+    mutate(subtype = rep(c("Specialty_total",
                        rep("Outpatient", 5),
                        rep("Inpatient", 3),
                        "Nonspecialty_total",
@@ -1486,18 +1481,21 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                        rep("General_medicine", 2),
                        rep("Juvenile_Justice", 2),
                        rep("Child_Welfare", 2),
-                       "combination")) %>% 
+                       "combination"), length.out = n())) %>% 
 # make a new variable called short_label to use as labels for plots for the data
-    mutate(short_label = c("Specialty total", "Outpatient total",  
-                           "Therapist", "Clinic", "Day program", 
-                           "In-home Therapist", "Inpatient total",
-                           "Hospital", "Residential Center",
-                           "Nonspecialty total", "School total", 
-                           "School Therapist", "School Program", 
-                           "General Medicine", "Family Dr", 
-                           "Justice System", "Justice System", 
-                           "Welfare", "Fostercare", 
-                           "Specialty Combination")) %>%
+    mutate(short_label = rep(c(
+      "Specialty total", "Outpatient total",
+      "Therapist", "Clinic", "Day program",
+      "In-home Therapist", "Inpatient total",
+      "Hospital", "Residential Center",
+      "Nonspecialty total", "School total",
+      "School Therapist", "School Program",
+      "General Medicine", "Family Dr",
+      "Justice System", "Justice System",
+      "Welfare", "Fostercare",
+      "Specialty Combination"
+    ),
+    length.out = n())) %>%
 # remove rows were all the values are NA - 
 # the number of `NA` values for a row should be less than the number of columns that could have `NA` values
   filter(rowSums(is.na(select(., is.numeric))) <
@@ -1506,7 +1504,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # the new value column is called what was specified with the "pivot_col" argument
   pivot_longer(cols = contains("20"),
                names_to = "Year", 
-               values_to = pivot_col)%>%
+               values_to = pivot_col) %>%
 # make the new "Year" variable numeric
   mutate(Year = as.numeric(Year))
 }
@@ -1560,10 +1558,7 @@ data_dem_settings <- function(TABLE){
   # Remove the last row - keep only the 1st through 2nd to last rows
   slice(1:(n()-1)) %>%
   # change the values from "nc, --" etc to NA
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*") %>%
+    mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*"), NA))) %>%
   # rename the first column to be "Demographic"
   rename(Demographic := names(.)[1]) %>%
   # replace white spaces form the values of the "Demographic" variable with a single space
@@ -1962,10 +1957,10 @@ Let's save our data first. This will allow us to come back without running our p
 ```{r}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("data", "wrangled", "wrangled_data.rda"))
-readr::write_csv(percents, path = here::here("data", "wrangled", "percents.csv"))
-readr::write_csv(counts, path = here::here("data", "wrangled", "counts.csv"))
-readr::write_csv(table11.1a, path = here::here("data", "wrangled", "table11.1a.csv"))
-readr::write_csv(table11.1b, path = here::here("data", "wrangled", "table11.1b.csv"))
+readr::write_csv(percents, here::here("data", "wrangled", "percents.csv"))
+readr::write_csv(counts, here::here("data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, here::here("data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
 
