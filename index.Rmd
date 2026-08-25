@@ -48,7 +48,6 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
 library(here)
 library(knitr)
 library(magick) # to create gif
-library(magrittr)
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
@@ -318,7 +317,6 @@ We will begin by loading the packages that we will need:
 library(here)
 library(rvest)
 library(dplyr)
-library(magrittr)
 library(stringr)
 library(tidyr)
 library(tibble)
@@ -340,7 +338,6 @@ library(OCSdata)
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
@@ -768,8 +765,7 @@ One could also directly use the URL but this is less convenient for piping.
 <details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` operator</summary>  
 
 
-By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. 
-This allows us to perform multiple sequential steps on one data input. 
+By [piping](https://dplyr.tidyverse.org/articles/dplyr.html#the-pipe){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr`. This allows us to perform multiple sequential steps on one data input. 
 
 
 </details> 
@@ -1003,13 +999,12 @@ table11.1a %>%
 
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
-We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. 
-This allows us to use the `table11.1a` as our input and reassign it at the end after all the steps have been performed.
+We will use `<-` to reassign the result to `table11.1a` after all the steps have been performed.
 
 We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist), which is the `tidyverse` version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::as_tibble() %>%
   slice(1:(n()-1))
 ```
@@ -1053,7 +1048,7 @@ Let's rename the first column using the `rename()` function of the `dplyr` packa
 This requires listing the new name first like so: `new_name = old_name`.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
 
 head(table11.1a)
@@ -1128,7 +1123,7 @@ We need to specify that the character strings that should be used can be found i
 To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 mutate(MHS_setting = 
          str_remove_all(string = MHS_setting, 
                         pattern = "[:digit:]|\r\n|[:punct:]|"))
@@ -1150,7 +1145,7 @@ So, we will use the `str_replace_all()` function of the `stringr` package.
 In this case, we also need to specify a replacement with the `replacement = ` argument. We will use this to specify one space.
 
 ```{r} 
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                          pattern = "[:blank:]{1,}", 
@@ -1167,7 +1162,7 @@ This allows us to specify what columns we want to mutate by using the `.cols = `
 We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(dplyr::across(.cols = -MHS_setting,
                        stringr::str_remove_all, "a|,"))
 
@@ -1181,7 +1176,7 @@ We can use the base `as.numeric()` function.
 Again we will use the `across()` function to indicate what variables we wish to mutate.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(across(.cols =-MHS_setting, as.numeric))
 
 head(table11.1a)
@@ -1197,7 +1192,7 @@ knitr::include_graphics(here::here("img", "table11.1a.png"))
 First, we will add the `type` and `subtype` variables using the `mutate` function.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(type = c(rep("Specialty", 9), 
                   rep("Nonspecialty", 11))) %>%
   mutate(subtype = c("Specialty_total", 
@@ -1214,7 +1209,7 @@ table11.1a %<>%
 We also want to add a variable with shorter names for labels in plots and statistical output.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(short_label = c("Specialty total", 
                          "Outpatient total", 
                          "Therapist", 
@@ -1241,7 +1236,7 @@ We can remove the empty rows using the `filter()` function of the `dplyr` packag
 We can specify that we don't want to keep these rows by using the `!=` not equal to operator. 
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare")
@@ -1269,7 +1264,7 @@ We will first use the base `dim()` function to see the dimensions of our table b
 
 ```{r}
 dim(table11.1a)
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   tidyr::pivot_longer(cols = contains("20"), 
                       names_to = "Year",
                       values_to = "Number") %>%
@@ -1309,7 +1304,7 @@ OK, so the next table (Table11.1B) is very similar to Table11.1A, while the rema
 As a reminder here are all of the steps that we performed to wrangle `table11.1a`:
 
 ```{r, eval = FALSE}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 # make the table into a tibble
   dplyr::as_tibble() %>%
 # remove the last row by only keeping the first through the second to last
@@ -1585,27 +1580,27 @@ We will also add a column to describe what the data are about which will be help
 
 ```{r}
 table11.2a <- data_dem_settings(TABLE = table11.2a)
-table11.2a %<>% mutate(data_type = "Major_Depressive_Episode")
+table11.2a <- table11.2a %>% mutate(data_type = "Major_Depressive_Episode")
 head(table11.2a)
 
 table11.2b <- data_dem_settings(TABLE = table11.2b)
-table11.2b %<>% mutate(data_type = "Major_Depressive_Episode")
+table11.2b <- table11.2b %>% mutate(data_type = "Major_Depressive_Episode")
 head(table11.2b)
 
 table11.3a <- data_dem_settings(TABLE = table11.3a)
-table11.3a %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
+table11.3a <- table11.3a %>% mutate(data_type = "Severe_Major_Depressive_Episode")
 head(table11.3a)
 
 table11.3b <- data_dem_settings(TABLE = table11.3b)
-table11.3b %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
+table11.3b <- table11.3b %>% mutate(data_type = "Severe_Major_Depressive_Episode")
 head(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
-table11.4a %<>% mutate(data_type = "Treatment")
+table11.4a <- table11.4a %>% mutate(data_type = "Treatment")
 head(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
-table11.4b %<>% mutate(data_type = "Treatment")
+table11.4b <- table11.4b %>% mutate(data_type = "Treatment")
 head(table11.4b)
 ```
 
@@ -1878,13 +1873,13 @@ Great!
 Now we will reformat both the `counts` and `percents` data to be in the long format using `pivot_longer()` once again.
 
 ```{r}
-counts %<>%
+counts <- counts %>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
                values_to = "Number") %>%
   mutate(Year = as.numeric(Year))
 
-percents %<>%
+percents <- percents %>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
                values_to = "Percent") %>%
@@ -1915,19 +1910,19 @@ However, we would like to note that there is [controversy](https://en.wikipedia.
 To do this we will use the `str_replace()` function.
 
 ```{r}
-percents %<>% mutate(Demographic = str_replace(string = Demographic, 
+percents <- percents %>% mutate(Demographic = str_replace(string = Demographic,
                                              pattern = "AIAN",
                                          replacement = "American Indian and Alaska Native"))
 
-percents %<>% mutate(Demographic =  str_replace(string = Demographic, 
+percents <- percents %>% mutate(Demographic =  str_replace(string = Demographic,
                                              pattern = "NHOPI",
                                          replacement = "Native Hawaiian or Other Pacific Islander"))
 
-counts %<>% mutate(Demographic = str_replace(string = Demographic, 
+counts <- counts %>% mutate(Demographic = str_replace(string = Demographic,
                                              pattern = "AIAN",
                                          replacement = "American Indian and Alaska Native"))
 
-counts %<>% mutate(Demographic =  str_replace(string = Demographic, 
+counts <- counts %>% mutate(Demographic =  str_replace(string = Demographic,
                                              pattern = "NHOPI",
                                          replacement = "Native Hawaiian or Other Pacific Islander"))
 
@@ -3223,7 +3218,7 @@ Using what you just learned about `pivot_wider()` and `select()` and without scr
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-chi_squared_11.2a %<>%
+chi_squared_11.2a <- chi_squared_11.2a %>%
   select(Demographic, Year, Number) %>%
   tidyr::pivot_wider(names_from = Year,
                      names_prefix = "Year", 
@@ -3238,7 +3233,7 @@ To convert a column to the names of rows, you can use the `column_to_rownames()`
 Otherwise, we would need to select the numeric columns to perform the stats test.
 
 ```{r}
-chi_squared_11.2a %<>%
+chi_squared_11.2a <- chi_squared_11.2a %>%
   tibble::column_to_rownames("Demographic")
 
 chi_squared_11.2a
@@ -3816,7 +3811,7 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 [Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}  
 See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}, this [blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}, and this [vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"} for more information about web scraping  
 [CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
-[Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
+[Piping in R](https://dplyr.tidyverse.org/articles/dplyr.html#the-pipe){target="_blank"}   
 [Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}
 Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-study/){target="_blank"}  for more information on writing functions.   
 [String manipulation cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
@@ -3849,7 +3844,6 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
 [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html#Kernel_convolution)      | to create a gif   
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
@@ -3899,4 +3893,3 @@ We would also like to acknowledge the [Bloomberg American Health Initiative](htt
 
 
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=080808&w=a&t=tt&d=V1QZLVYhdPKkJALpt8zp68Hxs1qOXSEVgEylL9gFs9g&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
-
