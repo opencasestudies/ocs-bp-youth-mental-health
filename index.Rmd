@@ -1032,7 +1032,7 @@ dplyr::pull(legend, `2004`)
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. 
 
 
-We can use the `na_if()` function to recode these values to `NA`.
+We can use the `mutate()` function along with `across()` to recode these values to `NA`.
 
 
 ```{r}
@@ -1315,10 +1315,7 @@ table11.1a %<>%
 # remove the last row by only keeping the first through the second to last
   slice(1:(n() - 1)) %>%
 # make the "nc" values "NA" instead
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*") %>% 
+  mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*", "dc", "nr"), NA))) %>%
 # rename the column to the shorter MHS_setting name
   dplyr::rename(MHS_setting = 
                   `Setting Where Mental Health ServiceWas Received`) %>%
