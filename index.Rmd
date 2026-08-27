@@ -3786,6 +3786,10 @@ Considering the very steep increase in females, this warrants further investigat
 
 Ask students to scrape Tables 11.5A and 11.5B from the website, which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform Chi-square tests to evaluate how groups compare over time.
 
+# **More Case Studies**
+***
+
+Interested in exploring more open case studies? Visit **[opencasestudies.org](https://opencasestudies.org)** to access additional studies and open educational resources.
 
 ## **Additional Information**
 ***
