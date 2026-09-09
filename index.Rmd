@@ -3178,7 +3178,7 @@ knitr::include_graphics(here::here("img", "Chi-square_distributionCDF-English.pn
 
 [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
-This [website](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
+This [chi-square distribution applet](https://mabognar.github.io/apps/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (On this applet, the notation for $df$ is ${\nu}$.)
 
 Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
 
@@ -3823,7 +3823,7 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 ***
 
 [RStudio](https://rstudio.com/products/rstudio/features/){target="_blank"}  
-[Cheatsheet on RStuido IDE](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf){target="_blank"}  
+[Cheatsheet on RStuido IDE](https://opensource.posit.co/resources/cheatsheets/rstudio-ide/){target="_blank"}  
 [Other RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}   
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}   
 [Selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"}  
@@ -3848,7 +3848,7 @@ Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-
 [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
 [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}  
 [Chi-squared distribution](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}  
-[chi-square distribution applet](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
+[chi-square distribution applet](https://mabognar.github.io/apps/chisq.html){target="_blank"}  
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}   
 [`ggplot2` package](http://ggplot2.tidyverse.org){target="_blank"}    
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
