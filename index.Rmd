@@ -45,6 +45,13 @@ options(crayon.enabled = NULL)
 knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE, cache = FALSE,
                       fig.align = "center", out.width = '90%')
+
+# `jhudsl/base_ottr` does not bundle magick. Install it when rendering in a
+# fresh container, while leaving local installations untouched.
+if (!requireNamespace("magick", quietly = TRUE)) {
+  install.packages("magick")
+}
+
 library(here)
 library(knitr)
 library(magick) # to create gif
