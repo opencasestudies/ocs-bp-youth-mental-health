@@ -54,7 +54,7 @@ Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson)
 for assisting in framing the major direction of the case study.
 
 We would like to acknowledge [Qier
-Meng](https://www.opencasestudies.org/authors/qmeng/) and [Michael
+Meng](https://www.opencasestudies.org/post/2020-11-16-welcome-Qier-Meng-and-Michael-Breshock.html) and [Michael
 Breshock](https://mbreshock.github.io/) for their contributions to this
 case study.
 
@@ -191,11 +191,11 @@ two groups across two years.
 ### Other notes and resources
 
 <a href="https://rstudio.com/products/rstudio/features/" target="_blank">RStudio</a>  
-<a href="https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf" target="_blank">Cheatsheet on RStuido IDE</a>  
+<a href="https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf" target="_blank">Cheatsheet on RStuido IDE</a>  
 <a href="https://rstudio.com/resources/cheatsheets/" target="_blank">Other RStudio cheatsheets</a>  
 <a href="https://www.tidyverse.org/" target="_blank">Tidyverse</a>  
 <a href="https://en.wikipedia.org/wiki/Selection_bias?oldformat=true" target="_blank">Selection bias</a>  
-<a href="https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true" target="_blank">Sampling methods</a>  
+<a href="https://en.wikipedia.org/wiki/Sampling_%28statistics%29" target="_blank">Sampling methods</a>  
 <a href="https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true" target="_blank">Sampling frame</a>  
 <a href="https://en.wikipedia.org/wiki/DSM-5" target="_blank">DSM 5</a></summary>  
 <a href="https://nsduhweb.rti.org/respweb/homepage.cfm" target="_blank">National Survey on Drug Use and Health (NSDUH)</a>  
@@ -206,7 +206,7 @@ two groups across two years.
 <a href="https://nsduhweb.rti.org/respweb/about_nsduh.html" target="_blank">Details about the Survey</a>  
 <a href="https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf" target="_blank">Report about the 2018 NSDUH Survey</a>  
 <a href="https://en.wikipedia.org/wiki/Web_scraping?oldformat=true" target="_blank">Web scraping</a>  
-<a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html" target="_blank">Selectorgadget Tool</a>  
+<a href="https://rvest.tidyverse.org/articles/selectorgadget.html" target="_blank">Selectorgadget Tool</a>  
 See this
 <a href="http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ" target="_blank">blog post</a>,
 this
@@ -227,7 +227,7 @@ for more information on writing functions.
 <a href="https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson&#39;s%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution." target="_blank">Pearson’s chi-squared test</a>  
 <a href="https://en.wikipedia.org/wiki/Contingency_table" target="_blank">contingency table</a>  
 <a href="https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png" target="_blank">Chi-square distribution</a>  
-<a href="http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html" target="_blank">chi-square distribution applet</a>  
+<a href="https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html" target="_blank">chi-square distribution applet</a>  
 See here for a more thorough explanation of the
 <a href="https://www.ling.upenn.edu/~clight/chisquared.htm" target="_blank">chi-square test</a>  
 <a href="http://ggplot2.tidyverse.org" target="_blank"><code>ggplot2</code> package</a>  
@@ -236,7 +236,7 @@ Please see
 for more details on using `ggplot2`.
 <a href="http://vita.had.co.nz/papers/layered-grammar.html" target="_blank">grammar of graphics</a>  
 <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" target="_blank"><code>ggplot2</code> themes</a>  
-<a href="http://directlabels.r-forge.r-project.org/docs/index.html" target="_blank"><code>directlabels</code> package methods</a>  
+<a href="https://cran.r-project.org/package=directlabels" target="_blank"><code>directlabels</code> package methods</a>  
 <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html" target="_blank">Viridis palette for colorblind friendly plots</a>  
 <a href="https://pubmed.ncbi.nlm.nih.gov/30869927/" target="_blank">Motivating article for this case study about depression rates</a>
 (Access is possible for those at Hopkins by using their email address)
@@ -298,7 +298,7 @@ for more details on using `ggplot2`.
 <td>to create plots</td>
 </tr>
 <tr class="even">
-<td><a href="http://directlabels.r-forge.r-project.org/docs/index.html" target="_blank">directlabels</a></td>
+<td><a href="https://cran.r-project.org/package=directlabels" target="_blank">directlabels</a></td>
 <td>to add labels directly to lines in plots</td>
 </tr>
 <tr class="odd">
