@@ -101,7 +101,7 @@ To access the GitHub repository to obtain the data for this case study see here:
 
 You may also access and download the data using our `OCSdata` package. To learn more about this package including examples, see this [link](https://github.com/opencasestudies/OCSdata). Here is how you would install this package:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 # Packages used in this case study that are not included in the standard
 # package list.
 install.packages(c(
@@ -355,7 +355,7 @@ library(OCSdata)
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
-[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[directlabels](https://cran.r-project.org/package=directlabels){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
@@ -441,13 +441,13 @@ There are some important considerations regarding this data analysis to keep in 
 
 1. The data that we will use come from a survey and are therefore values from a sample that estimate that of the true population. In our statistical analysis we use these sample values as if they are population estimates (because this is all we have access to). Thus, our results are not necessarily indicative of population differences.
 
-2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
+2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_%28statistics%29){target="_blank"}. 
 
 3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBTQIA+ (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
 
-Note: While [gender and sex](https://www.who.int/genomics/gender/en/index.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
+Note: While [gender and sex](https://www.who.int/health-topics/gender) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
 
 ## **What are the data?**
 *** 
@@ -548,7 +548,7 @@ The **location** of the data on the webpage that will be scraped can be identifi
 - [Vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
 - [Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
 - [Blog](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}
-- [Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}
+- [Selectorgadget Tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}
 
 ####
 
@@ -704,7 +704,7 @@ This window allows us to glance at the internal mechanics of the webpage. To scr
 
 Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents.
 By hovering over several elements—and clicking on the elements on the right side of the screen—we can identify the element that contains the data we are looking for. 
-Another option for identifying XPaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}.  
+Another option for identifying XPaths is to use the [selectorgadget tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}.  
 
 ```{r,step3, echo=FALSE}
 step3 
@@ -1919,7 +1919,7 @@ percents %>%
   pull(Demographic)
 ```
 
-Using the definitions from the [Census Bureau](https://www.census.gov/programs-surveys/cps/data/data-tools/cps-table-creator-help/race-definitions.html#:~:text=NHOPI%20Alone%20%E2%80%93%20NHOPI%20alone%20refers,not%20report%20any%20other%20race.){target="_blank"}: 
+Using the definitions from the [Census Bureau](https://www.census.gov/topics/population/race/about.html){target="_blank"}: 
 
 1. **AIAN** stands for American Indian and Alaska Native  
 2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
@@ -2263,7 +2263,7 @@ Nice! Now it is much easier to tell how each group has changed over time.
 
 We can also add labels directly to the lines using the `directlabels` package. 
 There are several methods to do so. 
-See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  
+See [here](https://cran.r-project.org/package=directlabels){target="_blank"} for more information about the options for adding labels with this package.  
 We use the `"far.from.others.borders"` method so that our labels do not overlap one another. 
 We also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). 
 The `dl.move()` function of the `directlabels` package is used to move one of the labels to a particular location. 
@@ -3171,7 +3171,7 @@ knitr::include_graphics(here::here("img", "Chi-square_distributionCDF-English.pn
 
 [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
-This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
+This [website](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
 
 Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
 
@@ -3816,11 +3816,11 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 ***
 
 [RStudio](https://rstudio.com/products/rstudio/features/){target="_blank"}  
-[Cheatsheet on RStuido IDE](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf){target="_blank"}  
+[Cheatsheet on RStuido IDE](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf){target="_blank"}  
 [Other RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}   
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}   
 [Selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"}  
-[Sampling methods](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}   
+[Sampling methods](https://en.wikipedia.org/wiki/Sampling_%28statistics%29){target="_blank"}   
 [Sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"}  
 [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}</summary>    
 [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"}   
@@ -3830,7 +3830,7 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 [Details about the Survey](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"}  
 [Report about the 2018 NSDUH Survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"}  
 [Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"}  
-[Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}  
+[Selectorgadget Tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}  
 See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}, this [blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}, and this [vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"} for more information about web scraping  
 [CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
 [Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
@@ -3841,13 +3841,13 @@ Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-
 [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
 [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}  
 [Chi-squared distribution](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}  
-[chi-square distribution applet](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
+[chi-square distribution applet](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}   
 [`ggplot2` package](http://ggplot2.tidyverse.org){target="_blank"}    
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
 [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html){target="_blank"}  
 [`ggplot2` themes](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"}   
-[`directlabels` package methods](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}  
+[`directlabels` package methods](https://cran.r-project.org/package=directlabels){target="_blank"}  
 [Viridis palette for colorblind friendly plots](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}  
 [Motivating article for this case study about depression rates](https://pubmed.ncbi.nlm.nih.gov/30869927/){target="_blank"} (Access is possible for those at Hopkins by using their email address)    
 
@@ -3872,7 +3872,7 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
-[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[directlabels](https://cran.r-project.org/package=directlabels){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
@@ -3910,7 +3910,7 @@ This compilation time was measured on a PC machine operating on Windows 10. This
 
 We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson){target="_blank"} for assisting in framing the major direction of the case study.
 
-We would like to acknowledge [Qier Meng](https://www.opencasestudies.org/authors/qmeng/) and [Michael Breshock](https://mbreshock.github.io/) for their contributions to this case study. 
+We would like to acknowledge [Qier Meng](https://www.opencasestudies.org/post/2020-11-16-welcome-Qier-Meng-and-Michael-Breshock.html) and [Michael Breshock](https://mbreshock.github.io/) for their contributions to this case study. 
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/){target="_blank"} for funding this work. 
 
