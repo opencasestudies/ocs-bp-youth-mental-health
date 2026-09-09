@@ -49,8 +49,6 @@ library(here)
 library(knitr)
 library(magick) # to create gif
 library(magrittr)
-remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
-remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
 library(read.so)
 
@@ -104,7 +102,18 @@ To access the GitHub repository to obtain the data for this case study see here:
 You may also access and download the data using our `OCSdata` package. To learn more about this package including examples, see this [link](https://github.com/opencasestudies/OCSdata). Here is how you would install this package:
 
 ```{r, eval=FALSE}
-install.packages("OCSdata")
+# Packages used in this case study that are not included in the standard
+# package list.
+install.packages(c(
+  "cowplot", "directlabels", "ggthemes", "magick", "OCSdata", "rstatix"
+))
+
+# These packages are installed from GitHub. `dependencies = TRUE` also
+# installs packages required by wordcountaddin, including koRpus.
+remotes::install_github(
+  "benmarwick/wordcountaddin", type = "source", dependencies = TRUE
+)
+remotes::install_github("alistaire47/read.so")
 ```
 
 This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
@@ -3907,4 +3916,3 @@ We would also like to acknowledge the [Bloomberg American Health Initiative](htt
 
 
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=080808&w=a&t=tt&d=V1QZLVYhdPKkJALpt8zp68Hxs1qOXSEVgEylL9gFs9g&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
-
