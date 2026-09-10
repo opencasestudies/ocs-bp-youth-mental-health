@@ -347,7 +347,6 @@ In this case study, we will especially focus on using packages and functions fro
 
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
-```{r, out.width = "20%", echo = FALSE, fig.align ="center", eval = knitr::is_html_output()}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
 ```
 
