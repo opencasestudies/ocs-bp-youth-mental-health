@@ -59,6 +59,34 @@ library(magrittr)
 library(wordcountaddin)
 library(read.so)
 
+replace_missing_markers <- function(data) {
+  data %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::where(is.character),
+        ~ dplyr::na_if(.x, "nc")
+      )
+    ) %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::where(is.character),
+        ~ dplyr::na_if(.x, "--")
+      )
+    ) %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::where(is.character),
+        ~ dplyr::na_if(.x, "")
+      )
+    ) %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::where(is.character),
+        ~ dplyr::na_if(.x, "*")
+      )
+    )
+}
+
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
 ```
@@ -323,6 +351,7 @@ In this case study, we will especially focus on using packages and functions fro
 
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
+```{r, out.width = "20%", echo = FALSE, fig.align ="center", eval = knitr::is_html_output()}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
 ```
 
@@ -770,12 +799,12 @@ First, we assign the URL to a character string to use within the `read_html()` f
 NSDUH_url <- "https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetTabsSect11pe2018.htm"
 ```
 
-We have also saved the data as it was on this website to our own website to ensure that our case study will remain stable despite possible changes to this website.
+We have also saved the data as it was on this website in this repository to ensure that our case study will remain stable despite possible changes to the source website.
 
 Thus we will proceed with this URL:
 
 ```{r}
-NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
+NSDUH_url <- here::here("data", "raw", "samhsa.gov_2020_tables.htm")
 ```
 
 One could also directly use the URL but this is less convenient for piping.  
@@ -856,7 +885,7 @@ We will call this function `scraper`.
 
 ```{r}
 scraper <- function(XPATH){
-  NSDUH_url <- "https://www.opencasestudies.org/ocs-bp-youth-mental-health/data/raw/samhsa.gov_2020_tables.htm"
+  NSDUH_url <- here::here("data", "raw", "samhsa.gov_2020_tables.htm")
   table <- NSDUH_url %>%
     read_html() %>%
     html_elements(xpath = XPATH) %>%
@@ -1053,10 +1082,7 @@ We can use the `na_if()` function to recode these values to `NA`.
 
 ```{r}
 table11.1a %<>%
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*")
+  replace_missing_markers()
 
 head(table11.1a)
 ```
@@ -1333,10 +1359,7 @@ table11.1a %<>%
 # remove the last row by only keeping the first through the second to last
   slice(1:(n() - 1)) %>%
 # make the "nc" values "NA" instead
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*") %>% 
+  replace_missing_markers() %>%
 # rename the column to the shorter MHS_setting name
   dplyr::rename(MHS_setting = 
                   `Setting Where Mental Health ServiceWas Received`) %>%
@@ -1471,10 +1494,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # remove the last row
     slice(1:(n() - 1)) %>%
 # make "nc" values NA etc.
-    na_if("nc") %>%
-    na_if("--") %>%
-    na_if("") %>%
-    na_if("*") %>% 
+    replace_missing_markers() %>%
 # rename the first column (names(.)[1]) to be what was specified with the new_col argument
     rename({{new_col}} := names(.)[1]) %>%
 # remove the numbers and punctuation marks and carriage returns (\r) and new lines (\n) from the first column
@@ -1576,10 +1596,7 @@ data_dem_settings <- function(TABLE){
   # Remove the last row - keep only the 1st through 2nd to last rows
   slice(1:(n()-1)) %>%
   # change the values from "nc, --" etc to NA
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*") %>%
+  replace_missing_markers() %>%
   # rename the first column to be "Demographic"
   rename(Demographic := names(.)[1]) %>%
   # replace white spaces form the values of the "Demographic" variable with a single space
@@ -1978,10 +1995,10 @@ Let's save our data first. This will allow us to come back without running our p
 ```{r}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("data", "wrangled", "wrangled_data.rda"))
-readr::write_csv(percents, path = here::here("data", "wrangled", "percents.csv"))
-readr::write_csv(counts, path = here::here("data", "wrangled", "counts.csv"))
-readr::write_csv(table11.1a, path = here::here("data", "wrangled", "table11.1a.csv"))
-readr::write_csv(table11.1b, path = here::here("data", "wrangled", "table11.1b.csv"))
+readr::write_csv(percents, file = here::here("data", "wrangled", "percents.csv"))
+readr::write_csv(counts, file = here::here("data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, file = here::here("data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, file = here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
 
