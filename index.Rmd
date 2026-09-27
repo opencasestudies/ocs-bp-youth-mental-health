@@ -48,7 +48,6 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
 library(here)
 library(knitr)
 library(magick) # to create gif
-library(magrittr)
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
@@ -318,7 +317,6 @@ We will begin by loading the packages that we will need:
 library(here)
 library(rvest)
 library(dplyr)
-library(magrittr)
 library(stringr)
 library(tidyr)
 library(tibble)
@@ -340,13 +338,12 @@ library(OCSdata)
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
-[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[directlabels](https://tdhock.github.io/directlabels/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
@@ -432,13 +429,13 @@ There are some important considerations regarding this data analysis to keep in 
 
 1. The data that we will use come from a survey and are therefore values from a sample that estimate that of the true population. In our statistical analysis we use these sample values as if they are population estimates (because this is all we have access to). Thus, our results are not necessarily indicative of population differences.
 
-2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}. 
+2. Furthermore, the sampling mechanism utilized for the survey can introduce [selection bias](https://en.wikipedia.org/wiki/Selection_bias){target="_blank"} in cases where the the [sampling methods do not produce a representative sample](https://en.wikipedia.org/wiki/Sampling_%28statistics%29){target="_blank"}. 
 
 3. Data are collected from human participants; this presents the *potential* for information bias, as there is the *potential* that participants in the [sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"} may for a variety of reasons report inaccurate information. 
 
 4. Data about certain group [intersections](https://www.vox.com/the-highlight/2019/5/20/18542843/intersectionality-conservatism-law-race-gender-discrimination){target="_blank"} (meaning for example individuals of a particular gender and ethnicity) or particular groups in general such as specific ethnicities or gender or sexual identity groups such as LGBTQIA+ (lesbian/gay/bisexual/transgender/queer and questioning) or non-binary gender populations is unfortunately not available in the data used in this analysis and in most research about this topic.
 
-Note: While [gender and sex](https://www.who.int/genomics/gender/en/index.html) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
+Note: While [gender and sex](https://www.who.int/health-topics/gender) are not actually binary, the data used in this analysis unfortunately only contains information for groups of individuals who self-reported as male or female. We also acknowledge that unfortunately not all ethnicities or group intersections are represented in the data either. More research should be devoted to collecting data about the mental health of these groups. 
 
 ## **What are the data?**
 *** 
@@ -539,7 +536,7 @@ The **location** of the data on the webpage that will be scraped can be identifi
 - [Vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"}
 - [Blog](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}
 - [Blog](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}
-- [Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}
+- [Selectorgadget Tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}
 
 ####
 
@@ -695,7 +692,7 @@ This window allows us to glance at the internal mechanics of the webpage. To scr
 
 Hovering our mouse over the elements of the webpage highlights the respective section of the webpage it represents.
 By hovering over several elements—and clicking on the elements on the right side of the screen—we can identify the element that contains the data we are looking for. 
-Another option for identifying XPaths is to use the [selectorgadget tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}.  
+Another option for identifying XPaths is to use the [selectorgadget tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}.  
 
 ```{r,step3, echo=FALSE}
 step3 
@@ -768,8 +765,7 @@ One could also directly use the URL but this is less convenient for piping.
 <details> <summary>Click here if you are unfamiliar with piping in R, which uses this `%>%` operator</summary>  
 
 
-By [piping](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr` because they load the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}. 
-This allows us to perform multiple sequential steps on one data input. 
+By [piping](https://dplyr.tidyverse.org/articles/dplyr.html#the-pipe){target="_blank"} we mean using the `%>%` pipe operator which is accessible after loading the `tidyverse` or several of the packages within the tidyverse like `dplyr`. This allows us to perform multiple sequential steps on one data input. 
 
 
 </details> 
@@ -1003,13 +999,12 @@ table11.1a %>%
 
 We can use the `slice()` function of the `dplyr` package to remove this row, by using the `slice`function to select from the first row using `1:` to the second to last row using `n()-1`.
 
-We are also going to use a special pipe operator from the [`magrittr` package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} called the compound assignment pipe-operator or sometimes the double pipe operator. 
-This allows us to use the `table11.1a` as our input and reassign it at the end after all the steps have been performed.
+We will use `<-` to reassign the result to `table11.1a` after all the steps have been performed.
 
 We will also first change the data to be a [tibble](https://tibble.tidyverse.org/#:~:text=A%20tibble%2C%20or%20tbl_df%20%2C%20is,modern%20reimagining%20of%20the%20data.&text=Tibbles%20are%20data.,a%20variable%20does%20not%20exist), which is the `tidyverse` version of a data frame using the `as_tibble()` function of the `dplyr` package and the `tibble` package.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::as_tibble() %>%
   slice(1:(n()-1))
 ```
@@ -1032,15 +1027,13 @@ dplyr::pull(legend, `2004`)
 Looks like we want to replace values that are: `*`, `--`, `da`, `nc`, and `nr`. 
 
 
-We can use the `na_if()` function to recode these values to `NA`.
+We can use the `mutate()` function along with `across()` to recode these values to `NA`.
 
 
 ```{r}
-table11.1a %<>%
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*")
+
+table11.1a <- table11.1a %>%
+   mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*", "dc", "nr"), NA)))
 
 head(table11.1a)
 ```
@@ -1055,7 +1048,7 @@ Let's rename the first column using the `rename()` function of the `dplyr` packa
 This requires listing the new name first like so: `new_name = old_name`.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::rename(MHS_setting = `Setting Where Mental Health ServiceWas Received`)
 
 head(table11.1a)
@@ -1130,7 +1123,7 @@ We need to specify that the character strings that should be used can be found i
 To allow us to look for all three of these patterns at the same time, we can use the `|` symbol between each pattern.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 mutate(MHS_setting = 
          str_remove_all(string = MHS_setting, 
                         pattern = "[:digit:]|\r\n|[:punct:]|"))
@@ -1152,7 +1145,7 @@ So, we will use the `str_replace_all()` function of the `stringr` package.
 In this case, we also need to specify a replacement with the `replacement = ` argument. We will use this to specify one space.
 
 ```{r} 
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 mutate(MHS_setting = 
          str_replace_all(string = MHS_setting,
                          pattern = "[:blank:]{1,}", 
@@ -1169,7 +1162,7 @@ This allows us to specify what columns we want to mutate by using the `.cols = `
 We can select all columns except the first column called `MHS_setting` by using a minus sign `-` in front of the column name.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(dplyr::across(.cols = -MHS_setting,
                        stringr::str_remove_all, "a|,"))
 
@@ -1183,7 +1176,7 @@ We can use the base `as.numeric()` function.
 Again we will use the `across()` function to indicate what variables we wish to mutate.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(across(.cols =-MHS_setting, as.numeric))
 
 head(table11.1a)
@@ -1199,7 +1192,7 @@ knitr::include_graphics(here::here("img", "table11.1a.png"))
 First, we will add the `type` and `subtype` variables using the `mutate` function.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(type = c(rep("Specialty", 9), 
                   rep("Nonspecialty", 11))) %>%
   mutate(subtype = c("Specialty_total", 
@@ -1216,7 +1209,7 @@ table11.1a %<>%
 We also want to add a variable with shorter names for labels in plots and statistical output.
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   mutate(short_label = c("Specialty total", 
                          "Outpatient total", 
                          "Therapist", 
@@ -1243,7 +1236,7 @@ We can remove the empty rows using the `filter()` function of the `dplyr` packag
 We can specify that we don't want to keep these rows by using the `!=` not equal to operator. 
 
 ```{r}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   dplyr::filter(MHS_setting != "General_Medicine") %>%
   dplyr::filter(MHS_setting != "Juvenile_Justice") %>%
   dplyr::filter(MHS_setting != "Child_Welfare")
@@ -1271,7 +1264,7 @@ We will first use the base `dim()` function to see the dimensions of our table b
 
 ```{r}
 dim(table11.1a)
-table11.1a %<>%
+table11.1a <- table11.1a %>%
   tidyr::pivot_longer(cols = contains("20"), 
                       names_to = "Year",
                       values_to = "Number") %>%
@@ -1311,16 +1304,13 @@ OK, so the next table (Table11.1B) is very similar to Table11.1A, while the rema
 As a reminder here are all of the steps that we performed to wrangle `table11.1a`:
 
 ```{r, eval = FALSE}
-table11.1a %<>%
+table11.1a <- table11.1a %>%
 # make the table into a tibble
   dplyr::as_tibble() %>%
 # remove the last row by only keeping the first through the second to last
   slice(1:(n() - 1)) %>%
 # make the "nc" values "NA" instead
-  dplyr::na_if("nc") %>%
-  dplyr::na_if("--") %>%
-  dplyr::na_if("") %>%
-  dplyr::na_if("*") %>% 
+  mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*", "dc", "nr"), NA))) %>%
 # rename the column to the shorter MHS_setting name
   dplyr::rename(MHS_setting = 
                   `Setting Where Mental Health ServiceWas Received`) %>%
@@ -1455,10 +1445,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # remove the last row
     slice(1:(n() - 1)) %>%
 # make "nc" values NA etc.
-    na_if("nc") %>%
-    na_if("--") %>%
-    na_if("") %>%
-    na_if("*") %>% 
+    mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*"), NA))) %>%
 # rename the first column (names(.)[1]) to be what was specified with the new_col argument
     rename({{new_col}} := names(.)[1]) %>%
 # remove the numbers and punctuation marks and carriage returns (\r) and new lines (\n) from the first column
@@ -1476,9 +1463,9 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # make these columns numeric  (all the columns but the first column)
     mutate(across(-{{new_col}}, as.numeric)) %>%
 # make a new variable called type with 9 values that are Specialty followed by 11 values of Nonspecialty
-    mutate(type = c(rep("Specialty", 9), rep("Nonspecialty", 11))) %>%
+    mutate(type = rep(c(rep("Specialty", 9), rep("Nonspecialty", 11)), length.out = n())) %>%
 # make a new variable called subtype with the following values repeated various times
-    mutate(subtype = c("Specialty_total",
+    mutate(subtype = rep(c("Specialty_total",
                        rep("Outpatient", 5),
                        rep("Inpatient", 3),
                        "Nonspecialty_total",
@@ -1486,18 +1473,21 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
                        rep("General_medicine", 2),
                        rep("Juvenile_Justice", 2),
                        rep("Child_Welfare", 2),
-                       "combination")) %>% 
+                       "combination"), length.out = n())) %>% 
 # make a new variable called short_label to use as labels for plots for the data
-    mutate(short_label = c("Specialty total", "Outpatient total",  
-                           "Therapist", "Clinic", "Day program", 
-                           "In-home Therapist", "Inpatient total",
-                           "Hospital", "Residential Center",
-                           "Nonspecialty total", "School total", 
-                           "School Therapist", "School Program", 
-                           "General Medicine", "Family Dr", 
-                           "Justice System", "Justice System", 
-                           "Welfare", "Fostercare", 
-                           "Specialty Combination")) %>%
+    mutate(short_label = rep(c(
+      "Specialty total", "Outpatient total",
+      "Therapist", "Clinic", "Day program",
+      "In-home Therapist", "Inpatient total",
+      "Hospital", "Residential Center",
+      "Nonspecialty total", "School total",
+      "School Therapist", "School Program",
+      "General Medicine", "Family Dr",
+      "Justice System", "Justice System",
+      "Welfare", "Fostercare",
+      "Specialty Combination"
+    ),
+    length.out = n())) %>%
 # remove rows were all the values are NA - 
 # the number of `NA` values for a row should be less than the number of columns that could have `NA` values
   filter(rowSums(is.na(select(., is.numeric))) <
@@ -1506,7 +1496,7 @@ data_prep_settings <- function(TABLE, new_col, pivot_col){
 # the new value column is called what was specified with the "pivot_col" argument
   pivot_longer(cols = contains("20"),
                names_to = "Year", 
-               values_to = pivot_col)%>%
+               values_to = pivot_col) %>%
 # make the new "Year" variable numeric
   mutate(Year = as.numeric(Year))
 }
@@ -1560,10 +1550,7 @@ data_dem_settings <- function(TABLE){
   # Remove the last row - keep only the 1st through 2nd to last rows
   slice(1:(n()-1)) %>%
   # change the values from "nc, --" etc to NA
-  na_if("nc") %>%
-  na_if("--") %>%
-  na_if("") %>%
-  na_if("*") %>%
+    mutate(across(everything(), ~ replace(., . %in% c("nc", "--", "", "*"), NA))) %>%
   # rename the first column to be "Demographic"
   rename(Demographic := names(.)[1]) %>%
   # replace white spaces form the values of the "Demographic" variable with a single space
@@ -1593,27 +1580,27 @@ We will also add a column to describe what the data are about which will be help
 
 ```{r}
 table11.2a <- data_dem_settings(TABLE = table11.2a)
-table11.2a %<>% mutate(data_type = "Major_Depressive_Episode")
+table11.2a <- table11.2a %>% mutate(data_type = "Major_Depressive_Episode")
 head(table11.2a)
 
 table11.2b <- data_dem_settings(TABLE = table11.2b)
-table11.2b %<>% mutate(data_type = "Major_Depressive_Episode")
+table11.2b <- table11.2b %>% mutate(data_type = "Major_Depressive_Episode")
 head(table11.2b)
 
 table11.3a <- data_dem_settings(TABLE = table11.3a)
-table11.3a %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
+table11.3a <- table11.3a %>% mutate(data_type = "Severe_Major_Depressive_Episode")
 head(table11.3a)
 
 table11.3b <- data_dem_settings(TABLE = table11.3b)
-table11.3b %<>% mutate(data_type = "Severe_Major_Depressive_Episode")
+table11.3b <- table11.3b %>% mutate(data_type = "Severe_Major_Depressive_Episode")
 head(table11.3b)
 
 table11.4a <- data_dem_settings(TABLE = table11.4a)
-table11.4a %<>% mutate(data_type = "Treatment")
+table11.4a <- table11.4a %>% mutate(data_type = "Treatment")
 head(table11.4a)
 
 table11.4b <- data_dem_settings(TABLE = table11.4b)
-table11.4b %<>% mutate(data_type = "Treatment")
+table11.4b <- table11.4b %>% mutate(data_type = "Treatment")
 head(table11.4b)
 ```
 
@@ -1886,13 +1873,13 @@ Great!
 Now we will reformat both the `counts` and `percents` data to be in the long format using `pivot_longer()` once again.
 
 ```{r}
-counts %<>%
+counts <- counts %>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
                values_to = "Number") %>%
   mutate(Year = as.numeric(Year))
 
-percents %<>%
+percents <- percents %>%
   pivot_longer(cols = contains("20"), 
                names_to = "Year", 
                values_to = "Percent") %>%
@@ -1910,7 +1897,7 @@ percents %>%
   pull(Demographic)
 ```
 
-Using the definitions from the [Census Bureau](https://www.census.gov/programs-surveys/cps/data/data-tools/cps-table-creator-help/race-definitions.html#:~:text=NHOPI%20Alone%20%E2%80%93%20NHOPI%20alone%20refers,not%20report%20any%20other%20race.){target="_blank"}: 
+Using the definitions from the [Census Bureau](https://www.census.gov/data/academy/resources/one-pagers/race.html){target="_blank"}: 
 
 1. **AIAN** stands for American Indian and Alaska Native  
 2. **NHOPI** stands for Native Hawaiian or Other Pacific Islander  
@@ -1923,19 +1910,19 @@ However, we would like to note that there is [controversy](https://en.wikipedia.
 To do this we will use the `str_replace()` function.
 
 ```{r}
-percents %<>% mutate(Demographic = str_replace(string = Demographic, 
+percents <- percents %>% mutate(Demographic = str_replace(string = Demographic,
                                              pattern = "AIAN",
                                          replacement = "American Indian and Alaska Native"))
 
-percents %<>% mutate(Demographic =  str_replace(string = Demographic, 
+percents <- percents %>% mutate(Demographic =  str_replace(string = Demographic,
                                              pattern = "NHOPI",
                                          replacement = "Native Hawaiian or Other Pacific Islander"))
 
-counts %<>% mutate(Demographic = str_replace(string = Demographic, 
+counts <- counts %>% mutate(Demographic = str_replace(string = Demographic,
                                              pattern = "AIAN",
                                          replacement = "American Indian and Alaska Native"))
 
-counts %<>% mutate(Demographic =  str_replace(string = Demographic, 
+counts <- counts %>% mutate(Demographic =  str_replace(string = Demographic,
                                              pattern = "NHOPI",
                                          replacement = "Native Hawaiian or Other Pacific Islander"))
 
@@ -1962,10 +1949,10 @@ Let's save our data first. This will allow us to come back without running our p
 ```{r}
 save(percents, counts, table11.1a, table11.1b, 
      file = here::here("data", "wrangled", "wrangled_data.rda"))
-readr::write_csv(percents, path = here::here("data", "wrangled", "percents.csv"))
-readr::write_csv(counts, path = here::here("data", "wrangled", "counts.csv"))
-readr::write_csv(table11.1a, path = here::here("data", "wrangled", "table11.1a.csv"))
-readr::write_csv(table11.1b, path = here::here("data", "wrangled", "table11.1b.csv"))
+readr::write_csv(percents, here::here("data", "wrangled", "percents.csv"))
+readr::write_csv(counts, here::here("data", "wrangled", "counts.csv"))
+readr::write_csv(table11.1a, here::here("data", "wrangled", "table11.1a.csv"))
+readr::write_csv(table11.1b, here::here("data", "wrangled", "table11.1b.csv"))
 ```
 
 
@@ -2254,7 +2241,7 @@ Nice! Now it is much easier to tell how each group has changed over time.
 
 We can also add labels directly to the lines using the `directlabels` package. 
 There are several methods to do so. 
-See [here](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  
+See [here](https://tdhock.github.io/directlabels/docs/index.html){target="_blank"} for more information about the options for adding labels with this package.  
 We use the `"far.from.others.borders"` method so that our labels do not overlap one another. 
 We also use `dl.trans()` of the `directlabels` package to move the labels slightly upward (`y = y +0.35`) and to the left (`x = x -0.1`). 
 The `dl.move()` function of the `directlabels` package is used to move one of the labels to a particular location. 
@@ -3162,7 +3149,7 @@ knitr::include_graphics(here::here("img", "Chi-square_distributionCDF-English.pn
 
 [[source]](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}
 
-This [website](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
+This [website](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"} has a simple way to check this, without requiring you to get out a ruler and consult this plot. (Note on this website the notation for $df$ is ${\nu}$.)
 
 Plugging in 3.409091 as ${\chi}^2$ and 1 as ${\nu}$, we get a $p$-value of 0.06484.
 
@@ -3231,7 +3218,7 @@ Using what you just learned about `pivot_wider()` and `select()` and without scr
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-chi_squared_11.2a %<>%
+chi_squared_11.2a <- chi_squared_11.2a %>%
   select(Demographic, Year, Number) %>%
   tidyr::pivot_wider(names_from = Year,
                      names_prefix = "Year", 
@@ -3246,7 +3233,7 @@ To convert a column to the names of rows, you can use the `column_to_rownames()`
 Otherwise, we would need to select the numeric columns to perform the stats test.
 
 ```{r}
-chi_squared_11.2a %<>%
+chi_squared_11.2a <- chi_squared_11.2a %>%
   tibble::column_to_rownames("Demographic")
 
 chi_squared_11.2a
@@ -3799,6 +3786,10 @@ Considering the very steep increase in females, this warrants further investigat
 
 Ask students to scrape Tables 11.5A and 11.5B from the website, which contain data about the receipt of treatment among youths who reported having a severe episode. Ask students to create plots and perform Chi-square tests to evaluate how groups compare over time.
 
+# **More Case Studies**
+***
+
+Interested in exploring more open case studies? Visit **[opencasestudies.org](https://opencasestudies.org)** to access additional studies and open educational resources.
 
 ## **Additional Information**
 ***
@@ -3807,11 +3798,11 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 ***
 
 [RStudio](https://rstudio.com/products/rstudio/features/){target="_blank"}  
-[Cheatsheet on RStuido IDE](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf){target="_blank"}  
+[Cheatsheet on RStuido IDE](https://opensource.posit.co/resources/cheatsheets/rstudio-ide/rstudio-ide.pdf){target="_blank"}  
 [Other RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"}   
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}   
 [Selection bias](https://en.wikipedia.org/wiki/Selection_bias?oldformat=true){target="_blank"}  
-[Sampling methods](https://en.wikipedia.org/wiki/Sampling_(statistics)?oldformat=true){target="_blank"}   
+[Sampling methods](https://en.wikipedia.org/wiki/Sampling_%28statistics%29){target="_blank"}   
 [Sampling frame](https://en.wikipedia.org/wiki/Sampling_frame?oldformat=true){target="_blank"}  
 [DSM 5](https://en.wikipedia.org/wiki/DSM-5){target="_blank"}</summary>    
 [National Survey on Drug Use and Health (NSDUH)](https://nsduhweb.rti.org/respweb/homepage.cfm){target="_blank"}   
@@ -3821,10 +3812,10 @@ Ask students to scrape Tables 11.5A and 11.5B from the website, which contain da
 [Details about the Survey](https://nsduhweb.rti.org/respweb/about_nsduh.html){target="_blank"}  
 [Report about the 2018 NSDUH Survey](https://www.samhsa.gov/data/sites/default/files/cbhsq-reports/NSDUHDetailedTabs2018R2/NSDUHDetailedTabs2018.pdf){target="_blank"}  
 [Web scraping](https://en.wikipedia.org/wiki/Web_scraping?oldformat=true){target="_blank"}  
-[Selectorgadget Tool](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html){target="_blank"}  
+[Selectorgadget Tool](https://rvest.tidyverse.org/articles/selectorgadget.html){target="_blank"}  
 See this [blog post](http://research.libd.org/rstatsclub/post/introduction-to-scraping-and-wranging-tables-from-research-articles/#.Xw878ZNKhQJ){target="_blank"}, this [blog post](http://blog.corynissen.com/2015/01/using-rvest-to-scrape-html-table.html){target="_blank"}, and this [vignette](https://rstudio-pubs-static.s3.amazonaws.com/266430_f3fd4660b2744751ab144aa130768a06.html){target="_blank"} for more information about web scraping  
 [CSS selectors tutorial](http://flukeout.github.io/#){target="_blank"} (and the [answers](https://gist.github.com/chrisman/fcb0a88459cd98239dbe6d2d200b02d1){target="_blank"})     
-[Piping in R](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"}   
+[Piping in R](https://dplyr.tidyverse.org/articles/dplyr.html#the-pipe){target="_blank"}   
 [Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}
 Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-study/){target="_blank"}  for more information on writing functions.   
 [String manipulation cheatsheet](https://rstudio.com/resources/cheatsheets/){target="_blank"}  
@@ -3832,13 +3823,13 @@ Also see [this case study](https://opencasestudies.github.io/ocs-bp-vaping-case-
 [Pearson's chi-squared test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#:~:text=Pearson's%20chi%2Dsquared%20test%20is,differs%20from%20a%20theoretical%20distribution.){target="_blank"}  
 [contingency table](https://en.wikipedia.org/wiki/Contingency_table){target="_blank"}  
 [Chi-squared distribution](https://en.wikipedia.org/wiki/Chi-squared_test#/media/File:Chi-square_distributionCDF-English.png){target="_blank"}  
-[chi-square distribution applet](http://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
+[chi-square distribution applet](https://homepage.divms.uiowa.edu/~mbognar/applets/chisq.html){target="_blank"}  
 See here for a more thorough explanation of the [chi-square test](https://www.ling.upenn.edu/~clight/chisquared.htm){target="_blank"}   
 [`ggplot2` package](http://ggplot2.tidyverse.org){target="_blank"}    
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`. 
 [grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html){target="_blank"}  
 [`ggplot2` themes](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"}   
-[`directlabels` package methods](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}  
+[`directlabels` package methods](https://tdhock.github.io/directlabels/docs/index.html){target="_blank"}  
 [Viridis palette for colorblind friendly plots](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}  
 [Motivating article for this case study about depression rates](https://pubmed.ncbi.nlm.nih.gov/30869927/){target="_blank"} (Access is possible for those at Hopkins by using their email address)    
 
@@ -3857,13 +3848,12 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [rvest](https://github.com/tidyverse/rvest){target="_blank"}      | to scrape web pages  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to subset and filter the data for specific groups, to replace specific values with `NA`, rename variables,  and perform functions on multiple variables     
 [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html#Kernel_convolution)      | to create a gif   
-[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to use and reassign data objects using the %<>%pipe operator  
 [stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate strings  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}      | to create tibbles and convert values of a column to row names  
 [purrr](https://purrr.tidyverse.org/){target="_blank"} | to apply a function to each column of a tibble or each tibble in a list     
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
-[directlabels](http://directlabels.r-forge.r-project.org/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
+[directlabels](https://tdhock.github.io/directlabels/docs/index.html){target="_blank"}      | to add labels directly to lines in plots  
 [scales](https://cran.r-project.org/web/packages/scales/scales.pdf)  | to get the current linetype options  
 [forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
 [ggthemes](https://cran.r-project.org/web/packages/ggthemes/ggthemes.pdf) | to create a plot to see what the different linetypes look like  
@@ -3901,10 +3891,9 @@ This compilation time was measured on a PC machine operating on Windows 10. This
 
 We would like to acknowledge [Tamar Mendelson](https://www.jhsph.edu/faculty/directory/profile/1770/tamar-mendelson){target="_blank"} for assisting in framing the major direction of the case study.
 
-We would like to acknowledge [Qier Meng](https://www.opencasestudies.org/authors/qmeng/) and [Michael Breshock](https://mbreshock.github.io/) for their contributions to this case study. 
+We would like to acknowledge Qier Meng and [Michael Breshock](https://mbreshock.github.io/) for their contributions to this case study. 
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/){target="_blank"} for funding this work. 
 
 
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=080808&w=a&t=tt&d=V1QZLVYhdPKkJALpt8zp68Hxs1qOXSEVgEylL9gFs9g&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
-
