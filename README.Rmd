@@ -18,6 +18,31 @@ output: md_document
 - GitHub: https://github.com/opencasestudies/ocs-bp-youth-mental-health
 - Bloomberg American Health Initiative: https://americanhealth.jhu.edu/open-case-studies
 
+### Rendering prerequisites
+
+This case study uses the R package [`magick`](https://docs.ropensci.org/magick/), which is an interface to the native ImageMagick library. Install the native dependency before installing the R package when R will build from source:
+
+```bash
+# macOS (Homebrew)
+brew install imagemagick@6
+
+# Debian/Ubuntu
+sudo apt-get update
+sudo apt-get install --yes libmagick++-dev
+```
+
+On Windows, the CRAN binary of `magick` includes the required ImageMagick components, so no Bash-level ImageMagick installation is normally needed. After the appropriate system setup, install the R package with either:
+
+```r
+install.packages("magick")
+
+# Or, using pak (installs the R package and its R dependencies):
+if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+pak::pkg_install("magick")
+```
+
+`pak::pkg_install("magick")` installs the R package; it does not replace the native ImageMagick prerequisite for Linux/source builds. For a repeatable local setup, run `bash scripts/install-magick-system-deps.sh` before the R installation command.
+
 ### Disclaimer 
 
 The purpose of the [Open Case Studies](https://www.opencasestudies.org) 

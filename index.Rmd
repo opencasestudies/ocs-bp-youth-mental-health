@@ -42,10 +42,13 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE, cache = FALSE,
                       fig.align = "center", out.width = '90%')
 
-# `jhudsl/base_ottr` does not bundle magick. Install it when rendering in a
-# fresh container, while leaving local installations untouched.
+# `jhudsl/base_ottr` does not bundle magick. Install the R package when
+# rendering in a fresh container, while leaving local installations untouched.
 if (!requireNamespace("magick", quietly = TRUE)) {
-  install.packages("magick")
+  if (!requireNamespace("pak", quietly = TRUE)) {
+    install.packages("pak")
+  }
+  pak::pkg_install("magick")
 }
 
 library(here)
