@@ -42,10 +42,53 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE, cache = FALSE,
                       fig.align = "center", out.width = '90%')
 
-# `jhudsl/base_ottr` does not bundle magick. Install it when rendering in a
-# fresh container, while leaving local installations untouched.
-if (!requireNamespace("magick", quietly = TRUE)) {
-  install.packages("magick")
+} else {
+  character()
+}
+
+if (!any(grepl(paste0("ImageMagick ", imagemagick_version),
+               installed_imagemagick_version, fixed = TRUE))) {
+  run_or_stop <- function(command, arguments) {
+    status <- system2(command, arguments)
+    if (!identical(status, 0L)) {
+      stop("Failed to run: ", command, " ", paste(arguments, collapse = " "))
+    }
+  }
+
+  run_or_stop("apt-get", "update")
+  run_or_stop("apt-get", c(
+    "install", "--yes", "build-essential", "curl", "pkg-config", "xz-utils",
+    "libgif-dev", "libjpeg-dev", "libpng-dev", "libtiff-dev", "libwebp-dev",
+    "libxml2-dev", "zlib1g-dev"
+  ))
+
+  archive <- file.path(tempdir(), paste0("ImageMagick-", imagemagick_version, ".tar.xz"))
+  source_directory <- file.path(tempdir(), paste0("ImageMagick-", imagemagick_version))
+  utils::download.file(
+    paste0("https://download.imagemagick.org/releases/ImageMagick-", imagemagick_version, ".tar.xz"),
+    archive,
+    mode = "wb"
+  )
+  utils::untar(archive, exdir = tempdir())
+
+  old_directory <- setwd(source_directory)
+  run_or_stop("./configure", c("--prefix=/usr/local", "--disable-static"))
+  run_or_stop("make", c("-j", parallel::detectCores()))
+  run_or_stop("make", "install")
+  setwd(old_directory)
+  run_or_stop("ldconfig", character())
+}
+
+Sys.setenv(PKG_CONFIG_PATH = paste(
+  "/usr/local/lib/pkgconfig", Sys.getenv("PKG_CONFIG_PATH"), sep = ":"
+))
+
+magick_is_available <- suppressMessages(requireNamespace("magick", quietly = TRUE))
+if (!magick_is_available) {
+  if ("magick" %in% rownames(installed.packages())) {
+    remove.packages("magick")
+  }
+  install.packages("magick", type = "source")
 }
 
 library(here)
