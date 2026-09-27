@@ -59,8 +59,33 @@ if (!any(grepl(paste0("ImageMagick ", imagemagick_version),
     }
   }
 
-  run_or_stop("apt-get", "update")
-  run_or_stop("apt-get", c(
+  # Ignore unrelated browser/CLI repositories with expired signing keys.
+  apt_sources <- tempfile("apt-sources-")
+  dir.create(apt_sources)
+  source_files <- c(
+    "/etc/apt/sources.list",
+    list.files("/etc/apt/sources.list.d", full.names = TRUE)
+  )
+  excluded_repositories <- "cli\\.github\\.com|repo\\.vivaldi\\.com"
+  for (source_file in source_files[file.exists(source_files)]) {
+    source_contents <- readLines(source_file, warn = FALSE)
+    target_file <- file.path(apt_sources, basename(source_file))
+    if (tools::file_ext(source_file) == "list") {
+      writeLines(
+        source_contents[!grepl(excluded_repositories, source_contents)],
+        target_file
+      )
+    } else if (!any(grepl(excluded_repositories, source_contents))) {
+      file.copy(source_file, apt_sources)
+    }
+  }
+  apt_arguments <- c(
+    "-o", "Dir::Etc::sourcelist=/dev/null",
+    "-o", paste0("Dir::Etc::sourceparts=", apt_sources)
+  )
+
+  run_or_stop("apt-get", c(apt_arguments, "update"))
+  run_or_stop("apt-get", c(apt_arguments,
     "install", "--yes", "build-essential", "curl", "pkg-config", "xz-utils",
     "libgif-dev", "libjpeg-dev", "libpng-dev", "libtiff-dev", "libwebp-dev",
     "libxml2-dev", "zlib1g-dev"
