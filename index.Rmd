@@ -42,6 +42,10 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE, cache = FALSE,
                       fig.align = "center", out.width = '90%')
 
+imagemagick_version <- "7.1.0-62"
+imagemagick_binary <- "/usr/local/bin/magick"
+installed_imagemagick_version <- if (file.exists(imagemagick_binary)) {
+  system2(imagemagick_binary, "-version", stdout = TRUE, stderr = TRUE)
 } else {
   character()
 }
