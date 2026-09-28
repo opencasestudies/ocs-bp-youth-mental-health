@@ -99,6 +99,16 @@ if (!requireNamespace("directlabels", quietly = TRUE)) {
   install.packages("directlabels")
 }
 
+# wordcountaddin requires rlang >= 1.1.7. packageVersion() reads the
+# installed package metadata without loading an older rlang namespace.
+rlang_version <- tryCatch(
+  utils::packageVersion("rlang"),
+  error = function(error) NULL
+)
+if (is.null(rlang_version) || rlang_version < "1.1.7") {
+  install.packages("rlang", repos = "https://cloud.r-project.org")
+}
+
 install_github_package <- function(package, repository, dependencies = NA) {
   if (requireNamespace(package, quietly = TRUE)) {
     return(invisible())
@@ -206,7 +216,7 @@ You may also access and download the data using our `OCSdata` package. To learn 
 # Packages used in this case study that are not included in the standard
 # package list.
 install.packages(c(
-  "cowplot", "directlabels", "ggthemes", "magick", "OCSdata", "rstatix"
+  "cowplot", "directlabels", "ggthemes", "magick", "OCSdata", "rlang", "rstatix"
 ))
 
 # These packages are installed from GitHub. `dependencies = TRUE` also
