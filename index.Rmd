@@ -42,23 +42,7 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE, cache = FALSE,
                       fig.align = "center", out.width = '90%')
 
-imagemagick_version <- "7.1.0-62"
-imagemagick_binary <- "/usr/local/bin/magick"
-installed_imagemagick_version <- if (file.exists(imagemagick_binary)) {
-  system2(imagemagick_binary, "-version", stdout = TRUE, stderr = TRUE)
-} else {
-  character()
-}
-
-if (!any(grepl(paste0("ImageMagick ", imagemagick_version),
-               installed_imagemagick_version, fixed = TRUE))) {
-  run_or_stop <- function(command, arguments) {
-    status <- system2(command, arguments)
-    if (!identical(status, 0L)) {
-      stop("Failed to run: ", command, " ", paste(arguments, collapse = " "))
-    }
-  }
-
+if (nzchar(Sys.which("apt-get"))) {
   # Ignore unrelated browser/CLI repositories with expired signing keys.
   apt_sources <- tempfile("apt-sources-")
   dir.create(apt_sources)
@@ -83,41 +67,19 @@ if (!any(grepl(paste0("ImageMagick ", imagemagick_version),
     "-o", "Dir::Etc::sourcelist=/dev/null",
     "-o", paste0("Dir::Etc::sourceparts=", apt_sources)
   )
+  run_apt <- function(arguments) {
+    status <- system2("apt-get", c(apt_arguments, arguments))
+    if (!identical(status, 0L)) {
+      stop("Failed to run apt-get ", paste(arguments, collapse = " "))
+    }
+  }
 
-  run_or_stop("apt-get", c(apt_arguments, "update"))
-  run_or_stop("apt-get", c(apt_arguments,
-    "install", "--yes", "build-essential", "curl", "pkg-config", "xz-utils",
-    "libgif-dev", "libjpeg-dev", "libpng-dev", "libtiff-dev", "libwebp-dev",
-    "libxml2-dev", "zlib1g-dev"
-  ))
-
-  archive <- file.path(tempdir(), paste0("ImageMagick-", imagemagick_version, ".tar.xz"))
-  source_directory <- file.path(tempdir(), paste0("ImageMagick-", imagemagick_version))
-  utils::download.file(
-    paste0("https://download.imagemagick.org/releases/ImageMagick-", imagemagick_version, ".tar.xz"),
-    archive,
-    mode = "wb"
-  )
-  utils::untar(archive, exdir = tempdir())
-
-  old_directory <- setwd(source_directory)
-  run_or_stop("./configure", c("--prefix=/usr/local", "--disable-static"))
-  run_or_stop("make", c("-j", parallel::detectCores()))
-  run_or_stop("make", "install")
-  setwd(old_directory)
-  run_or_stop("ldconfig", character())
+  run_apt("update")
+  run_apt(c("install", "--yes", "libmagick++-6.q16-8"))
 }
 
-Sys.setenv(PKG_CONFIG_PATH = paste(
-  "/usr/local/lib/pkgconfig", Sys.getenv("PKG_CONFIG_PATH"), sep = ":"
-))
-
-magick_is_available <- suppressMessages(requireNamespace("magick", quietly = TRUE))
-if (!magick_is_available) {
-  if ("magick" %in% rownames(installed.packages())) {
-    remove.packages("magick")
-  }
-  install.packages("magick", type = "source")
+if (!requireNamespace("magick", quietly = TRUE)) {
+  install.packages("magick")
 }
 
 library(here)
