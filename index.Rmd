@@ -82,6 +82,10 @@ if (!requireNamespace("magick", quietly = TRUE)) {
   install.packages("magick")
 }
 
+if (!requireNamespace("directlabels", quietly = TRUE)) {
+  install.packages("directlabels")
+}
+
 install_github_package <- function(package, repository, dependencies = NA) {
   if (requireNamespace(package, quietly = TRUE)) {
     return(invisible())
