@@ -78,6 +78,19 @@ if (nzchar(Sys.which("apt-get"))) {
   run_apt(c("install", "--yes", "libmagick++-6.q16-8"))
 }
 
+packages_to_install <- c("ggthemes", "rstatix")
+missing_packages <- packages_to_install[
+  !vapply(packages_to_install, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages) > 0) {
+  install.packages(
+    missing_packages,
+    repos = "https://cloud.r-project.org",
+    dependencies = TRUE
+  )
+}
+
 if (!requireNamespace("magick", quietly = TRUE)) {
   install.packages("magick")
 }
@@ -410,21 +423,6 @@ include_graphics("https://tidyverse.tidyverse.org/logo.png")
 *** 
 
 We will begin by loading the packages that we will need:
-
-```{r}
-packages_to_install <- c("ggthemes", "rstatix")
-missing_packages <- packages_to_install[
-  !vapply(packages_to_install, requireNamespace, logical(1), quietly = TRUE)
-]
-
-if (length(missing_packages) > 0) {
-  install.packages(
-    missing_packages,
-    repos = "https://cloud.r-project.org",
-    dependencies = TRUE
-  )
-}
-```
 
 ```{r}
 library(here)
