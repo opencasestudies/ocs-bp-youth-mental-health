@@ -412,6 +412,12 @@ include_graphics("https://tidyverse.tidyverse.org/logo.png")
 We will begin by loading the packages that we will need:
 
 ```{r}
+if (!requireNamespace("ggthemes", quietly = TRUE)) {
+  install.packages("ggthemes", repos = "https://cloud.r-project.org")
+}
+```
+
+```{r}
 library(here)
 library(rvest)
 library(dplyr)
