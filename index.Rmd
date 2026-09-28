@@ -82,6 +82,25 @@ if (!requireNamespace("magick", quietly = TRUE)) {
   install.packages("magick")
 }
 
+install_github_package <- function(package, repository, dependencies = NA) {
+  if (requireNamespace(package, quietly = TRUE)) {
+    return(invisible())
+  }
+
+  if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes")
+  }
+  remotes::install_github(repository, dependencies = dependencies)
+}
+
+# These packages are hosted on GitHub rather than CRAN. They must be present
+# before the document loads them below (the instructional installation chunk
+# appears later in the rendered page).
+install_github_package(
+  "wordcountaddin", "benmarwick/wordcountaddin", dependencies = TRUE
+)
+install_github_package("read.so", "alistaire47/read.so")
+
 library(here)
 library(knitr)
 library(magick) # to create gif
@@ -166,7 +185,7 @@ To access the GitHub repository to obtain the data for this case study see here:
 
 You may also access and download the data using our `OCSdata` package. To learn more about this package including examples, see this [link](https://github.com/opencasestudies/OCSdata). Here is how you would install this package:
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 # Packages used in this case study that are not included in the standard
 # package list.
 install.packages(c(
