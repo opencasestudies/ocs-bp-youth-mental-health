@@ -412,8 +412,13 @@ include_graphics("https://tidyverse.tidyverse.org/logo.png")
 We will begin by loading the packages that we will need:
 
 ```{r}
-if (!requireNamespace("ggthemes", quietly = TRUE)) {
-  install.packages("ggthemes", repos = "https://cloud.r-project.org")
+packages_to_install <- c("ggthemes", "rstatix")
+missing_packages <- packages_to_install[
+  !vapply(packages_to_install, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages) > 0) {
+  install.packages(missing_packages, repos = "https://cloud.r-project.org")
 }
 ```
 
