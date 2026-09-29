@@ -99,14 +99,19 @@ if (!requireNamespace("directlabels", quietly = TRUE)) {
   install.packages("directlabels")
 }
 
-# wordcountaddin requires rlang >= 1.1.7. packageVersion() reads the
-# installed package metadata without loading an older rlang namespace.
 rlang_version <- tryCatch(
   utils::packageVersion("rlang"),
   error = function(error) NULL
 )
-if (is.null(rlang_version) || rlang_version < "1.1.7") {
-  install.packages("rlang", repos = "https://cloud.r-project.org")
+if (is.null(rlang_version) || rlang_version != "1.1.7") {
+  if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes", repos = "https://cloud.r-project.org")
+  }
+  remotes::install_version(
+    "rlang",
+    version = "1.1.7",
+    repos = "https://cloud.r-project.org"
+  )
 }
 
 install_github_package <- function(package, repository, dependencies = NA) {
