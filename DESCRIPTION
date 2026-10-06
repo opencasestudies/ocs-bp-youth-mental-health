@@ -28,17 +28,13 @@ Imports:
     ggthemes, 
     cowplot,
     viridis,
-    vctrs (== 0.6.5),
     jpeg, 
     png, 
-    wordcountaddin,
-    read.so,
+    koRpus,
+    koRpus.lang.en,
     testthat, 
     rmarkdown(== 2.2),
     stats,
     rstatix
-Remotes:
-    benmarwick/wordcountaddin,
-    alistaire47/read.so
 VignetteBuilder: knitr
 Encoding: UTF-8

@@ -99,46 +99,37 @@ if (!requireNamespace("directlabels", quietly = TRUE)) {
   install.packages("directlabels")
 }
 
-rlang_version <- tryCatch(
-  utils::packageVersion("rlang"),
-  error = function(error) NULL
-)
-if (is.null(rlang_version) || rlang_version != "1.1.7") {
-  if (!requireNamespace("remotes", quietly = TRUE)) {
-    install.packages("remotes", repos = "https://cloud.r-project.org")
-  }
-  remotes::install_version(
-    "rlang",
-    version = "1.1.7",
-    repos = "https://cloud.r-project.org"
-  )
-}
-
-install_github_package <- function(package, repository, dependencies = NA) {
-  if (requireNamespace(package, quietly = TRUE)) {
-    return(invisible())
-  }
-
-  if (!requireNamespace("remotes", quietly = TRUE)) {
-    install.packages("remotes")
-  }
-  remotes::install_github(repository, dependencies = dependencies)
-}
-
-# These packages are hosted on GitHub rather than CRAN. They must be present
-# before the document loads them below (the instructional installation chunk
-# appears later in the rendered page).
-install_github_package(
-  "wordcountaddin", "benmarwick/wordcountaddin", dependencies = TRUE
-)
-install_github_package("read.so", "alistaire47/read.so")
-
 library(here)
 library(knitr)
 library(magick) # to create gif
 library(magrittr)
-library(wordcountaddin)
-library(read.so)
+library(koRpus.lang.en)
+
+case_study_text <- function(input_file) {
+  lines <- readLines(input_file, warn = FALSE)
+  code_fences <- cumsum(grepl("^```", lines))
+  text_lines <- lines[code_fences %% 2L == 0L & !grepl("^```", lines)]
+
+  if (length(text_lines) > 0L && text_lines[[1]] == "---") {
+    yaml_end <- which(text_lines[-1] == "---")[1]
+    if (!is.na(yaml_end)) {
+      text_lines <- text_lines[-seq_len(yaml_end + 1L)]
+    }
+  }
+
+  paste(text_lines, collapse = "\n")
+}
+
+case_study_readability <- function(input_file) {
+  tokenized_text <- koRpus::tokenize(
+    case_study_text(input_file), format = "obj", lang = "en"
+  )
+  koRpus::readability(
+    tokenized_text,
+    index = c("Flesch.Kincaid", "FORCAST", "SMOG"),
+    quiet = TRUE
+  )
+}
 
 replace_missing_markers <- function(data) {
   data %>%
@@ -221,15 +212,9 @@ You may also access and download the data using our `OCSdata` package. To learn 
 # Packages used in this case study that are not included in the standard
 # package list.
 install.packages(c(
-  "cowplot", "directlabels", "ggthemes", "magick", "OCSdata", "rlang", "rstatix"
+  "cowplot", "directlabels", "ggthemes", "koRpus", "koRpus.lang.en", "magick",
+  "OCSdata", "rstatix"
 ))
-
-# These packages are installed from GitHub. `dependencies = TRUE` also
-# installs packages required by wordcountaddin, including koRpus.
-remotes::install_github(
-  "benmarwick/wordcountaddin", type = "source", dependencies = TRUE
-)
-remotes::install_github("alistaire47/read.so")
 ```
 
 This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
@@ -239,11 +224,11 @@ This case study is part of a series of public health case studies for the [Bloom
 The total reading time for this case study is calculated via [koRpus](https://github.com/unDocUMeantIt/koRpus) and shown below: 
 
 ```{r, echo=FALSE}
-readtable = text_stats("index.Rmd") # producing reading time markdown table
-readtime = read.so::read.md(readtable) %>% dplyr::select(Method, koRpus) %>% # reading table into dataframe, selecting relevant factors
-  dplyr::filter(Method == "Reading time") %>% # dropping unnecessary rows
-  dplyr::mutate(koRpus = paste(round(as.numeric(stringr::str_split(koRpus, " ")[[1]][1])), "minutes")) %>% # rounding reading time estimate
-  dplyr::mutate(Method = "koRpus") %>% dplyr::relocate(koRpus, .before = Method) %>% dplyr::rename(`Reading Time` = koRpus) # reorganizing table
+readability_results <- case_study_readability("index.Rmd")
+readtime <- data.frame(
+  `Reading Time` = paste(round(readability_results@desc$words / 200), "minutes"),
+  Method = "koRpus"
+)
 knitr::kable(readtime, format="markdown")
 ```
 
@@ -254,11 +239,16 @@ knitr::kable(readtime, format="markdown")
 A readability index estimates the reading difficulty level of a particular text. Flesch-Kincaid, FORCAST, and SMOG are three common readability indices that were calculated for this case study via [koRpus](https://github.com/unDocUMeantIt/koRpus). These indices provide an estimation of the minimum reading level required to comprehend this case study by grade and age. 
 
 ```{r, echo=FALSE}
-rt = wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
-df = read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
-  tidyr::drop_na() %>% dplyr::mutate(grade = round(as.numeric(grade)), # dropping rows with missing values, rounding age and grade columns
-                                     age = round(as.numeric(age))
-                                     )
+indices <- c("Flesch.Kincaid", "FORCAST", "SMOG")
+index_labels <- c("Flesch-Kincaid", "FORCAST", "SMOG")
+index_results <- lapply(
+  indices, function(index) methods::slot(readability_results, index)
+)
+df <- data.frame(
+  index = index_labels,
+  grade = round(vapply(index_results, function(result) result$grade, numeric(1))),
+  age = round(vapply(index_results, function(result) result$age, numeric(1)))
+)
 knitr::kable(df, format="markdown")
 ```
 
