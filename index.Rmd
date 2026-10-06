@@ -78,7 +78,7 @@ if (nzchar(Sys.which("apt-get"))) {
   run_apt(c("install", "--yes", "libmagick++-6.q16-8"))
 }
 
-packages_to_install <- c("ggthemes", "rstatix")
+packages_to_install <- c("ggthemes", "rstatix", "koRpus", "koRpus.lang.en")
 missing_packages <- packages_to_install[
   !vapply(packages_to_install, requireNamespace, logical(1), quietly = TRUE)
 ]
