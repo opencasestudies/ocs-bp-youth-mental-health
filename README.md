@@ -5,8 +5,8 @@ Open Case Studies: Mental Health of American Youth
 
 <!-- badges: start -->
 
-[![render-README](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-README/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
-[![render-index](https://github.com/opencasestudies/ocs-bp-youth-mental-health/workflows/render-index/badge.svg)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions)
+[![render-README](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions/workflows/render-readme.yaml/badge.svg?branch=master)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions/workflows/render-readme.yaml)
+[![render-index](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions/workflows/render-index.yaml/badge.svg?branch=master)](https://github.com/opencasestudies/ocs-bp-youth-mental-health/actions/workflows/render-index.yaml)
 <!-- badges: end -->
 
 ### Important links
