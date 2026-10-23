@@ -30,6 +30,8 @@ Imports:
     viridis,
     jpeg, 
     png, 
+    koRpus,
+    koRpus.lang.en,
     testthat, 
     rmarkdown(== 2.2),
     stats,
